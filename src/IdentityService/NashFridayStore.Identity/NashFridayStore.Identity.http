@@ -1,0 +1,6 @@
+@NashFridayStore.Identity_HostAddress = http://localhost:5011
+
+GET {{NashFridayStore.Identity_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

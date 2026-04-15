@@ -1,0 +1,18 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/ApiService/">
+    <Project Path="src/ApiService/NashFridayStore.API/NashFridayStore.API.csproj" />
+    <Project Path="src/ApiService/NashFridayStore.Domain/NashFridayStore.Domain.csproj" />
+    <Project Path="src/ApiService/NashFridayStore.Infrastructure/NashFridayStore.Infrastructure.csproj" />
+    <Project Path="src/ApiService/NashFridayStore.Tests/NashFridayStore.Tests.csproj" />
+  </Folder>
+  <Folder Name="/src/BFF/">
+    <Project Path="src/BFF/NashFridayStore.BFF/NashFridayStore.BFF.csproj" />
+  </Folder>
+  <Folder Name="/src/IdentityService/">
+    <Project Path="src/IdentityService/NashFridayStore.Identity/NashFridayStore.Identity.csproj" />
+  </Folder>
+  <Folder Name="/src/Storefront/">
+    <Project Path="src/Storefront/NashFridayStore.Web/NashFridayStore.Web.csproj" />
+  </Folder>
+</Solution>

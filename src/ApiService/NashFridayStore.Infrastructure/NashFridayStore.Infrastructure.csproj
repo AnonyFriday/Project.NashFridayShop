@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\NashFridayStore.Domain\NashFridayStore.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
