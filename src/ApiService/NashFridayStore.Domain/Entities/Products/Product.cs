@@ -1,6 +1,8 @@
-﻿namespace NashFridayStore.Domain.Entities.Products;
+﻿using NashFridayStore.Domain.Commons;
 
-public sealed class Product
+namespace NashFridayStore.Domain.Entities.Products;
+
+public sealed class Product : IEntityAuditable, IEntitySoftDeletable
 {
     public Guid Id { get; set; }
     public Guid CategoryId { get; set; }
@@ -13,4 +15,6 @@ public sealed class Product
     public ProductStatus Status { get; set; }
     public DateTime CreatedAtUtc { get; set; }
     public DateTime UpdatedAtUtc { get; set; }
+    public DateTime? DeletedAtUtc { get; set; }
+    public bool IsDeleted { get; set; }
 }
