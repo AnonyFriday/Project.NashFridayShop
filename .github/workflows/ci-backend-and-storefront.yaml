@@ -1,0 +1,47 @@
+name: ci-backend-and-storefront
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+      - "release/*"
+    paths:
+      - "src/ApiService/**"
+      - "src/BFF/**"
+      - "src/IdentityService/**"
+      - "src/Storefront/**"
+      - ".github/workflows/ci-backend-and-storefront.yaml"
+
+  push:
+    branches:
+      - develop
+      - main
+      - "release/*"
+    paths:
+      - "src/ApiService/**"
+      - "src/BFF/**"
+      - "src/IdentityService/**"
+      - "src/Storefront/**"
+      - ".github/workflows/ci-backend-and-storefront.yaml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v6
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.x"
+
+      - name: Install Nuget Packages
+        run: dotnet restore ./NashFridayStore.slnx
+
+      - name: Build
+        run: dotnet build ./NashFridayStore.slnx --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test ./NashFridayStore.slnx --configuration Release --no-build
