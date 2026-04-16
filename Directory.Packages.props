@@ -1,22 +1,20 @@
 <Project>
   <ItemGroup>
-
-    <!-- EF Core -->
-
+    <!-- EF Core + Database -->
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.6" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.6" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.6" />
+    
     <!-- Sonar Analyzer -->
     <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.23.0.137933" PrivateAssets="all" />
     <!-- FluentValidation -->
-
     <!-- Serilog -->
-
     <!-- Documentations -->
- 
-    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0-rc.1.25451.107" />
-  
-    <!-- Testing xUnit  -->
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
-    <PackageVersion Include="xunit.v3" Version="3.0.0" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.3" />
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.6" />
 
+    <!-- Testing xUnit  -->
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.4.0" />
+    <PackageVersion Include="xunit.v3" Version="3.2.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
   </ItemGroup>
 </Project>
