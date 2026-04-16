@@ -10,10 +10,14 @@ public class StoreDbContext : DbContext
     public DbSet<SubCategory> SubCategories { get; set; }
     public DbSet<Product> Products { get; set; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSnakeCaseNamingConvention();
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(StoreDbContext).Assembly);
     }
 }
