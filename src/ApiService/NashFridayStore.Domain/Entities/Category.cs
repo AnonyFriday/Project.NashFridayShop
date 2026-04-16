@@ -1,6 +1,8 @@
-﻿namespace NashFridayStore.Domain.Entities;
+﻿using NashFridayStore.Domain.Entities.Products;
 
-internal class Category
+namespace NashFridayStore.Domain.Entities;
+
+public sealed class Category
 {
     public Guid Id { get; set; }
     public string Name { get; set; }

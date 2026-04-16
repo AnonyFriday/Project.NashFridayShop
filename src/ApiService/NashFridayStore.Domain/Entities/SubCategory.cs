@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using NashFridayStore.Domain.Entities.Products;
 
 namespace NashFridayStore.Domain.Entities;
 
-internal class SubCategory
+public sealed class SubCategory
 {
     public Guid Id { get; set; }
     public Guid CategoryId { get; set; }
