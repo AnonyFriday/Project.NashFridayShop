@@ -3,6 +3,7 @@
 **/appsettings.Local.json
 **/*.env
 **/.git
+**/.secrets
 
 # Build
 **/bin/

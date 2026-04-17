@@ -1,0 +1,57 @@
+services:
+  # SQL Server
+  nashfridaystore-sqlserver:
+    image: mcr.microsoft.com/mssql/server:2025-latest
+    container_name: nashfridaystore-sqlserver
+    restart: always
+    ports:
+      - 1433:1433
+    env_file:
+      - path: .secrets/nashfridaystore-sqlserver.env
+        required: true
+    environment:
+      - ACCEPT_EULA=Y
+    volumes:
+      - nashfridaystore-sqlserver-data:/var/opt/mssql
+    networks:
+      - nashfridaystore-network
+
+  # Redis
+  nashfridaystore-redis:
+    image: redis/redis-stack-server:latest
+    container_name: nashfridaystore-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - nashfridaystore-redis-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - nashfridaystore-network
+
+    # Redis Insight
+  nashfridaystore-redisinsight:
+    image: redis/redisinsight:latest
+    container_name: nashfridaystore-redisinsight
+    restart: always
+    ports:
+      - "5540:5540"
+    volumes:
+      - nashfridaystore-redisinsight-data:/data
+    networks:
+      - nashfridaystore-network
+    depends_on:
+      - nashfridaystore-redis
+
+networks:
+  nashfridaystore-network:
+    driver: bridge
+
+volumes:
+  nashfridaystore-sqlserver-data:
+  nashfridaystore-redis-data:
+  nashfridaystore-redisinsight-data:
