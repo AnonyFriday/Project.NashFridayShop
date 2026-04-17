@@ -6,14 +6,16 @@ namespace NashFridayStore.Infrastructure.Data;
 
 public class StoreDbContext : DbContext
 {
-    public DbSet<Category> Categories { get; set; }
-    public DbSet<SubCategory> SubCategories { get; set; }
-    public DbSet<Product> Products { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    public StoreDbContext(DbContextOptions options) : base(options)
     {
-        optionsBuilder.UseSnakeCaseNamingConvention();
     }
+
+    protected StoreDbContext()
+    {
+    }
+
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<Product> Products { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

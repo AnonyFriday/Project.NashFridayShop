@@ -17,9 +17,6 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(p => p.CategoryId)
             .IsRequired();
 
-        builder.Property(p => p.SubCategoryId)
-            .IsRequired();
-
         builder.Property(p => p.Name)
             .IsRequired()
             .HasMaxLength(100);
@@ -44,9 +41,6 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         builder.HasIndex(p => p.CategoryId)
             .HasDatabaseName("ix_products_category_id");
-
-        builder.HasIndex(p => p.SubCategoryId)
-            .HasDatabaseName("ix_products_subcategory_id");
 
         builder.HasIndex(p => p.Name)
             .HasDatabaseName("ix_products_name");

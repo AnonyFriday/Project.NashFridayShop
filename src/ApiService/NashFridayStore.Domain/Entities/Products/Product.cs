@@ -6,7 +6,6 @@ public sealed class Product : IEntityAuditable, IEntitySoftDeletable
 {
     public Guid Id { get; set; }
     public Guid CategoryId { get; set; }
-    public Guid SubCategoryId { get; set; }
     public string Name { get; set; } = default!;
     public string Description { get; set; } = default!;
     public decimal PriceUsd { get; set; }
