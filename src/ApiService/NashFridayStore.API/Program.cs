@@ -3,7 +3,6 @@ using NashFridayStore.Infrastructure.Extensions;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddOpenApi();
 builder.Services.AddApiServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
@@ -19,6 +18,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.MapControllers();
 
 await app.RunAsync();
 

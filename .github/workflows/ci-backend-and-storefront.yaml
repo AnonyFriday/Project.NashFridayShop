@@ -9,8 +9,8 @@ on:
     paths:
       - "src/ApiService/**"
       - "src/BFF/**"
-      - "src/IdentityService/**"
-      - "src/Storefront/**"
+      - "src/IdentityServer/**"
+      - "src/StoreFront/**"
       - ".github/workflows/ci-backend-and-storefront.yaml"
 
   push:
@@ -21,8 +21,8 @@ on:
     paths:
       - "src/ApiService/**"
       - "src/BFF/**"
-      - "src/IdentityService/**"
-      - "src/Storefront/**"
+      - "src/IdentityServer/**"
+      - "src/StoreFront/**"
       - ".github/workflows/ci-backend-and-storefront.yaml"
 
 jobs:
