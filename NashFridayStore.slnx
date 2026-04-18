@@ -9,10 +9,10 @@
   <Folder Name="/src/BFF/">
     <Project Path="src/BFF/NashFridayStore.BFF/NashFridayStore.BFF.csproj" />
   </Folder>
-  <Folder Name="/src/IdentityService/">
-    <Project Path="src/IdentityService/NashFridayStore.Identity/NashFridayStore.Identity.csproj" />
+  <Folder Name="/src/IdentityServer/">
+    <Project Path="src/IdentityServer/NashFridayStore.Identity/NashFridayStore.Identity.csproj" />
   </Folder>
-  <Folder Name="/src/Storefront/">
-    <Project Path="src/Storefront/NashFridayStore.Web/NashFridayStore.Web.csproj" />
+  <Folder Name="/src/StoreFront/">
+    <Project Path="src/StoreFront/NashFridayStore.StoreFront/NashFridayStore.StoreFront.csproj" />
   </Folder>
 </Solution>
