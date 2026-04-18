@@ -19,12 +19,13 @@ public static class ServiceCollectionsExtension
             .Bind(configuration.GetSection(ConnectionStringsOptions.ConnectionStrings))
             .ValidateOnStart();
 
-        // DbContext + SQL Server
+        // DbContext + SQL Server + Seeder
         services.AddDbContextPool<StoreDbContext>((sp, options) =>
         {
             ConnectionStringsOptions settings = sp.GetRequiredService<IOptions<ConnectionStringsOptions>>().Value;
             options.UseSqlServer(settings.Database);
             options.UseSnakeCaseNamingConvention();
         });
+        services.AddTransient<StoreDbContextSeeder>();
     }
 }
