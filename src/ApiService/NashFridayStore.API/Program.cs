@@ -1,6 +1,9 @@
 using NashFridayStore.API.Extensions;
+using NashFridayStore.Domain.Commons;
 using NashFridayStore.Infrastructure.Data;
 using NashFridayStore.Infrastructure.Extensions;
+
+// Configure services
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +26,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors(AppCts.Policy.AdminSite);
+
 app.MapControllers();
 
 await app.RunAsync();

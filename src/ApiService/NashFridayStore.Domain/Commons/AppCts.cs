@@ -7,4 +7,9 @@ public static class AppCts
         public const int PageSize = 10;
         public const int PageIndex = 0;
     }
+
+    public static class Policy
+    {
+        public const string AdminSite = "AdminSitePolicy";
+    }
 }

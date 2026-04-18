@@ -11,9 +11,4 @@
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
-
-    <!-- Apply Sonar analyzer to all projects except docker -->
-    <ItemGroup Condition="'$(MSBuildProjectExtension)' != '.dcproj'">
-        <PackageReference Include="SonarAnalyzer.CSharp" />
-    </ItemGroup>
 </Project>
