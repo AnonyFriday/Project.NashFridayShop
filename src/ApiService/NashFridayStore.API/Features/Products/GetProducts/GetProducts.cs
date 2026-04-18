@@ -15,7 +15,7 @@ public sealed record Request(
     string? SearchName,
     decimal? MinPrice,
     decimal? MaxPrice,
-    int PageIndex = 1,
+    int PageIndex = 0,
     int PageSize = 10,
     ProductStatus Status = ProductStatus.InStock,
     bool IsDeleted = false);
