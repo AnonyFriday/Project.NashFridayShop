@@ -17,7 +17,8 @@ public sealed record Response(
     string Name,
     string ImageUrl,
     decimal PriceUsd,
-    ProductStatus Status);
+    ProductStatus Status,
+    decimal AverageStars);
 #endregion
 
 #region Validation
@@ -47,13 +48,15 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
 
         Response? product = await dbContext.Products
             .AsNoTracking()
+            .Include(p => p.ProductRatings)
             .Where(x => x.Id == req.Id)
             .Select(x => new Response(
                 x.Id,
                 x.Name,
                 x.ImageUrl,
                 x.PriceUsd,
-                x.Status))
+                x.Status,
+                x.ProductRatings.Any() ? x.ProductRatings.Average(r => (decimal)r.Stars) % AppCts.Api.MaxStars : 0))
             .FirstOrDefaultAsync(ct);
 
         if (product is null)

@@ -9,7 +9,7 @@ using NashFridayStore.Infrastructure.Data;
 namespace NashFridayStore.API.Features.Products.GetProducts;
 
 #region Contracts
-public sealed record ProductItem(Guid Id, string Name, string ImageUrl, decimal PriceUsd, ProductStatus Status);
+public sealed record ProductItem(Guid Id, string Name, string ImageUrl, decimal PriceUsd, ProductStatus Status, decimal AverageStars);
 
 public sealed record Request(
     Guid? CategoryId,
@@ -103,6 +103,7 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
 
         query = query
             .AsNoTracking()
+            .Include(p => p.ProductRatings)
             .Where(x =>
                 x.IsDeleted == req.IsDeleted &&
                 x.Status == req.Status &&
@@ -123,7 +124,8 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
                 x.Name,
                 x.ImageUrl,
                 x.PriceUsd,
-                x.Status)
+                x.Status,
+                x.ProductRatings.Any() ? x.ProductRatings.Average(x => (decimal)x.Stars) % AppCts.Api.MaxStars : 0)
             )
             .ToListAsync(ct);
 
