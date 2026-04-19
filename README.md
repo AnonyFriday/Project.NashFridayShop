@@ -1,5 +1,7 @@
 # Nash Friday Shop
 
+![codecov](https://codecov.io/gh/AnonyFriday/Project.NashFridayShop/branch/develop/graph/badge.svg)
+
 ## Techstack
 
 - **Backend**: .NET 10 (ASP.NET Core, Entity Framework Core, FluentValidation)
