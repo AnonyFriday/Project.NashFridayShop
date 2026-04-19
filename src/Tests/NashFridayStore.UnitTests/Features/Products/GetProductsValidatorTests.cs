@@ -16,7 +16,7 @@ public class GetProductsValidatorTests
 
     #region SearchName Tests
     [Fact]
-    [Trait("Category", "SearchName")]
+    [Trait("UT", "SearchName")]
     public void Validate_SearchNameExceedsMaxLength_ShouldHaveValidationError()
     {
         // Arrange
@@ -34,7 +34,7 @@ public class GetProductsValidatorTests
     }
 
     [Fact]
-    [Trait("Category", "SearchName")]
+    [Trait("UT", "SearchName")]
     public void Validate_SearchNameEqualsMaxLength_ShouldNotHaveValidationError()
     {
         // Arrange
@@ -49,7 +49,7 @@ public class GetProductsValidatorTests
     }
 
     [Fact]
-    [Trait("Category", "SearchName")]
+    [Trait("UT", "SearchName")]
     public void Validate_SearchNameIsValid_ShouldNotHaveValidationError()
     {
         // Arrange
@@ -65,7 +65,7 @@ public class GetProductsValidatorTests
 
     #region Price Tests
     [Fact]
-    [Trait("Category", "Price")]
+    [Trait("UT", "Price")]
     public void Validate_MinPriceIsNegative_ShouldHaveValidationError()
     {
         // Arrange
@@ -83,7 +83,7 @@ public class GetProductsValidatorTests
     }
 
     [Fact]
-    [Trait("Category", "Price")]
+    [Trait("UT", "Price")]
     public void Validate_MaxPriceIsNegative_ShouldHaveValidationError()
     {
         // Arrange
@@ -101,7 +101,7 @@ public class GetProductsValidatorTests
     }
 
     [Fact]
-    [Trait("Category", "Price")]
+    [Trait("UT", "Price")]
     public void Validate_MinPriceGreaterThanMaxPrice_ShouldHaveValidationError()
     {
         // Arrange
@@ -118,7 +118,7 @@ public class GetProductsValidatorTests
     }
 
     [Fact]
-    [Trait("Category", "Price")]
+    [Trait("UT", "Price")]
     public void Validate_MinPriceLessThanOrEqualMaxPrice_ShouldNotHaveValidationError()
     {
         // Arrange
@@ -134,7 +134,7 @@ public class GetProductsValidatorTests
 
     #region Paging Tests
     [Fact]
-    [Trait("Category", "Paging")]
+    [Trait("UT", "Paging")]
     public void Validate_PageIndexIsNegative_ShouldHaveValidationError()
     {
         var request = new Request(null, null, null, null, PageIndex: -1);
@@ -150,7 +150,7 @@ public class GetProductsValidatorTests
 
 
     [Fact]
-    [Trait("Category", "Paging")]
+    [Trait("UT", "Paging")]
     public void Validate_PageSizeOutOfRange_ShouldHaveValidationError()
     {
         var request = new Request(null, null, null, null, PageSize: 101);
@@ -165,7 +165,7 @@ public class GetProductsValidatorTests
     }
 
     [Fact]
-    [Trait("Category", "Paging")]
+    [Trait("UT", "Paging")]
     public void Validate_PageSizeIsValid_ShouldNotHaveValidationError()
     {
         var request = new Request(null, null, null, null, PageSize: 10);
@@ -178,7 +178,7 @@ public class GetProductsValidatorTests
 
     #region Status Tests
     [Fact]
-    [Trait("Category", "Status")]
+    [Trait("UT", "Status")]
     public void Validate_StatusIsInvalid_ShouldHaveValidationError()
     {
         // Arrange
@@ -204,7 +204,7 @@ public class GetProductsValidatorTests
     }
 
     [Fact]
-    [Trait("Category", "Status")]
+    [Trait("UT", "Status")]
     public void Validate_StatusIsValid_ShouldNotHaveValidationError()
     {
         // Arrange
@@ -227,7 +227,7 @@ public class GetProductsValidatorTests
 
     #region Passed All Tests
     [Fact]
-    [Trait("Category", "General")]
+    [Trait("UT", "General")]
     public void Validate_RequestIsValid_ShouldNotHaveAnyValidationErrors()
     {
         var request = new Request(null, "Laptop", 10, 100, 0, 10);
