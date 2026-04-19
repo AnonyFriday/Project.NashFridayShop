@@ -4,6 +4,7 @@
 
 - **Backend**: .NET 10 (ASP.NET Core, Entity Framework Core, FluentValidation)
 - **Frontend**: Next.js (Admin Site), ASP.NET Razor Pages (StoreFront)
+- **BFF**: Backend for Frontend service
 - **Identity**: IdentityServer4
 - **Database**: SQL Server (via EF Core)
 - **Architecture**: Vertical Slice Architecture
@@ -41,11 +42,9 @@
 - Global coding analyzer: `Directory.Build.props`
 - Coding style: `.editorconfig`
 
-## ERD
+## ERD (V1)
 
-- Analyze ERD + Draw ERD: **v1**
-- ERD link: https://lucid.app/lucidchart/80f9e014-52b0-4936-90e0-51cf2d40980b/edit?viewport_loc=32%2C-11%2C892%2C1085%2C0_0&invitationId=inv_1ef36d86-f9aa-4297-9f12-42a1ae19f457
-- Diagram placeholder: add ERD image or embed here
+![ERD Diagram](./images/erd_v1_no_identity.png)
 
 ## Week 1 Summary
 
