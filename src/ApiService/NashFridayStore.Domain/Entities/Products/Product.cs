@@ -16,4 +16,6 @@ public sealed class Product : IEntityAuditable, IEntitySoftDeletable
     public DateTime? UpdatedAtUtc { get; set; }
     public DateTime? DeletedAtUtc { get; set; }
     public bool IsDeleted { get; set; }
+
+    public ICollection<ProductRating> ProductRatings { get; set; }
 }
