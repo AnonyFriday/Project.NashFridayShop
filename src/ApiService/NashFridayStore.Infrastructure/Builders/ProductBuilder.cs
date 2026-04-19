@@ -16,6 +16,8 @@ public sealed class ProductBuilder
     private int _quantity = 10;
     private DateTime _createdAtUtc = DateTime.UtcNow;
     private DateTime? _updatedAtUtc;
+    private bool _isDeleted;
+    private DateTime? _deletedAtUtc;
 
     private ProductStatus _status = ProductStatus.InStock;
 
@@ -73,6 +75,13 @@ public sealed class ProductBuilder
         return this;
     }
 
+    public ProductBuilder WithIsDeleted(bool isDeleted)
+    {
+        _isDeleted = isDeleted;
+        _deletedAtUtc = DateTime.UtcNow;
+        return this;
+    }
+
     public Product Build()
     {
         return new Product
@@ -86,7 +95,9 @@ public sealed class ProductBuilder
             Quantity = _quantity,
             Status = _status,
             CreatedAtUtc = _createdAtUtc,
-            UpdatedAtUtc = _updatedAtUtc
+            UpdatedAtUtc = _updatedAtUtc,
+            IsDeleted = _isDeleted,
+            DeletedAtUtc = _deletedAtUtc
         };
     }
 }
