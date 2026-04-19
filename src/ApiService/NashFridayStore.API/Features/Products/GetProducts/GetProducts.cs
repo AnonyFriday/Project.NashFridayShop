@@ -9,7 +9,7 @@ using NashFridayStore.Infrastructure.Data;
 namespace NashFridayStore.API.Features.Products.GetProducts;
 
 #region Contracts
-public sealed record ProductItem(Guid Id, string Name, string ImageUrl, decimal PriceUsd);
+public sealed record ProductItem(Guid Id, string Name, string ImageUrl, decimal PriceUsd, ProductStatus Status);
 
 public sealed record Request(
     Guid? CategoryId,
@@ -98,13 +98,6 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
             throw GetProductsErrors.Validation(validation.Errors);
         }
 
-        // Handle Exceptions
-        if (req.CategoryId.HasValue && !await dbContext.Categories
-                .AnyAsync(x => x.Id == req.CategoryId.Value, ct))
-        {
-            throw GetProductsErrors.CategoryNotFound(req.CategoryId.Value);
-        }
-
         // Implementing logic
         IQueryable<Product> query = dbContext.Products.AsQueryable();
 
@@ -129,7 +122,8 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
                 x.Id,
                 x.Name,
                 x.ImageUrl,
-                x.PriceUsd)
+                x.PriceUsd,
+                x.Status)
             )
             .ToListAsync(ct);
 

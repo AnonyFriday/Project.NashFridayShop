@@ -10,10 +10,12 @@ public static class CommonPropertiesConfigurationExtension
         where T : class, IEntityAuditable
     {
         builder.Property(x => x.CreatedAtUtc)
+            .ValueGeneratedOnAdd()
             .IsRequired();
 
         builder.Property(x => x.UpdatedAtUtc)
-            .IsRequired();
+            .ValueGeneratedOnAddOrUpdate()
+            .IsRequired(false);
     }
 
     public static void ConfigureSoftDeletable<T>(this EntityTypeBuilder<T> builder, string tableName)

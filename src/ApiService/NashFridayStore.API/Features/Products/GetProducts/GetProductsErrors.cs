@@ -11,12 +11,5 @@ internal static class GetProductsErrors
         return new RequestValidationException(
             errors.Select(e => new RequestValidationError(e.PropertyName, e.ErrorMessage)));
     }
-
-    internal static ApiResponseException CategoryNotFound(Guid id) => new(new ProblemDetails
-    {
-        Title = "Category not found",
-        Detail = $"Category with id '{id}' was not found.",
-        Status = StatusCodes.Status404NotFound
-    });
 }
 

@@ -12,8 +12,8 @@ using NashFridayStore.Infrastructure.Data;
 namespace NashFridayStore.Infrastructure.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20260417103655_Add Product")]
-    partial class AddProduct
+    [Migration("20260419061256_change_updatedAtUtc_to_nullable")]
+    partial class change_updatedAtUtc_to_nullable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,16 +34,22 @@ namespace NashFridayStore.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)")
                         .HasColumnName("description");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("name");
 
                     b.HasKey("Id")
                         .HasName("pk_categories");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasDatabaseName("ix_categories_name");
 
                     b.ToTable("categories", (string)null);
                 });
@@ -60,6 +66,7 @@ namespace NashFridayStore.Infrastructure.Migrations
                         .HasColumnName("category_id");
 
                     b.Property<DateTime>("CreatedAtUtc")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasColumnName("created_at_utc");
 
@@ -105,7 +112,8 @@ namespace NashFridayStore.Infrastructure.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("status");
 
-                    b.Property<DateTime>("UpdatedAtUtc")
+                    b.Property<DateTime?>("UpdatedAtUtc")
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2")
                         .HasColumnName("updated_at_utc");
 
