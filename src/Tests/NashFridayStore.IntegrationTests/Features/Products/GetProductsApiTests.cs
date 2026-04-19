@@ -290,4 +290,122 @@ public class GetProductsApiTests : IClassFixture<CustomWebApplicationFactory>, I
     }
 
     #endregion
+
+    #region AverageStars Tests
+    [Fact]
+    public async Task GetProducts_WithRatings_ShouldReturnCorrectAverageStars()
+    {
+        // Arrange
+        CancellationToken cancellationToken = TestContext.Current.CancellationToken;
+        Category category = new CategoryBuilder().Build();
+
+        Product product1 = new ProductBuilder()
+            .WithCategoryId(category.Id)
+            .WithName("Laptop")
+            .Build();
+
+        Product product2 = new ProductBuilder()
+            .WithCategoryId(category.Id)
+            .WithName("Mouse")
+            .Build();
+
+        ProductRating[] ratings1 =
+        [
+            new ProductRatingBuilder().WithProductId(product1.Id).WithStars(5).Build(),
+            new ProductRatingBuilder().WithProductId(product1.Id).WithStars(4).Build(),
+            new ProductRatingBuilder().WithProductId(product1.Id).WithStars(3).Build()
+        ];
+
+        ProductRating[] ratings2 =
+        [
+            new ProductRatingBuilder().WithProductId(product2.Id).WithStars(5).Build(),
+            new ProductRatingBuilder().WithProductId(product2.Id).WithStars(5).Build()
+        ];
+
+        _dbContext.Categories.Add(category);
+        _dbContext.Products.AddRange(product1, product2);
+        _dbContext.ProductRatings.AddRange(ratings1);
+        _dbContext.ProductRatings.AddRange(ratings2);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        // Act
+        HttpResponseMessage response = await _client.GetAsync("/api/products", cancellationToken);
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: cancellationToken);
+
+        Assert.NotNull(result);
+        Assert.Equal(2, result.ProductItems.Count);
+
+        ProductItem laptopItem = result.ProductItems.First(p => p.Name == "Laptop");
+        ProductItem mouseItem = result.ProductItems.First(p => p.Name == "Mouse");
+
+        Assert.Equal(4.0m, laptopItem.AverageStars); // (5+4+3)/3 = 4
+        Assert.Equal(5.0m, mouseItem.AverageStars); // (5+5)/2 = 5
+    }
+
+    [Fact]
+    public async Task GetProducts_NoRatings_ShouldReturnZeroAverageStars()
+    {
+        // Arrange
+        CancellationToken cancellationToken = TestContext.Current.CancellationToken;
+        Category category = new CategoryBuilder().Build();
+
+        Product product = new ProductBuilder()
+            .WithCategoryId(category.Id)
+            .WithName("Laptop")
+            .Build();
+
+        _dbContext.Categories.Add(category);
+        _dbContext.Products.Add(product);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        // Act
+        HttpResponseMessage response = await _client.GetAsync("/api/products", cancellationToken);
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: cancellationToken);
+
+        Assert.NotNull(result);
+        Assert.Single(result.ProductItems);
+        Assert.Equal(0.0m, result.ProductItems[0].AverageStars);
+    }
+
+    [Fact]
+    public async Task GetProducts_WithDeletedRatings_ShouldExcludeDeletedRatingsFromAverage()
+    {
+        // Arrange
+        CancellationToken cancellationToken = TestContext.Current.CancellationToken;
+        Category category = new CategoryBuilder().Build();
+
+        Product product = new ProductBuilder()
+            .WithCategoryId(category.Id)
+            .WithName("Laptop")
+            .Build();
+
+        ProductRating[] ratings =
+        [
+            new ProductRatingBuilder().WithProductId(product.Id).WithStars(5).Build(),
+            new ProductRatingBuilder().WithProductId(product.Id).WithStars(1).WithIsDeleted(true).Build()
+        ];
+
+        _dbContext.Categories.Add(category);
+        _dbContext.Products.Add(product);
+        _dbContext.ProductRatings.AddRange(ratings);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        // Act
+        HttpResponseMessage response = await _client.GetAsync("/api/products", cancellationToken);
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: cancellationToken);
+
+        Assert.NotNull(result);
+        Assert.Single(result.ProductItems);
+        Assert.Equal(5.0m, result.ProductItems[0].AverageStars); // Only the active rating (5) is counted
+    }
+    #endregion
 }

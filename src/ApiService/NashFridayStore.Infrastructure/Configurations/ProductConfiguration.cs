@@ -39,6 +39,11 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .HasMaxLength(20)
             .HasConversion<EnumToStringConverter<ProductStatus>>();
 
+        builder.HasMany(x => x.ProductRatings)
+            .WithOne()
+            .HasForeignKey(p => p.ProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         builder.HasIndex(p => p.CategoryId)
             .HasDatabaseName("ix_products_category_id");
 

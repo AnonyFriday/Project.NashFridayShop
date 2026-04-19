@@ -18,7 +18,9 @@ public class StoreDbContextSeeder(StoreDbContext dbContext, ILogger<StoreDbConte
         logger.LogInformation("Starting database seeding...");
         await dbContext.Database.MigrateAsync();
 
-        if (await dbContext.Categories.AnyAsync())
+        if (await dbContext.Categories.AnyAsync()
+            && await dbContext.Products.AnyAsync()
+            && await dbContext.ProductRatings.AnyAsync())
         {
             logger.LogInformation("Database already seeded. Skipping seeding.");
             return;
@@ -45,7 +47,7 @@ public class StoreDbContextSeeder(StoreDbContext dbContext, ILogger<StoreDbConte
             .WithDescription("Decorative souvenirs and gift items")
             .Build();
 
-        var cate = new List<Category>{
+        var categories = new List<Category>{
             localCrafts,
             clothing,
             food,
@@ -64,8 +66,73 @@ public class StoreDbContextSeeder(StoreDbContext dbContext, ILogger<StoreDbConte
         };
         #endregion
 
-        await dbContext.Categories.AddRangeAsync(cate);
+        #region ProductRatings
+        var productRatings = new List<ProductRating>
+        {
+            // Bamboo Basket
+            new ProductRatingBuilder()
+                .WithProductId(products[0].Id)
+                .WithStars(9)
+                .WithComment("Very well crafted, feels authentic!")
+                .Build(),
+
+            new ProductRatingBuilder()
+                .WithProductId(products[0].Id)
+                .WithStars(8)
+                .WithComment("Nice quality but a bit small.")
+                .Build(),
+
+            // T-Shirt
+            new ProductRatingBuilder()
+                .WithProductId(products[1].Id)
+                .WithStars(7)
+                .WithComment("Comfortable and fits well.")
+                .Build(),
+
+            new ProductRatingBuilder()
+                .WithProductId(products[1].Id)
+                .WithStars(6)
+                .WithComment("Design is okay, expected better print.")
+                .Build(),
+
+            // Dried Mango
+            new ProductRatingBuilder()
+                .WithProductId(products[2].Id)
+                .WithStars(10)
+                .WithComment("Absolutely delicious! Must try.")
+                .Build(),
+
+            new ProductRatingBuilder()
+                .WithProductId(products[2].Id)
+                .WithStars(9)
+                .WithComment("Sweet and chewy, loved it.")
+                .Build(),
+
+            // Cyclo Model
+            new ProductRatingBuilder()
+                .WithProductId(products[3].Id)
+                .WithStars(8)
+                .WithComment("Great souvenir piece.")
+                .Build(),
+
+            // Lotus Painting
+            new ProductRatingBuilder()
+                .WithProductId(products[4].Id)
+                .WithStars(9)
+                .WithComment("Beautiful artwork, worth the price.")
+                .Build(),
+
+            new ProductRatingBuilder()
+                .WithProductId(products[4].Id)
+                .WithStars(7)
+                .WithComment("Looks good but packaging could improve.")
+                .Build()
+        };
+        #endregion
+
+        await dbContext.Categories.AddRangeAsync(categories);
         await dbContext.Products.AddRangeAsync(products);
+        await dbContext.ProductRatings.AddRangeAsync(productRatings);
         await dbContext.SaveChangesAsync();
 
         logger.LogInformation("Database seeding completed.");
