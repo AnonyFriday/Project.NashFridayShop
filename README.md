@@ -7,11 +7,13 @@
 - **🔧 Backend**: .NET 10 (ASP.NET Core Web Api, Entity Framework Core, FluentValidation)
 - **🌐 Frontend**: Next.js (Admin Site), ASP.NET Razor Pages (StoreFront)
 - **🧩 BFF**: Backend for Frontend service
-- **🔐 Identity**: IdentityServer4
-- **🗄️ Database**: SQL Server (via EF Core)
+- **🔐 Identity**: `(Updating)`
+- **🗄️ Database**: SQL Server
 - **🏗️ Architecture**: Vertical Slice Architecture
 - **🧪 Testing**: xUnit, Coverlet
-- **🛠️ Tooling**: `Directory.Packages.props`, `Directory.Build.props`, `.editorconfig`, `docker-compose.yaml`
+- **🛠️ Tooling**: `Directory.Packages.props`, `Directory.Build.props`, `docker-compose.yaml`
+- **🎪 Payment: `(Updating)`
+- **🛒 Cart: `(Updating)`
 
 ## Current Supporting APIs
 
@@ -19,9 +21,10 @@
 | --------------------------- | ------------------- | --------------------------------------- | ------------------ |
 | `/api/categories`           | GET                 | Category menu / list categories         | ✅ Completed       |
 | `/api/categories/{id}`      | GET                 | Category details                        | ✅ Completed       |
-| `/api/products`             | GET                 | Product listing, filters, category view | ✅ Completed       |
+| `/api/products`             | GET                 | Product listing, filters, pagination    | ✅ Completed       |
 | `/api/products/{id}`        | GET                 | Product details                         | ✅ Completed       |
-| `/api/products/{id}/rating` | POST                | Product rating                          | ❌ Not implemented |
+| `/api/products/{id}/ratings`| GET                 | Rating listing, filters, pagination     | ✅ Completed       |
+| `/api/products/{id}/rating` | POST                | Add rating and comment to a product     | ❌ Not implemented |
 | `/api/auth/register`        | POST                | Customer registration                   | ❌ Not implemented |
 | `/api/auth/login`           | POST                | Customer login                          | ❌ Not implemented |
 | `/api/auth/logout`          | POST                | Customer logout                         | ❌ Not implemented |
@@ -38,31 +41,30 @@
 
 ### Setup FE + BE Source Code
 
-- 3rd Softwares: fork, Postman, VSCode, Docker Desktop, SSMT
-- Dev environment: secrets, `appsettings.Development.json`, `IOptions`
+- 3rd Softwares: fork, Postman, VSCode, Docker Desktop, SSMT,
+- Dev environment: `secrets`, `appsettings.Development.json`, `IOptions`
 - Coding convention: `.editorconfig`
 - Central package management: `Directory.Packages.props`
 - Central project setting: `Directory.Build.props`
 - Code analysis: `SonarAnalyzer`
-- DbContext setup
-- Migrations and seed data preparation: Product, Category
-- Razor Pages frontend scaffold
+- DbContext setup, Migrations and seed data preparation: `Product`, `Category`, `ProductRating`
+- CORS configuration
+- Code coverage setup
+- HTTPS support: `dotnet dev-certs`, `Next.js dev cert`
+- API Documentation tool: `Scalar`
+- Testing stack: `xUnit`, `SQLite In-Memory`, `WebApplicationFactory`
+- Exception handler: API exception, validation exception, general exception handler
+- API versioning
+- Razor Pages store front scaffold
 - BFF service scaffold
 - Identity Server scaffold
 - Next.js admin site scaffold
-- CORS configuration
-- Code coverage setup
-- HTTPS support: `dotnet dev-certs`, Next.js dev cert
-- API Documentation tool: Scalar
-- API versioning
-- Testing stack: `xUnit`, `SQLite`, `WebApplicationFactory`
-- Exception handler: API exception, validation exception, general exception handler
 
 ### CI/CD and Services
 
-- Next.JS CI setup
-- .NET Projects CI setup
-- CD (later)
+- CI: Next.JS CI
+- CI: .NET Projects CI
+- CD: (later)
 - Docker Compose for images: Redis, SQL Server, Redis Insight
 
 ### Research
@@ -83,14 +85,14 @@ src/
 ├── IdentityServer/                     # Authentication service
 ├── StoreFront/                         # Customer-site ASP.NET Razor Pages app
 └── admin-site/                         # Admin-site Next.js application
-└── Tests/              # Unit and integration tests
+└── Tests/                              # Unit and integration tests
 ```
 
 ## Vertical Slice Architecture Explanation
 
 Each feature is organized in its own "slice" with all related code together:
 
-- **Contracts**: Request/Response records
+- **Contracts**: Request/Response objects
 - **Validation**: FluentValidation rules
 - **Business Logic**: Handler with domain logic
 - **Endpoints**: Controller actions
