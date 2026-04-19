@@ -4,20 +4,21 @@
 
 ## Techstack
 
-- **🔧 Backend**: .NET 10 (ASP.NET Core, Entity Framework Core, FluentValidation, JWT Bearer, Scalar)
+- **🔧 Backend**: .NET 10 (ASP.NET Core Web Api, Entity Framework Core, FluentValidation)
 - **🌐 Frontend**: Next.js (Admin Site), ASP.NET Razor Pages (StoreFront)
 - **🧩 BFF**: Backend for Frontend service
 - **🔐 Identity**: IdentityServer4
 - **🗄️ Database**: SQL Server (via EF Core)
 - **🏗️ Architecture**: Vertical Slice Architecture
-- **🧪 Testing**: xUnit, Integration Testing, Coverlet
-- **🛠️ Tooling**: `Directory.Packages.props`, `Directory.Build.props`, `.editorconfig`
+- **🧪 Testing**: xUnit, Coverlet
+- **🛠️ Tooling**: `Directory.Packages.props`, `Directory.Build.props`, `.editorconfig`, `docker-compose.yaml`
 
 ## Current Supporting APIs
 
 | API Endpoint                | Method              | Description                             | Status             |
 | --------------------------- | ------------------- | --------------------------------------- | ------------------ |
 | `/api/categories`           | GET                 | Category menu / list categories         | ✅ Completed       |
+| `/api/categories/{id}`      | GET                 | Category details                        | ✅ Completed       |
 | `/api/products`             | GET                 | Product listing, filters, category view | ✅ Completed       |
 | `/api/products/{id}`        | GET                 | Product details                         | ✅ Completed       |
 | `/api/products/{id}/rating` | POST                | Product rating                          | ❌ Not implemented |
@@ -37,55 +38,52 @@
 
 ### Setup FE + BE Source Code
 
-- Dev environment: fork, Postman, secrets, `appsettings.Development.json`, `IOptions`
+- 3rd Softwares: fork, Postman, VSCode, Docker Desktop, SSMT
+- Dev environment: secrets, `appsettings.Development.json`, `IOptions`
 - Coding convention: `.editorconfig`
 - Central package management: `Directory.Packages.props`
-- Global analyzer: `Directory.Build.props`
-- SonarAnalyzer
+- Central project setting: `Directory.Build.props`
+- Code analysis: `SonarAnalyzer`
 - DbContext setup
-- Razor Pages frontend
+- Migrations and seed data preparation: Product, Category
+- Razor Pages frontend scaffold
 - BFF service scaffold
 - Identity Server scaffold
 - Next.js admin site scaffold
 - CORS configuration
 - Code coverage setup
-- HTTPS support: `mkcert`, `dotnet dev-certs`, Next.js dev cert
-- Documentation tool: Scalar
+- HTTPS support: `dotnet dev-certs`, Next.js dev cert
+- API Documentation tool: Scalar
 - API versioning
-- Testing stack: xUnit, SQLite, `WebApplicationFactory`
-- Exception handling: API exception, validation exception, general exception handler
+- Testing stack: `xUnit`, `SQLite`, `WebApplicationFactory`
+- Exception handler: API exception, validation exception, general exception handler
 
 ### CI/CD and Services
 
 - Next.JS CI setup
 - .NET Projects CI setup
 - CD (later)
-- Docker Compose support: Redis, SQL Server, Redis Insight
+- Docker Compose for images: Redis, SQL Server, Redis Insight
 
-### Research and Architecture
+### Research
 
-- Identity service research
+- Identity Server research
 - BFF research
 - Vertical Slice Architecture research
-
-### Feature Foundation
-
-- Entity and configuration setup for Product and Category
-- Migrations and seed data preparation
 
 ## Project Structure
 
 ```
 src/
 ├── ApiService/
-│   ├── NashFridayStore.API/          # Main API service
-│   ├── NashFridayStore.Domain/       # Domain entities and business rules
+│   ├── NashFridayStore.API/            # Main API service
+│   ├── NashFridayStore.Domain/         # Domain entities and business rules
 │   ├── NashFridayStore.Infrastructure/ # Data access and external services
-│   └── NashFridayStore.Tests/         # Unit and integration tests
-├── BFF/                              # Backend for Frontend
-├── IdentityServer/                   # Authentication service
-├── StoreFront/                       # Customer-site ASP.NET Razor Pages app
-└── admin-site/                       # Admin Next.js application
+├── BFF/                                # Backend for Frontend
+├── IdentityServer/                     # Authentication service
+├── StoreFront/                         # Customer-site ASP.NET Razor Pages app
+└── admin-site/                         # Admin-site Next.js application
+└── Tests/              # Unit and integration tests
 ```
 
 ## Vertical Slice Architecture Explanation
@@ -185,20 +183,55 @@ Unit test example:
 
 ```csharp
 [Fact]
+[Trait("UT", "Id")]
 public void Validate_IdIsEmpty_ShouldHaveValidationError()
 {
+    // Arrange
     var request = new Request(Guid.Empty);
+
+    // Act
     TestValidationResult<Request> result = _validator.TestValidate(request);
+
+    // Assert
     Assert.False(result.IsValid);
+    ValidationFailure error = Assert.Single(result.Errors);
+    Assert.Equal(nameof(Request.Id), error.PropertyName);
+    Assert.Equal(Validator.IdRequired, error.ErrorMessage);
 }
 ```
 
-Application test example:
+Integration test example:
 
 ```csharp
-HttpResponseMessage response = await _client.GetAsync($"/api/products/{product.Id}", cancellationToken);
-response.EnsureSuccessStatusCode();
-Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: cancellationToken);
+[Fact]
+public async Task GetProduct_ById_ShouldReturnProduct()
+{
+    // Arrange
+    CancellationToken cancellationToken = TestContext.Current.CancellationToken;
+    Category category = new CategoryBuilder().Build();
+
+    Product product = new ProductBuilder()
+        .WithCategoryId(category.Id)
+        .WithName("Laptop")
+        .Build();
+
+    _dbContext.Categories.Add(category);
+    _dbContext.Products.Add(product);
+    await _dbContext.SaveChangesAsync(cancellationToken);
+
+    // Act
+    HttpResponseMessage response = await _client.GetAsync($"/api/products/{product.Id}", cancellationToken);
+
+    // Assert
+    response.EnsureSuccessStatusCode();
+    Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: cancellationToken);
+
+    Assert.NotNull(result);
+    Assert.Equal(product.Id, result!.Id);
+    Assert.Equal("Laptop", result.Name);
+    Assert.Equal(product.PriceUsd, result.PriceUsd);
+    Assert.Equal(product.Status, result.Status);
+}
 ```
 
 This keeps features isolated and easy to maintain.
