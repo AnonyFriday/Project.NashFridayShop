@@ -12,8 +12,8 @@ using NashFridayStore.Infrastructure.Data;
 namespace NashFridayStore.Infrastructure.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20260417104910_Add Category")]
-    partial class AddCategory
+    [Migration("20260419060517_add_products_and_categories")]
+    partial class add_products_and_categories
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -66,6 +66,7 @@ namespace NashFridayStore.Infrastructure.Migrations
                         .HasColumnName("category_id");
 
                     b.Property<DateTime>("CreatedAtUtc")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasColumnName("created_at_utc");
 
@@ -112,6 +113,7 @@ namespace NashFridayStore.Infrastructure.Migrations
                         .HasColumnName("status");
 
                     b.Property<DateTime>("UpdatedAtUtc")
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2")
                         .HasColumnName("updated_at_utc");
 
