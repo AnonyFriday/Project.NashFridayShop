@@ -23,4 +23,9 @@
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
     <PackageVersion Include="coverlet.collector" Version="10.0.0" />
   </ItemGroup>
+
+      <!-- Apply Sonar analyzer to all projects except docker -->
+    <ItemGroup Condition="'$(MSBuildProjectExtension)' != '.dcproj'">
+        <PackageReference Include="SonarAnalyzer.CSharp" />
+    </ItemGroup>
 </Project>

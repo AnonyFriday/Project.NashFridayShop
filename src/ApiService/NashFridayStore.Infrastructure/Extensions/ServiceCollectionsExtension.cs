@@ -1,4 +1,3 @@
-using Microsoft.CodeAnalysis.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +16,10 @@ public static class ServiceCollectionsExtension
         // Settings at appsettings.json
         services.AddOptions<ConnectionStringsOptions>()
             .Bind(configuration.GetSection(ConnectionStringsOptions.ConnectionStrings))
+            .ValidateOnStart();
+
+        services.AddOptions<ClientUrlsOption>()
+            .Bind(configuration.GetSection(ClientUrlsOption.ClientUrls))
             .ValidateOnStart();
 
         // DbContext + SQL Server + Seeder
