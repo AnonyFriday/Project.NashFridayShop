@@ -52,10 +52,13 @@ public class GetProductsValidatorTests
     [Trait("Category", "SearchName")]
     public void Validate_SearchNameIsValid_ShouldNotHaveValidationError()
     {
+        // Arrange
         var request = new Request(null, "Laptop", null, null);
 
+        // Act
         TestValidationResult<Request> result = _validator.TestValidate(request);
 
+        // Assert
         Assert.True(result.IsValid);
     }
     #endregion
@@ -63,12 +66,51 @@ public class GetProductsValidatorTests
     #region Price Tests
     [Fact]
     [Trait("Category", "Price")]
-    public void Validate_MinPriceGreaterThanMaxPrice_ShouldHaveValidationError()
+    public void Validate_MinPriceIsNegative_ShouldHaveValidationError()
     {
-        var request = new Request(null, null, 100, 10);
+        // Arrange
+        var request = new Request(null, null, -1, 10);
 
+        // Act
         TestValidationResult<Request> result = _validator.TestValidate(request);
 
+        // Assert
+        Assert.False(result.IsValid);
+
+        ValidationFailure error = Assert.Single(result.Errors);
+        Assert.Equal(nameof(Request.MinPrice), error.PropertyName);
+        Assert.Equal(Validator.MinPriceGreaterThanOrEqualZero, error.ErrorMessage);
+    }
+
+    [Fact]
+    [Trait("Category", "Price")]
+    public void Validate_MaxPriceIsNegative_ShouldHaveValidationError()
+    {
+        // Arrange
+        var request = new Request(null, null, 20, -1);
+
+        // Act
+        TestValidationResult<Request> result = _validator.TestValidate(request);
+
+        // Assert
+        Assert.False(result.IsValid);
+
+        Assert.Contains(result.Errors, e =>
+              e.PropertyName == nameof(Request.MaxPrice) &&
+              e.ErrorMessage == Validator.MaxPriceGreaterThanOrEqualZero);
+    }
+
+    [Fact]
+    [Trait("Category", "Price")]
+    public void Validate_MinPriceGreaterThanMaxPrice_ShouldHaveValidationError()
+    {
+        // Arrange
+        var request = new Request(null, null, 100, 10);
+
+        // Act
+        TestValidationResult<Request> result = _validator.TestValidate(request);
+
+        // Assert
         Assert.False(result.IsValid);
 
         ValidationFailure error = Assert.Single(result.Errors);
@@ -79,10 +121,13 @@ public class GetProductsValidatorTests
     [Trait("Category", "Price")]
     public void Validate_MinPriceLessThanOrEqualMaxPrice_ShouldNotHaveValidationError()
     {
+        // Arrange
         var request = new Request(null, null, 10, 100);
 
+        // Act
         TestValidationResult<Request> result = _validator.TestValidate(request);
 
+        // Assert
         Assert.True(result.IsValid);
     }
     #endregion

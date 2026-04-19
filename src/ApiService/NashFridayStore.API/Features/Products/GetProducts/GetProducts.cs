@@ -36,6 +36,8 @@ public sealed class Validator : AbstractValidator<Request>
     public const string PageIndexGreaterThanOrEqualZero = "Page must be greater than or equal to 0.";
     public const string PageSizeBetweenRange = "Page Size must be between 1 and 100.";
     public const string InvalidProductStatus = "Invalid product status.";
+    public const string MinPriceGreaterThanOrEqualZero = "Min Price must be greater than or equal to 0.";
+    public const string MaxPriceGreaterThanOrEqualZero = "Max Price must be greater than or equal to 0.";
 
     public Validator()
     {
@@ -43,6 +45,16 @@ public sealed class Validator : AbstractValidator<Request>
             .MaximumLength(100)
             .WithMessage(SearchNameMaxLength)
             .When(x => !string.IsNullOrWhiteSpace(x.SearchName));
+
+        RuleFor(x => x.MinPrice)
+            .GreaterThanOrEqualTo(0)
+            .WithMessage(MinPriceGreaterThanOrEqualZero)
+            .When(x => x.MinPrice.HasValue);
+
+        RuleFor(x => x.MaxPrice)
+            .GreaterThanOrEqualTo(0)
+            .WithMessage(MaxPriceGreaterThanOrEqualZero)
+            .When(x => x.MaxPrice.HasValue);
 
         RuleFor(x => x)
             .Must(x => x.MinPrice <= x.MaxPrice)
