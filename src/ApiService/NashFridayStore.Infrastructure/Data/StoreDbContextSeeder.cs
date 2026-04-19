@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NashFridayStore.Domain.Entities;
 using NashFridayStore.Domain.Entities.Products;
+using NashFridayStore.Infrastructure.Builders;
 
 namespace NashFridayStore.Infrastructure.Data;
 
@@ -23,111 +24,47 @@ public class StoreDbContextSeeder(StoreDbContext dbContext, ILogger<StoreDbConte
             return;
         }
 
-        DateTime now = DateTime.UtcNow;
+        #region Categories
+        Category localCrafts = new CategoryBuilder()
+           .WithName("Local Crafts")
+           .WithDescription("Handmade traditional crafts")
+           .Build();
 
-        var categories = new List<Category>
-        {
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "Local Crafts",
-                Description = "Handmade traditional crafts",
-            },
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "Clothing & Accessories",
-                Description = "Souvenir clothing and wearable items",
-            },
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "Food & Snacks",
-                Description = "Local specialties and snacks",
-            },
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "Decor & Gifts",
-                Description = "Decorative souvenirs and gift items",
-            }
+        Category clothing = new CategoryBuilder()
+            .WithName("Clothing & Accessories")
+            .WithDescription("Souvenir clothing and wearable items")
+            .Build();
+
+        Category food = new CategoryBuilder()
+            .WithName("Food & Snacks")
+            .WithDescription("Local specialties and snacks")
+            .Build();
+
+        Category decor = new CategoryBuilder()
+            .WithName("Decor & Gifts")
+            .WithDescription("Decorative souvenirs and gift items")
+            .Build();
+
+        var cate = new List<Category>{
+            localCrafts,
+            clothing,
+            food,
+            decor
         };
+        #endregion
 
+        #region Products
         var products = new List<Product>
         {
-            new()
-            {
-                Id = Guid.NewGuid(),
-                CategoryId = categories[0].Id,
-                Name = "Handwoven Bamboo Basket",
-                Description = "Traditional handcrafted bamboo basket from local artisans.",
-                PriceUsd = 15,
-                ImageUrl = "https://picsum.photos/300?random=1",
-                Quantity = 40,
-                Status = ProductStatus.InStock,
-                CreatedAtUtc = now,
-                UpdatedAtUtc = now,
-                IsDeleted = false
-            },
-            new()
-            {
-                Id = Guid.NewGuid(),
-                CategoryId = categories[1].Id,
-                Name = "Vietnam Souvenir T-Shirt",
-                Description = "Cotton T-shirt with iconic Vietnam print.",
-                PriceUsd = 20,
-                ImageUrl = "https://picsum.photos/300?random=2",
-                Quantity = 100,
-                Status = ProductStatus.InStock,
-                CreatedAtUtc = now,
-                UpdatedAtUtc = now,
-                IsDeleted = false
-            },
-            new()
-            {
-                Id = Guid.NewGuid(),
-                CategoryId = categories[2].Id,
-                Name = "Dried Mango Snack",
-                Description = "Sweet and chewy dried mango from local farms.",
-                PriceUsd = 8,
-                ImageUrl = "https://picsum.photos/300?random=3",
-                Quantity = 60,
-                Status = ProductStatus.InStock,
-                CreatedAtUtc = now,
-                UpdatedAtUtc = now,
-                IsDeleted = false
-            },
-            new()
-            {
-                Id = Guid.NewGuid(),
-                CategoryId = categories[3].Id,
-                Name = "Miniature Cyclo Model",
-                Description = "Decorative miniature cyclo, a symbol of Vietnam.",
-                PriceUsd = 25,
-                ImageUrl = "https://picsum.photos/300?random=4",
-                Quantity = 25,
-                Status = ProductStatus.InStock,
-                CreatedAtUtc = now,
-                UpdatedAtUtc = now,
-                IsDeleted = false
-            },
-            new()
-            {
-                Id = Guid.NewGuid(),
-                CategoryId = categories[3].Id,
-                Name = "Lotus Flower Painting",
-                Description = "Hand-painted lotus artwork representing purity.",
-                PriceUsd = 45,
-                ImageUrl = "https://picsum.photos/300?random=5",
-                Quantity = 10,
-                Status = ProductStatus.InStock,
-                CreatedAtUtc = now,
-                UpdatedAtUtc = now,
-                IsDeleted = false
-            }
+            new ProductBuilder().WithCategoryId(localCrafts.Id).WithName("Handwoven Bamboo Basket").WithPrice(15).Build(),
+            new ProductBuilder().WithCategoryId(clothing.Id).WithName("Vietnam Souvenir T-Shirt").WithPrice(20).Build(),
+            new ProductBuilder().WithCategoryId(food.Id).WithName("Dried Mango Snack").WithPrice(8).Build(),
+            new ProductBuilder().WithCategoryId(decor.Id).WithName("Miniature Cyclo Model").WithPrice(25).Build(),
+            new ProductBuilder().WithCategoryId(decor.Id).WithName("Lotus Flower Painting").WithPrice(45).Build()
         };
+        #endregion
 
-        await dbContext.Categories.AddRangeAsync(categories);
+        await dbContext.Categories.AddRangeAsync(cate);
         await dbContext.Products.AddRangeAsync(products);
         await dbContext.SaveChangesAsync();
 

@@ -3,7 +3,7 @@ using FluentValidation.TestHelper;
 using NashFridayStore.API.Features.Products.GetProducts;
 using NashFridayStore.Domain.Entities.Products;
 
-namespace NashFridayStore.Tests.UnitTests.Features.Products.GetProductsValidatorTests;
+namespace NashFridayStore.UnitTests.Features.Products;
 
 public class GetProductsValidatorTests
 {

@@ -4,7 +4,6 @@
     <Project Path="src/ApiService/NashFridayStore.API/NashFridayStore.API.csproj" />
     <Project Path="src/ApiService/NashFridayStore.Domain/NashFridayStore.Domain.csproj" />
     <Project Path="src/ApiService/NashFridayStore.Infrastructure/NashFridayStore.Infrastructure.csproj" />
-    <Project Path="src/ApiService/NashFridayStore.Tests/NashFridayStore.Tests.csproj" />
   </Folder>
   <Folder Name="/src/BFF/">
     <Project Path="src/BFF/NashFridayStore.BFF/NashFridayStore.BFF.csproj" />
@@ -14,5 +13,9 @@
   </Folder>
   <Folder Name="/src/StoreFront/">
     <Project Path="src/StoreFront/NashFridayStore.StoreFront/NashFridayStore.StoreFront.csproj" />
+  </Folder>
+  <Folder Name="/src/Tests/">
+    <Project Path="src/Tests/NashFridayStore.IntegrationTests/NashFridayStore.IntegrationTests.csproj" />
+    <Project Path="src/Tests/NashFridayStore.UnitTests/NashFridayStore.UnitTests.csproj" />
   </Folder>
 </Solution>

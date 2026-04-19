@@ -13,7 +13,7 @@ public sealed class Product : IEntityAuditable, IEntitySoftDeletable
     public int Quantity { get; set; }
     public ProductStatus Status { get; set; }
     public DateTime CreatedAtUtc { get; set; }
-    public DateTime UpdatedAtUtc { get; set; }
+    public DateTime? UpdatedAtUtc { get; set; }
     public DateTime? DeletedAtUtc { get; set; }
     public bool IsDeleted { get; set; }
 }

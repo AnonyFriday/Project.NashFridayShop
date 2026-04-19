@@ -20,6 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NashFridayStore.API\NashFridayStore.API.csproj" />
+    <ProjectReference Include="..\..\ApiService\NashFridayStore.API\NashFridayStore.API.csproj" />
   </ItemGroup>
 </Project>

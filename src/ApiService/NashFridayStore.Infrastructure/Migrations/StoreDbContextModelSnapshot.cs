@@ -63,6 +63,7 @@ namespace NashFridayStore.Infrastructure.Migrations
                         .HasColumnName("category_id");
 
                     b.Property<DateTime>("CreatedAtUtc")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasColumnName("created_at_utc");
 
@@ -108,7 +109,8 @@ namespace NashFridayStore.Infrastructure.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("status");
 
-                    b.Property<DateTime>("UpdatedAtUtc")
+                    b.Property<DateTime?>("UpdatedAtUtc")
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2")
                         .HasColumnName("updated_at_utc");
 

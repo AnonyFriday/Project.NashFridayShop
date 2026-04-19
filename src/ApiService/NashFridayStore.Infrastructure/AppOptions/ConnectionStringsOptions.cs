@@ -2,13 +2,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NashFridayStore.Infrastructure.AppOptions;
 
-public class ConnectionStringsOptions
+public sealed record ConnectionStringsOptions
 {
     public const string ConnectionStrings = "ConnectionStrings";
 
     [Required]
-    public string Database { get; set; } = string.Empty;
+    public string Database { get; init; } = string.Empty;
 
     [Required]
-    public string Caching { get; set; } = string.Empty;
+    public string Caching { get; init; } = string.Empty;
+
+    [Required]
+    public string SqliteTesting { get; set; } = string.Empty;
 }
