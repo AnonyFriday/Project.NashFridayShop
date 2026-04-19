@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NashFridayStore.Infrastructure.Data;
 using NashFridayStore.Infrastructure.AppOptions;
 using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace NashFridayStore.Infrastructure.Extensions;
 
@@ -23,7 +24,7 @@ public static class ServiceCollectionsExtension
             .ValidateOnStart();
 
         // DbContext + SQL Server + Seeder
-        services.AddDbContextPool<StoreDbContext>((sp, options) =>
+        services.AddDbContext<StoreDbContext>((sp, options) =>
         {
             ConnectionStringsOptions settings = sp.GetRequiredService<IOptions<ConnectionStringsOptions>>().Value;
             options.UseSqlServer(settings.Database);
