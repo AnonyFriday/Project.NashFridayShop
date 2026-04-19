@@ -1,0 +1,87 @@
+name: ci-backend-and-storefront
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+      - "release/*"
+    paths:
+      - "src/ApiService/**"
+      - "src/BFF/**"
+      - "src/IdentityServer/**"
+      - "src/StoreFront/**"
+      - "src/Tests/**"
+      - ".github/workflows/ci-backend-and-storefront.yaml"
+
+  push:
+    branches:
+      - develop
+      - main
+      - "release/*"
+    paths:
+      - "src/ApiService/**"
+      - "src/BFF/**"
+      - "src/IdentityServer/**"
+      - "src/StoreFront/**"
+      - "src/Tests/**"
+      - ".github/workflows/ci-backend-and-storefront.yaml"
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v6
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.x"
+
+      - name: Install Nuget Packages
+        run: dotnet restore ./NashFridayStore.slnx
+
+      - name: Build
+        run: dotnet build ./NashFridayStore.slnx --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test
+          src/Tests/NashFridayStore.UnitTests/NashFridayStore.UnitTests.csproj
+          --configuration Release --no-build --collect:"XPlat Code Coverage"
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: "**/coverage.cobertura.xml"
+          fail_ci_if_error: true
+
+  integration-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v6
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.x"
+
+      - name: Install Nuget Packages
+        run: dotnet restore ./NashFridayStore.slnx
+
+      - name: Build
+        run: dotnet build ./NashFridayStore.slnx --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test
+          src/Tests/NashFridayStore.IntegrationTests/NashFridayStore.IntegrationTests.csproj
+          --configuration Release --no-build --collect:"XPlat Code Coverage"
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: "**/coverage.cobertura.xml"
+          fail_ci_if_error: true
