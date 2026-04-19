@@ -1,49 +1,57 @@
 name: ci-admin-site
 
 on:
-    pull_request:
-        branches:
-            - develop
-            - main
-            - "release/*"
-        paths:
-            - "src/admin-site/**"
-            - ".github/workflows/ci-admin-site.yml"
+  pull_request:
+    branches:
+      - develop
+      - main
+      - "release/*"
+    paths:
+      - "src/admin-site/**"
+      - ".github/workflows/ci-admin-site.yml"
 
-    push:
-        branches:
-            - develop
-            - main
-            - "release/*"
-        paths:
-            - "src/admin-site/**"
-            - ".github/workflows/ci-admin-site.yml"
+  push:
+    branches:
+      - develop
+      - main
+      - "release/*"
+    paths:
+      - "src/admin-site/**"
+      - ".github/workflows/ci-admin-site.yml"
 
 defaults:
-    run:
-        working-directory: src/admin-site
+  run:
+    working-directory: src/admin-site
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout Repo
-              uses: actions/checkout@v6
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v6
 
-            - name: Install Nodejs
-              uses: actions/setup-node@v6
-              with:
-                  node-version: 24
+      - name: Install Nodejs
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
 
-            - name: Install Dependencies for CI
-              run: npm ci
+      - name: Install Dependencies for CI
+        run: npm ci
 
-            - name: Run Lint
-              run: npm run lint
+      - name: Run Lint
+        run: npm run lint
 
-            - name: Run Type Checks
-              run: npm run type-check
+      - name: Run Type Checks
+        run: npm run type-check
 
-            - name: Build Project
-              run: npm run build
+      - name: Run tests
+        run: npx jest --coverage
+
+      - name: Upload results to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Build Project
+        run: npm run build
