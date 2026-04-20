@@ -33,7 +33,7 @@ public sealed class Validator : AbstractValidator<Request>
 #region Business Logic
 public sealed class Handler(StoreDbContext dbContext, IValidator<Request> validator)
 {
-    public async Task<Response> Handle(Request req, CancellationToken ct)
+    public async Task<Response> HandleAsync(Request req, CancellationToken ct)
     {
         ValidationResult validation = await validator.ValidateAsync(req, ct);
         if (!validation.IsValid)
@@ -69,7 +69,7 @@ public class GetCategoryController(Handler handler) : ControllerBase
     public async Task<IActionResult> Get([FromRoute] Guid id, CancellationToken ct)
     {
         var request = new Request(id);
-        Response response = await handler.Handle(request, ct);
+        Response response = await handler.HandleAsync(request, ct);
         return Ok(response);
     }
 }
