@@ -11,7 +11,7 @@ namespace NashFridayStore.API.Features.Products.PostProductRating;
 
 #region Contracts
 public record Request(Guid ProductId, RequestBody RequestBody);
-public record RequestBody(string? Comment, int Stars = 0);
+public record RequestBody(string? Comment, int Stars = AppCts.Api.MinStars);
 public record Response(Guid ProductId, int Stars, string? Comment, DateTime CreatedAtUtc);
 #endregion
 
@@ -28,9 +28,8 @@ public sealed class Validator : AbstractValidator<Request>
             .NotEmpty()
             .WithMessage(ProductIdIsRequired);
 
-
         RuleFor(x => x.RequestBody.Stars)
-            .InclusiveBetween(1, 10)
+            .InclusiveBetween(AppCts.Api.MinStars, AppCts.Api.MaxStars)
             .WithMessage(StarsInRange)
             .OverridePropertyName("Stars");
 
@@ -55,7 +54,6 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
                 Comment = string.IsNullOrWhiteSpace(orgReq.RequestBody.Comment)
                     ? null
                     : orgReq.RequestBody.Comment.Trim(),
-                Stars = orgReq.RequestBody.Stars < 0 ? AppCts.Api.MaxStars : orgReq.RequestBody.Stars
             }
         };
 
@@ -68,6 +66,7 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
 
         // Business Logic
         Product? product = await dbContext.Products
+            .AsNoTracking()
             .FirstOrDefaultAsync(
                 e => e.Id == req.ProductId, cancellationToken: ct);
 
@@ -99,7 +98,7 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
 
 #region Endpoints
 [ApiController]
-[Route("products/{productId:guid}/rating")]
+[Route("api/products/{productId:guid}/rating")]
 public class PostProductRatingController(Handler handler) : ControllerBase
 {
     [HttpPost]
@@ -111,7 +110,7 @@ public class PostProductRatingController(Handler handler) : ControllerBase
     {
         var request = new Request(ProductId, body);
         Response response = await handler.HandleAsync(request, ct);
-        return Ok(response);
+        return CreatedAtAction(nameof(Post), response);
     }
 }
 #endregion
