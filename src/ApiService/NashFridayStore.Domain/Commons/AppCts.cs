@@ -10,6 +10,7 @@ public static class AppCts
     public static class Api
     {
         public const int MaxStars = 10;
+        public const int MinStars = 1;
         public const int PageSize = 10;
         public const int PageIndex = 0;
     }

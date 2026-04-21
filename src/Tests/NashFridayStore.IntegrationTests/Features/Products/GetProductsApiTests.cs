@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Json;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using NashFridayStore.API.Features.Products.GetProducts;
 using NashFridayStore.Domain.Entities;

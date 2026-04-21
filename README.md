@@ -12,26 +12,27 @@
 - **🏗️ Architecture**: Vertical Slice Architecture
 - **🧪 Testing**: xUnit, Coverlet
 - **🛠️ Tooling**: `Directory.Packages.props`, `Directory.Build.props`, `docker-compose.yaml`
-- **🎪 Payment: `(Updating)`
-- **🛒 Cart: `(Updating)`
+- **🎪 Payment**: `(Updating)`
+- **🛒 Cart**: `(Updating)`
 
 ## Current Supporting APIs
 
-| API Endpoint                | Method              | Description                             | Status             |
-| --------------------------- | ------------------- | --------------------------------------- | ------------------ |
-| `/api/categories`           | GET                 | Category menu / list categories         | ✅ Completed       |
-| `/api/categories/{id}`      | GET                 | Category details                        | ✅ Completed       |
-| `/api/products`             | GET                 | Product listing, filters, pagination    | ✅ Completed       |
-| `/api/products/{id}`        | GET                 | Product details                         | ✅ Completed       |
-| `/api/products/{id}/ratings`| GET                 | Rating listing, filters, pagination     | ✅ Completed       |
-| `/api/products/{id}/rating` | POST                | Add rating and comment to a product     | ❌ Not implemented |
-| `/api/auth/register`        | POST                | Customer registration                   | ❌ Not implemented |
-| `/api/auth/login`           | POST                | Customer login                          | ❌ Not implemented |
-| `/api/auth/logout`          | POST                | Customer logout                         | ❌ Not implemented |
-| `/api/cart`                 | POST/GET            | Shopping cart                           | ❌ Not implemented |
-| `/api/order`                | POST                | Order creation                          | ❌ Not implemented |
-| `/api/admin/categories`     | GET/POST/PUT/DELETE | Manage categories                       | ❌ Not implemented |
-| `/api/admin/products`       | GET/POST/PUT/DELETE | Manage products                         | ❌ Not implemented |
+| API Endpoint                 | Method              | Description                          | Status             |
+| ---------------------------- | ------------------- | ------------------------------------ | ------------------ |
+| `/api/categories`            | GET                 | Category menu / list categories      | ✅ Completed       |
+| `/api/categories/{id}`       | GET                 | Category details                     | ✅ Completed       |
+| `/api/products`              | GET                 | Product listing, filters, pagination | ✅ Completed       |
+| `/api/products/{id}`         | GET                 | Product details                      | ✅ Completed       |
+| `/api/products/{id}/ratings` | GET                 | Rating listing, filters, pagination  | ✅ Completed       |
+| `/api/products/{id}/rating`  | POST                | Add rating and comment to a product  | ✅ Completed       |
+| `/api/cart`                  | POST/GET            | Shopping cart                        | ❌ Not implemented |
+| `/api/order`                 | POST                | Order creation                       | ❌ Not implemented |
+| `/api/auth/register`         | POST                | Customer registration                | ❌ Not implemented |
+| `/api/auth/login`            | POST                | Customer login                       | ❌ Not implemented |
+| `/api/auth/logout`           | POST                | Customer logout                      | ❌ Not implemented |
+| `/api/admin/orders`          | GET                 | Order Listing                        | ❌ Not implemented |
+| `/api/admin/categories`      | GET/POST/PUT/DELETE | Manage categories                    | ❌ Not implemented |
+| `/api/admin/products`        | GET/POST/PUT/DELETE | Manage products                      | ❌ Not implemented |
 
 ## ERD (V1)
 
@@ -120,7 +121,7 @@ public sealed class Validator : AbstractValidator<Request>
 
 public sealed class Handler(StoreDbContext dbContext, IValidator<Request> validator)
 {
-    public async Task<Response> Handle(Request req, CancellationToken ct)
+    public async Task<Response> HandleAsync(Request req, CancellationToken ct)
     {
         ValidationResult validation = await validator.ValidateAsync(req, ct);
         if (!validation.IsValid)
@@ -151,7 +152,7 @@ public class GetProductController(Handler handler) : ControllerBase
     public async Task<IActionResult> Get([FromRoute] Guid id, CancellationToken ct)
     {
         var request = new Request(id);
-        Response response = await handler.Handle(request, ct);
+        Response response = await handler.HandleAsync(request, ct);
         return Ok(response);
     }
 }
