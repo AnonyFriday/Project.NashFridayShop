@@ -12,12 +12,12 @@ internal static class PostProductRatingErrors
             errors.Select(e => new RequestValidationError(e.PropertyName, e.ErrorMessage)));
     }
 
-    internal static ApiResponseException ProductNotFound(Guid productId)
+    public static ApiResponseException ProductNotFound(Guid productId)
     {
         return new ApiResponseException(new ProblemDetails
         {
             Status = StatusCodes.Status404NotFound,
-            Title = "Product not found.",
+            Title = "Product not found",
             Detail = $"Product with id '{productId}' was not found.",
             Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.4"
         });
