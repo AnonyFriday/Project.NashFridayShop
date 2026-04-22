@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using NashFridayStore.Domain.Commons;
 using NashFridayStore.Domain.Entities.Products;
 using NashFridayStore.Infrastructure.Data;
-using NashFridayStore.SharedFeatures.Features.Categories.GetCategories;
 
 namespace NashFridayStore.SharedFeatures.Features.Products.GetProducts;
 
@@ -30,13 +29,17 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
         }
 
         // Implementing logic
-        IQueryable<Product> query = dbContext.Products.AsQueryable();
+        IQueryable<Product> query = dbContext.Products;
+
+        if (req.IncludeDeleted)
+        {
+            query = query.IgnoreQueryFilters();
+        }
 
         query = query
             .AsNoTracking()
             .Include(p => p.ProductRatings)
             .Where(x =>
-                x.IsDeleted == req.IsDeleted &&
                 x.Status == req.Status &&
                 (!req.CategoryId.HasValue || x.CategoryId == req.CategoryId.Value) &&
                 (string.IsNullOrWhiteSpace(req.SearchName) || x.Name.Contains(req.SearchName)) &&

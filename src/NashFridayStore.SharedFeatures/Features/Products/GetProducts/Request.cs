@@ -10,4 +10,4 @@ public sealed record Request(
     int PageIndex = 0,
     int PageSize = 10,
     ProductStatus Status = ProductStatus.InStock,
-    bool IsDeleted = false);
+    bool IncludeDeleted = false);

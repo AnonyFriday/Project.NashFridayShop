@@ -4,4 +4,4 @@ public sealed record Request(
     Guid ProductId,
     int PageIndex = 0,
     int PageSize = 10,
-    bool IsDeleted = false);
+    bool IncludeDeleted = false);
