@@ -1,7 +1,7 @@
 #pragma warning disable IDE0008
 
 using FluentValidation.TestHelper;
-using NashFridayStore.API.Features.Categories.GetCategories;
+using NashFridayStore.SharedFeatures.Features.Categories.GetCategories;
 
 namespace NashFridayStore.UnitTests.Features.Categories;
 

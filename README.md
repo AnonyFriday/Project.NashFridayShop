@@ -12,8 +12,8 @@
 - **🏗️ Architecture**: Vertical Slice Architecture
 - **🧪 Testing**: xUnit, Coverlet
 - **🛠️ Tooling**: `Directory.Packages.props`, `Directory.Build.props`, `docker-compose.yaml`
-- **🎪 Payment**: `(Updating)`
-- **🛒 Cart**: `(Updating)`
+- **🎪 Payment**: `Stripe`
+- **🛒 Cart**: `Redis`
 
 ## Current Supporting APIs
 
@@ -78,37 +78,46 @@
 
 ```
 src/
-├── ApiService/
-│   ├── NashFridayStore.API/            # Main API service
-│   ├── NashFridayStore.Domain/         # Domain entities and business rules
-│   ├── NashFridayStore.Infrastructure/ # Data access and external services
-├── BFF/                                # Backend for Frontend
-├── IdentityServer/                     # Authentication service
-├── StoreFront/                         # Customer-site ASP.NET Razor Pages app
-└── admin-site/                         # Admin-site Next.js application
-└── Tests/                              # Unit and integration tests
+├── NashFridayStore.API/            # Endpoints
+├── NashFridayStore.Domain/         # Domain entities
+├── NashFridayStore.Infrastructure/ # Data access, configurations, migrations
+├── NashFridayStore.SharedFeatures/ # Business logic handlers, validators, requests/responses
+├── NashFridayStore.BFF/            # Backend for Frontend service
+├── NashFridayStore.IdentityServer/ # Auth, Authz service
+├── NashFridayStore.StoreFront/     # Frontend Customer-site
+├── admin-site/                     # Frontend Admin-site
+└── tests/                          # Unit and integration tests
 ```
 
 ## Vertical Slice Architecture Explanation
 
-Each feature is organized in its own "slice" with all related code together:
+Each feature is organized in its own "slice" within the **SharedFeatures** project with all related business logic together:
 
-- **Contracts**: Request/Response objects
-- **Validation**: FluentValidation rules
-- **Business Logic**: Handler with domain logic
-- **Endpoints**: Controller actions
-- **Errors**: Custom exception handling
-- **Tests**: Unit and integration tests per feature
+- **Request**: Request contract object
+- **Response**: Response contract returned by the handler
+- **Handler**: Core business logic and domain operations
+- **Validator**: FluentValidation rules for requests
+- **Exceptions**: Custom exceptions for the feature
 
-Example from `src/ApiService/NashFridayStore.API/Features/Products/GetProduct/GetProduct.cs`:
+The **API** project contains thin endpoint controllers that only route requests to handlers.
+
+Example from `src/NashFridayStore.SharedFeatures/Features/Products/GetProduct/`:
+
+**Request.cs**:
 
 ```csharp
-// Request contract for the GetProduct feature
 public sealed record Request(Guid Id);
+```
 
-// Response contract returned by the handler
+**Response.cs**:
+
+```csharp
 public sealed record Response(Guid Id, string Name, string ImageUrl, decimal PriceUsd, ProductStatus Status);
+```
 
+**Validator.cs**:
+
+```csharp
 public sealed class Validator : AbstractValidator<Request>
 {
     public Validator()
@@ -118,7 +127,11 @@ public sealed class Validator : AbstractValidator<Request>
             .WithMessage("Product Id is required.");
     }
 }
+```
 
+**Handler.cs**:
+
+```csharp
 public sealed class Handler(StoreDbContext dbContext, IValidator<Request> validator)
 {
     public async Task<Response> HandleAsync(Request req, CancellationToken ct)
@@ -126,7 +139,7 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
         ValidationResult validation = await validator.ValidateAsync(req, ct);
         if (!validation.IsValid)
         {
-            throw GetProductErrors.Validation(validation.Errors);
+            throw Exceptions.Validation(validation.Errors);
         }
 
         Response? product = await dbContext.Products
@@ -137,31 +150,18 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
 
         if (product is null)
         {
-            throw GetProductErrors.NotFound(req.Id);
+            throw Exceptions.NotFound(req.Id);
         }
 
         return product;
     }
 }
-
-[ApiController]
-[Route("api/products/{id:guid}")]
-public class GetProductController(Handler handler) : ControllerBase
-{
-    [HttpGet]
-    public async Task<IActionResult> Get([FromRoute] Guid id, CancellationToken ct)
-    {
-        var request = new Request(id);
-        Response response = await handler.HandleAsync(request, ct);
-        return Ok(response);
-    }
-}
 ```
 
-Error factory example from `src/ApiService/NashFridayStore.API/Features/Products/GetProduct/GetProductErrors.cs`:
+**Exceptions.cs**:
 
 ```csharp
-internal static class GetProductErrors
+internal static class Exceptions
 {
     internal static RequestValidationException Validation(IList<ValidationFailure> errors)
     {
@@ -182,28 +182,26 @@ internal static class GetProductErrors
 }
 ```
 
-Unit test example:
+**API Endpoint** (from `src/NashFridayStore.API/Endpoints/Products/GetProductEndpoint.cs`):
 
 ```csharp
-[Fact]
-[Trait("UT", "Id")]
-public void Validate_IdIsEmpty_ShouldHaveValidationError()
+using NashFridayStore.SharedFeatures.Features.Products.GetProduct;
+
+[ApiController]
+[Route("api/products/{id:guid}")]
+public sealed class GetProductEndpoint(Handler handler) : ControllerBase
 {
-    // Arrange
-    var request = new Request(Guid.Empty);
-
-    // Act
-    TestValidationResult<Request> result = _validator.TestValidate(request);
-
-    // Assert
-    Assert.False(result.IsValid);
-    ValidationFailure error = Assert.Single(result.Errors);
-    Assert.Equal(nameof(Request.Id), error.PropertyName);
-    Assert.Equal(Validator.IdRequired, error.ErrorMessage);
+    [HttpGet]
+    public async Task<IActionResult> Get([FromRoute] Guid id, CancellationToken ct)
+    {
+        var request = new Request(id);
+        Response response = await handler.HandleAsync(request, ct);
+        return Ok(response);
+    }
 }
 ```
 
-Integration test example:
+Unit test example from integration tests:
 
 ```csharp
 [Fact]
@@ -237,7 +235,7 @@ public async Task GetProduct_ById_ShouldReturnProduct()
 }
 ```
 
-This keeps features isolated and easy to maintain.
+This keeps features isolated, testable, and easy to maintain. The separation between API endpoints, business logic handlers, and MVC Razor Pages structure.
 
 ## Design Patterns Applied
 

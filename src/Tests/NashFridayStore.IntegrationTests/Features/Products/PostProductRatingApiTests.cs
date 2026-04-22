@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using NashFridayStore.API.Features.Products.PostProductRating;
+using NashFridayStore.SharedFeatures.Features.Products.PostProductRating;
 using NashFridayStore.Domain.Entities;
 using NashFridayStore.Domain.Entities.Products;
 using NashFridayStore.Infrastructure.Builders;
@@ -53,7 +53,7 @@ public class PostProductRatingApiTests : IClassFixture<CustomWebApplicationFacto
         ProblemDetails? problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>(cancellationToken: cancellationToken);
 
         Assert.NotNull(problemDetails);
-        Assert.Equal("Product not found", problemDetails.Title);
+        Assert.Equal("Product Not Found", problemDetails.Title);
         Assert.Contains(productIdNotExists.ToString(), problemDetails.Detail);
     }
     #endregion

@@ -18,11 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="Xunit" />
+    <ProjectReference Include="../../NashFridayStore.API/NashFridayStore.API.csproj" />
+    <ProjectReference Include="../../NashFridayStore.SharedFeatures/NashFridayStore.SharedFeatures.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ApiService\NashFridayStore.API\NashFridayStore.API.csproj" />
+    <Using Include="Xunit" />
   </ItemGroup>
 
 </Project>
