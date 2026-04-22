@@ -17,25 +17,37 @@
 
 ## Current Supporting APIs for Admin only
 
-| API Endpoint                       | Method              | Description                          | Status             |
-| ---------------------------------- | ------------------- | ------------------------------------ | ------------------ |
-| `/api/admin/categories`            | GET                 | Category menu / list categories      | ✅ Completed       |
-| `/api/admin/categories/{id}`       | GET                 | Category details                     | ✅ Completed       |
-| `/api/admin/products`              | GET                 | Product listing, filters, pagination | ✅ Completed       |
-| `/api/admin/products/{id}`         | GET                 | Product details                      | ✅ Completed       |
-| `/api/admin/products/{id}`         | POST                | Create a product                     | ✅ Completed       |
-| `/api/admin/products/{id}`         | PUT                 | Update a product                     | ✅ Completed       |
-| `/api/admin/products/{id}`         | DELETE              | Soft Delete a product                | ✅ Completed       |
-| `/api/admin/products/{id}/ratings` | GET                 | Rating listing, filters, pagination  | ✅ Completed       |
-| `/api/admin/products/{id}/rating`  | POST                | Add rating and comment to a product  | ✅ Completed       |
-| `/api/admin/cart`                  | POST/GET            | Shopping cart                        | ❌ Not implemented |
-| `/api/admin/order`                 | POST                | Order creation                       | ❌ Not implemented |
-| `/api/admin/auth/register`         | POST                | Customer registration                | ❌ Not implemented |
-| `/api/admin/auth/login`            | POST                | Customer login                       | ❌ Not implemented |
-| `/api/admin/auth/logout`           | POST                | Customer logout                      | ❌ Not implemented |
-| `/api/admin/admin/orders`          | GET                 | Order Listing                        | ❌ Not implemented |
-| `/api/admin/admin/categories`      | GET/POST/PUT/DELETE | Manage categories                    | ❌ Not implemented |
-| `/api/admin/admin/products`        | GET/POST/PUT/DELETE | Manage products                      | ❌ Not implemented |
+| API Endpoint                       | Method | Description                           | Status             |
+| ---------------------------------- | ------ | ------------------------------------- | ------------------ |
+| `/api/admin/categories`            | GET    | Category menu / list categories       | ✅ Completed       |
+| `/api/admin/categories/{id}`       | GET    | Category details                      | ✅ Completed       |
+| `/api/admin/products`              | GET    | Product listing, filters, pagination  | ✅ Completed       |
+| `/api/admin/products/{id}`         | GET    | Product details                       | ✅ Completed       |
+| `/api/admin/products/{id}`         | POST   | Create a product                      | ✅ Completed       |
+| `/api/admin/products/{id}`         | PUT    | Update a product                      | ✅ Completed       |
+| `/api/admin/products/{id}`         | DELETE | Soft Delete a product                 | ✅ Completed       |
+| `/api/admin/products/{id}/ratings` | GET    | Rating listing, filters, pagination   | ✅ Completed       |
+| `/api/admin/products/{id}/rating`  | POST   | Add rating and comment to a product   | ✅ Completed       |
+| `/api/admin/orders`                | GET    | Order listing, filters, pagination    | ❌ Not implemented |
+| `/api/admin/customers`             | GET    | Customer listing, filters, pagination | ❌ Not implemented |
+| `/api/admin/customers/{id}`        | DELETE | Disable customer account              | ❌ Not implemented |
+
+## Current Supporting Pages for Customer only
+
+| Page Route         | Description                                  | Status             |
+| ------------------ | -------------------------------------------- | ------------------ |
+| `/`                | Home (categories + featured products)        | ❌ Not implemented |
+| `/categories`      | List categories                              | ❌ Not implemented |
+| `/categories/{id}` | Category details (products by category)      | ❌ Not implemented |
+| `/products`        | Product listing (filter/search) + avg rating | ❌ Not implemented |
+| `/products/{id}`   | Product details + ratings + comments         | ❌ Not implemented |
+| `/cart`            | View cart                                    | ❌ Not implemented |
+| `/checkout`        | Checkout                                     | ❌ Not implemented |
+| `/orders`          | Order listing                                | ❌ Not implemented |
+| `/orders/{id}`     | Order details                                | ❌ Not implemented |
+| `/auth/register`   | Customer registration                        | ❌ Not implemented |
+| `/auth/login`      | Customer login                               | ❌ Not implemented |
+| `/auth/logout`     | Customer logout                              | ❌ Not implemented |
 
 ## ERD (V1)
 
