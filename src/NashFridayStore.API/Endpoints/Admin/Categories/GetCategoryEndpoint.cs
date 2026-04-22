@@ -2,10 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using NashFridayStore.API.Features.Categories.GetCategory;
 using NashFridayStore.SharedFeatures.Features.Categories.GetCategory;
 
-namespace NashFridayStore.API.Endpoints.Categories;
+namespace NashFridayStore.API.Endpoints.Admin.Categories;
 
 [ApiController]
-[Route("api/categories/{id:guid}")]
+[Route("api/admin/categories/{id:guid}")]
 public sealed class GetCategoryEndpoint(Handler handler) : ControllerBase
 {
     [HttpGet]

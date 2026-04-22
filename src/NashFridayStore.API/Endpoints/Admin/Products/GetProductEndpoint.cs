@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using NashFridayStore.SharedFeatures.Features.Products.GetProduct;
 
-namespace NashFridayStore.API.Endpoints.Products;
+namespace NashFridayStore.API.Endpoints.Admin.Products;
 
 [ApiController]
-[Route("api/products/{id:guid}")]
+[Route("api/admin/products/{id:guid}")]
 public sealed class GetProductEndpoint(Handler handler) : ControllerBase
 {
     [HttpGet]

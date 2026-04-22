@@ -53,7 +53,7 @@ public class CreateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         // Act
         HttpResponseMessage response = await _client.PostAsJsonAsync(
-            "/api/products", request, cancellationToken);
+            "/api/admin/products", request, cancellationToken);
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -85,7 +85,7 @@ public class CreateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         // Act
         HttpResponseMessage response = await _client.PostAsJsonAsync(
-            "/api/products", request, cancellationToken);
+            "/api/admin/products", request, cancellationToken);
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -111,7 +111,7 @@ public class CreateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         // Act
         HttpResponseMessage response = await _client.PostAsJsonAsync(
-            "/api/products", request, cancellationToken);
+            "/api/admin/products", request, cancellationToken);
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -137,7 +137,7 @@ public class CreateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         // Act
         HttpResponseMessage response = await _client.PostAsJsonAsync(
-            "/api/products", request, cancellationToken);
+            "/api/admin/products", request, cancellationToken);
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -165,7 +165,7 @@ public class CreateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
             ProductStatus.InStock);
 
         // Act
-        HttpResponseMessage response = await _client.PostAsJsonAsync("/api/products", request, ct);
+        HttpResponseMessage response = await _client.PostAsJsonAsync("/api/admin/products", request, ct);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -196,8 +196,8 @@ public class CreateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
         var request2 = new Request(category.Id, "Product 2", "Description 2", 20.99m, "https://image.url", 10);
 
         // Act
-        HttpResponseMessage response1 = await _client.PostAsJsonAsync("/api/products", request1, ct);
-        HttpResponseMessage response2 = await _client.PostAsJsonAsync("/api/products", request2, ct);
+        HttpResponseMessage response1 = await _client.PostAsJsonAsync("/api/admin/products", request1, ct);
+        HttpResponseMessage response2 = await _client.PostAsJsonAsync("/api/admin/products", request2, ct);
 
         // Assert
         response1.EnsureSuccessStatusCode();
@@ -235,7 +235,7 @@ public class CreateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
             5);
 
         // Act
-        HttpResponseMessage response = await _client.PostAsJsonAsync("/api/products", request, ct);
+        HttpResponseMessage response = await _client.PostAsJsonAsync("/api/admin/products", request, ct);
 
         // Assert
         response.EnsureSuccessStatusCode();
