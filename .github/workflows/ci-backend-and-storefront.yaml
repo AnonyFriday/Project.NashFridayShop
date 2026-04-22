@@ -7,7 +7,8 @@ on:
       - main
       - "release/*"
     paths:
-      - "src/**/*.csproj"
+      - "src/**"
+      - "!src/admin-site/**"
       - "src/tests/*.csproj"
       - ".github/workflows/ci-backend-and-storefront.yaml"
 
@@ -17,7 +18,8 @@ on:
       - main
       - "release/*"
     paths:
-      - "src/**/*.csproj"
+      - "src/**"
+      - "!src/admin-site/**"
       - "src/tests/*.csproj"
       - ".github/workflows/ci-backend-and-storefront.yaml"
 
