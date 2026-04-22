@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using NashFridayStore.API.Exceptions;
+using NashFridayStore.SharedFeatures.Commons.Exceptions;
 
 namespace NashFridayStore.API.ExceptionHandlers;
 
@@ -13,20 +13,10 @@ internal sealed class GeneralExceptionHandler(
     {
         switch (exception)
         {
-            // Handle text related exception only
-            case ApiResponseException apiResponseException:
-                {
-                    logger.LogError(exception, "Handle : {Message}", exception.Message);
-                    httpContext.Response.ContentType = "application/json";
-                    httpContext.Response.StatusCode = apiResponseException.StatusCode;
-                    await httpContext.Response.WriteAsJsonAsync(apiResponseException.ProblemDetails, cancellationToken: cancellationToken);
-                    break;
-                }
-
             // Handle only validation errors
-            case RequestValidationException requestValidationException:
+            case AppValidationException requestValidationException:
                 {
-                    logger.LogError(exception, "An unhandled exception occurred: {Message}", exception.Message);
+                    logger.LogError(requestValidationException, "An unhandled exception occurred: {Message}", requestValidationException.Message);
                     var problemDetails = new ProblemDetails
                     {
                         Status = StatusCodes.Status400BadRequest,
@@ -47,6 +37,24 @@ internal sealed class GeneralExceptionHandler(
 
                     httpContext.Response.ContentType = "application/json";
                     httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+                    await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken: cancellationToken);
+                    break;
+                }
+
+            // Handle text related exception only
+            case AppException appException:
+                {
+                    var problemDetails = new ProblemDetails()
+                    {
+                        Title = appException.Title,
+                        Detail = appException.Message,
+                        Type = appException.Type,
+                        Status = appException.StatusCode
+                    };
+
+                    logger.LogError(exception, "Handle : {Message}", exception.Message);
+                    httpContext.Response.ContentType = "application/json";
+                    httpContext.Response.StatusCode = appException.StatusCode;
                     await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken: cancellationToken);
                     break;
                 }
