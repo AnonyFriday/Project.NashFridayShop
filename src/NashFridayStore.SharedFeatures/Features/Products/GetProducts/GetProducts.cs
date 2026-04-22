@@ -140,19 +140,4 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
 }
 #endregion
 
-#region Endpoints
-[ApiController]
-[Route("api/products")]
-public class GetProductsController(Handler handler) : ControllerBase
-{
-    [HttpGet]
-    public async Task<IActionResult> Get(
-        [FromQuery] Request request,
-        CancellationToken ct
-    )
-    {
-        Response response = await handler.HandleAsync(request, ct);
-        return Ok(response);
-    }
-}
-#endregion
+
