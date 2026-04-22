@@ -1,6 +1,6 @@
 using FluentValidation.Results;
 using FluentValidation.TestHelper;
-using NashFridayStore.API.Features.Categories.GetCategory;
+using NashFridayStore.SharedFeatures.Features.Categories.GetCategory;
 
 namespace NashFridayStore.UnitTests.Features.Categories;
 
@@ -28,7 +28,7 @@ public class GetCategoryValidatorTests
         Assert.False(result.IsValid);
         ValidationFailure error = Assert.Single(result.Errors);
         Assert.Equal(nameof(Request.Id), error.PropertyName);
-        Assert.Equal(Validator.IdRequired, error.ErrorMessage);
+        Assert.Equal(Validator.CategoryIdRequired, error.ErrorMessage);
     }
 
     [Fact]
