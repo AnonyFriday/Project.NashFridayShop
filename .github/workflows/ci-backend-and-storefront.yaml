@@ -7,7 +7,7 @@ on:
       - main
       - "release/*"
     paths:
-      - "src/**/.csproj"
+      - "src/**/*.csproj"
       - "src/tests/**"
       - ".github/workflows/ci-backend-and-storefront.yaml"
 
@@ -17,7 +17,7 @@ on:
       - main
       - "release/*"
     paths:
-      - "src/**/.csproj"
+      - "src/**/*.csproj"
       - "src/tests/**"
       - ".github/workflows/ci-backend-and-storefront.yaml"
 
@@ -40,8 +40,8 @@ jobs:
         run: dotnet build ./NashFridayStore.slnx --configuration Release --no-restore
 
       - name: Test
-        run: |
-          dotnet test src/tests/NashFridayStore.UnitTests/NashFridayStore.UnitTests.csproj
+        run: dotnet test
+          src/tests/NashFridayStore.UnitTests/NashFridayStore.UnitTests.csproj
           --configuration Release --no-build --collect:"XPlat Code Coverage"
 
       - name: Upload coverage reports to Codecov
@@ -69,8 +69,8 @@ jobs:
         run: dotnet build ./NashFridayStore.slnx --configuration Release --no-restore
 
       - name: Test
-        run: |
-          dotnet test src/tests/NashFridayStore.IntegrationTests/NashFridayStore.IntegrationTests.csproj
+        run: dotnet test
+          src/tests/NashFridayStore.IntegrationTests/NashFridayStore.IntegrationTests.csproj
           --configuration Release --no-build --collect:"XPlat Code Coverage"
 
       - name: Upload coverage reports to Codecov
