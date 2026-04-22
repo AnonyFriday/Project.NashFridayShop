@@ -15,24 +15,27 @@
 - **🎪 Payment**: `Stripe`
 - **🛒 Cart**: `Redis`
 
-## Current Supporting APIs
+## Current Supporting APIs for Admin only
 
-| API Endpoint                 | Method              | Description                          | Status             |
-| ---------------------------- | ------------------- | ------------------------------------ | ------------------ |
-| `/api/categories`            | GET                 | Category menu / list categories      | ✅ Completed       |
-| `/api/categories/{id}`       | GET                 | Category details                     | ✅ Completed       |
-| `/api/products`              | GET                 | Product listing, filters, pagination | ✅ Completed       |
-| `/api/products/{id}`         | GET                 | Product details                      | ✅ Completed       |
-| `/api/products/{id}/ratings` | GET                 | Rating listing, filters, pagination  | ✅ Completed       |
-| `/api/products/{id}/rating`  | POST                | Add rating and comment to a product  | ✅ Completed       |
-| `/api/cart`                  | POST/GET            | Shopping cart                        | ❌ Not implemented |
-| `/api/order`                 | POST                | Order creation                       | ❌ Not implemented |
-| `/api/auth/register`         | POST                | Customer registration                | ❌ Not implemented |
-| `/api/auth/login`            | POST                | Customer login                       | ❌ Not implemented |
-| `/api/auth/logout`           | POST                | Customer logout                      | ❌ Not implemented |
-| `/api/admin/orders`          | GET                 | Order Listing                        | ❌ Not implemented |
-| `/api/admin/categories`      | GET/POST/PUT/DELETE | Manage categories                    | ❌ Not implemented |
-| `/api/admin/products`        | GET/POST/PUT/DELETE | Manage products                      | ❌ Not implemented |
+| API Endpoint                       | Method              | Description                          | Status             |
+| ---------------------------------- | ------------------- | ------------------------------------ | ------------------ |
+| `/api/admin/categories`            | GET                 | Category menu / list categories      | ✅ Completed       |
+| `/api/admin/categories/{id}`       | GET                 | Category details                     | ✅ Completed       |
+| `/api/admin/products`              | GET                 | Product listing, filters, pagination | ✅ Completed       |
+| `/api/admin/products/{id}`         | GET                 | Product details                      | ✅ Completed       |
+| `/api/admin/products/{id}`         | POST                | Create a product                     | ✅ Completed       |
+| `/api/admin/products/{id}`         | PUT                 | Update a product                     | ✅ Completed       |
+| `/api/admin/products/{id}`         | DELETE              | Soft Delete a product                | ✅ Completed       |
+| `/api/admin/products/{id}/ratings` | GET                 | Rating listing, filters, pagination  | ✅ Completed       |
+| `/api/admin/products/{id}/rating`  | POST                | Add rating and comment to a product  | ✅ Completed       |
+| `/api/admin/cart`                  | POST/GET            | Shopping cart                        | ❌ Not implemented |
+| `/api/admin/order`                 | POST                | Order creation                       | ❌ Not implemented |
+| `/api/admin/auth/register`         | POST                | Customer registration                | ❌ Not implemented |
+| `/api/admin/auth/login`            | POST                | Customer login                       | ❌ Not implemented |
+| `/api/admin/auth/logout`           | POST                | Customer logout                      | ❌ Not implemented |
+| `/api/admin/admin/orders`          | GET                 | Order Listing                        | ❌ Not implemented |
+| `/api/admin/admin/categories`      | GET/POST/PUT/DELETE | Manage categories                    | ❌ Not implemented |
+| `/api/admin/admin/products`        | GET/POST/PUT/DELETE | Manage products                      | ❌ Not implemented |
 
 ## ERD (V1)
 
@@ -188,7 +191,7 @@ internal static class Exceptions
 using NashFridayStore.SharedFeatures.Features.Products.GetProduct;
 
 [ApiController]
-[Route("api/products/{id:guid}")]
+[Route("api/admin/products/{id:guid}")]
 public sealed class GetProductEndpoint(Handler handler) : ControllerBase
 {
     [HttpGet]
@@ -221,7 +224,7 @@ public async Task GetProduct_ById_ShouldReturnProduct()
     await _dbContext.SaveChangesAsync(cancellationToken);
 
     // Act
-    HttpResponseMessage response = await _client.GetAsync($"/api/products/{product.Id}", cancellationToken);
+    HttpResponseMessage response = await _client.GetAsync($"/api/admin/products/{product.Id}", cancellationToken);
 
     // Assert
     response.EnsureSuccessStatusCode();
