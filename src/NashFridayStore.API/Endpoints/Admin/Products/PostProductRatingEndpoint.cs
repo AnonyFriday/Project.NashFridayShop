@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using NashFridayStore.SharedFeatures.Features.Products.PostProductRating;
 
-namespace NashFridayStore.API.Endpoints.Products;
+namespace NashFridayStore.API.Endpoints.Admin.Products;
 
 [ApiController]
-[Route("api/products/{productId:guid}/rating")]
+[Route("api/admin/products/{productId:guid}/rating")]
 public sealed class PostProductRatingEndpoint(Handler handler) : ControllerBase
 {
     [HttpPost]

@@ -47,7 +47,7 @@ public class PostProductRatingApiTests : IClassFixture<CustomWebApplicationFacto
 
         // Act
         HttpResponseMessage response = await _client.PostAsJsonAsync(
-            $"/api/products/{productIdNotExists}/rating", request, cancellationToken);
+            $"/api/admin/products/{productIdNotExists}/rating", request, cancellationToken);
 
         // Assert
         ProblemDetails? problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>(cancellationToken: cancellationToken);
@@ -79,7 +79,7 @@ public class PostProductRatingApiTests : IClassFixture<CustomWebApplicationFacto
 
         // Act
         HttpResponseMessage response = await _client.PostAsJsonAsync(
-            $"/api/products/{product.Id}/rating",
+            $"/api/admin/products/{product.Id}/rating",
             request,
             ct
         );

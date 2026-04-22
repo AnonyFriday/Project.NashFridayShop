@@ -49,7 +49,7 @@ public class GetCategoriesApiTests : IClassFixture<CustomWebApplicationFactory>,
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         // Act
-        HttpResponseMessage response = await _client.GetAsync("/api/categories", cancellationToken);
+        HttpResponseMessage response = await _client.GetAsync("/api/admin/categories", cancellationToken);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -91,7 +91,7 @@ public class GetCategoriesApiTests : IClassFixture<CustomWebApplicationFactory>,
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         // Act
-        HttpResponseMessage response = await _client.GetAsync("/api/categories?searchName=Book", cancellationToken);
+        HttpResponseMessage response = await _client.GetAsync("/api/admin/categories?searchName=Book", cancellationToken);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -127,7 +127,7 @@ public class GetCategoriesApiTests : IClassFixture<CustomWebApplicationFactory>,
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         // Act
-        HttpResponseMessage response = await _client.GetAsync("/api/categories?pageSize=2&pageIndex=1", cancellationToken);
+        HttpResponseMessage response = await _client.GetAsync("/api/admin/categories?pageSize=2&pageIndex=1", cancellationToken);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -158,7 +158,7 @@ public class GetCategoriesApiTests : IClassFixture<CustomWebApplicationFactory>,
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         // Act
-        HttpResponseMessage response = await _client.GetAsync("/api/categories?isAll=true", cancellationToken);
+        HttpResponseMessage response = await _client.GetAsync("/api/admin/categories?isAll=true", cancellationToken);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -190,7 +190,7 @@ public class GetCategoriesApiTests : IClassFixture<CustomWebApplicationFactory>,
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         // Act
-        HttpResponseMessage response = await _client.GetAsync("/api/categories?isAll=true&searchName=Book", cancellationToken);
+        HttpResponseMessage response = await _client.GetAsync("/api/admin/categories?isAll=true&searchName=Book", cancellationToken);
 
         // Assert
         response.EnsureSuccessStatusCode();

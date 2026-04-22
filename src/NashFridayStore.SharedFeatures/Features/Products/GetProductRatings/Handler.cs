@@ -3,6 +3,7 @@ using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using NashFridayStore.Domain.Commons;
 using NashFridayStore.Domain.Entities;
+using NashFridayStore.Domain.Entities.Products;
 using NashFridayStore.Infrastructure.Data;
 
 namespace NashFridayStore.SharedFeatures.Features.Products.GetProductRatings;
@@ -15,7 +16,7 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
         Request req = orgReq with
         {
             PageIndex = orgReq.PageIndex <= 0 ? AppCts.Api.PageIndex : orgReq.PageIndex,
-            PageSize = orgReq.PageSize < 0 ? AppCts.Api.PageSize : orgReq.PageSize
+            PageSize = orgReq.PageSize < 0 ? AppCts.Api.PageSize : orgReq.PageSize,
         };
 
         // Handle Validation
@@ -26,9 +27,16 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
         }
 
         // Check if product exists
-        bool productExists = await dbContext.Products
+        IQueryable<Product> queryProduct = dbContext.Products.AsQueryable();
+
+        if (req.IncludeDeleted)
+        {
+            queryProduct = queryProduct.IgnoreQueryFilters();
+        }
+
+        bool productExists = await queryProduct
             .AsNoTracking()
-            .AnyAsync(x => x.Id == req.ProductId && x.IsDeleted == req.IsDeleted, ct);
+            .AnyAsync(x => x.Id == req.ProductId, ct);
 
         if (!productExists)
         {
@@ -36,17 +44,21 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
         }
 
         // Get ratings
-        IQueryable<ProductRating> query = dbContext.ProductRatings.AsQueryable();
+        IQueryable<ProductRating> queryRating = dbContext.ProductRatings.AsQueryable();
 
-        query = query
+        if (req.IncludeDeleted)
+        {
+            queryRating = queryRating.IgnoreQueryFilters();
+        }
+
+        queryRating = queryRating
             .AsNoTracking()
             .Where(x =>
-                x.ProductId == req.ProductId &&
-                x.IsDeleted == req.IsDeleted);
+                x.ProductId == req.ProductId);
 
-        int totalItems = await query.CountAsync(ct);
+        int totalItems = await queryRating.CountAsync(ct);
 
-        List<RatingItem> items = await query
+        List<RatingItem> items = await queryRating
             .OrderByDescending(x => x.CreatedAtUtc)
             .Skip(req.PageIndex * req.PageSize)
             .Take(req.PageSize)
@@ -57,9 +69,9 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
             .ToListAsync(ct);
 
         // Calculate average
-        decimal average = await query.AnyAsync(ct)
-            ? await query.AverageAsync(x => (decimal)x.Stars, ct)
-            : 0;
+        decimal average = await queryRating
+            .Select(x => (decimal?)x.Stars)
+            .AverageAsync(ct) ?? 0;
 
         int totalPages = (int)Math.Ceiling(totalItems / (double)req.PageSize);
 

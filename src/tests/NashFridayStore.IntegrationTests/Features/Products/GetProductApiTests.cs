@@ -48,7 +48,7 @@ public class GetProductApiTests : IClassFixture<CustomWebApplicationFactory>, ID
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         // Act
-        HttpResponseMessage response = await _client.GetAsync($"/api/products/{product.Id}", cancellationToken);
+        HttpResponseMessage response = await _client.GetAsync($"/api/admin/products/{product.Id}", cancellationToken);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -87,7 +87,7 @@ public class GetProductApiTests : IClassFixture<CustomWebApplicationFactory>, ID
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         // Act
-        HttpResponseMessage response = await _client.GetAsync($"/api/products/{product.Id}", cancellationToken);
+        HttpResponseMessage response = await _client.GetAsync($"/api/admin/products/{product.Id}", cancellationToken);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -123,7 +123,7 @@ public class GetProductApiTests : IClassFixture<CustomWebApplicationFactory>, ID
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         // Act
-        HttpResponseMessage response = await _client.GetAsync($"/api/products/{product.Id}", cancellationToken);
+        HttpResponseMessage response = await _client.GetAsync($"/api/admin/products/{product.Id}", cancellationToken);
 
         // Assert
         response.EnsureSuccessStatusCode();

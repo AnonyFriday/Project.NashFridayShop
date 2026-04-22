@@ -2,6 +2,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using NashFridayStore.Domain.Commons;
+using NashFridayStore.Domain.Entities.Products;
 using NashFridayStore.Infrastructure.Data;
 
 namespace NashFridayStore.SharedFeatures.Features.Products.GetProduct;
@@ -16,7 +17,14 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
             throw new Exceptions.ValidationException(validation.Errors);
         }
 
-        Response? product = await dbContext.Products
+        IQueryable<Product> query = dbContext.Products;
+
+        if (req.IncludeDeleted)
+        {
+            query = query.IgnoreQueryFilters();
+        }
+
+        Response product = await query
             .AsNoTracking()
             .Include(p => p.ProductRatings)
             .Where(x => x.Id == req.Id)

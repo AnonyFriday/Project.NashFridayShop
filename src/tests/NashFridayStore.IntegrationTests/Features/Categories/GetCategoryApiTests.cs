@@ -45,7 +45,7 @@ public class GetCategoryApiTests : IClassFixture<CustomWebApplicationFactory>, I
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         // Act
-        HttpResponseMessage response = await _client.GetAsync($"/api/categories/{category.Id}", cancellationToken);
+        HttpResponseMessage response = await _client.GetAsync($"/api/admin/categories/{category.Id}", cancellationToken);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -65,7 +65,7 @@ public class GetCategoryApiTests : IClassFixture<CustomWebApplicationFactory>, I
         var nonExistentId = Guid.NewGuid();
 
         // Act
-        HttpResponseMessage response = await _client.GetAsync($"/api/categories/{nonExistentId}", cancellationToken);
+        HttpResponseMessage response = await _client.GetAsync($"/api/admin/categories/{nonExistentId}", cancellationToken);
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
