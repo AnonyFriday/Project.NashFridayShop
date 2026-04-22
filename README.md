@@ -17,20 +17,20 @@
 
 ## Current Supporting APIs for Admin only
 
-| API Endpoint                       | Method | Description                           | Status             |
-| ---------------------------------- | ------ | ------------------------------------- | ------------------ |
-| `/api/admin/categories`            | GET    | Category menu / list categories       | ✅ Completed       |
-| `/api/admin/categories/{id}`       | GET    | Category details                      | ✅ Completed       |
-| `/api/admin/products`              | GET    | Product listing, filters, pagination  | ✅ Completed       |
-| `/api/admin/products/{id}`         | GET    | Product details                       | ✅ Completed       |
-| `/api/admin/products/{id}`         | POST   | Create a product                      | ✅ Completed       |
-| `/api/admin/products/{id}`         | PUT    | Update a product                      | ✅ Completed       |
-| `/api/admin/products/{id}`         | DELETE | Soft Delete a product                 | ✅ Completed       |
-| `/api/admin/products/{id}/ratings` | GET    | Rating listing, filters, pagination   | ✅ Completed       |
-| `/api/admin/products/{id}/rating`  | POST   | Add rating and comment to a product   | ✅ Completed       |
-| `/api/admin/orders`                | GET    | Order listing, filters, pagination    | ❌ Not implemented |
-| `/api/admin/customers`             | GET    | Customer listing, filters, pagination | ❌ Not implemented |
-| `/api/admin/customers/{id}`        | DELETE | Disable customer account              | ❌ Not implemented |
+| API Endpoint                       | Method | Description                           | Status             | Tests     |
+| ---------------------------------- | ------ | ------------------------------------- | ------------------ | --------- |
+| `/api/admin/categories`            | GET    | Category menu / list categories       | ✅ Completed       | ✅ UT, IT |
+| `/api/admin/categories/{id}`       | GET    | Category details                      | ✅ Completed       | ✅ UT, IT |
+| `/api/admin/products`              | GET    | Product listing, filters, pagination  | ✅ Completed       | ✅ UT, IT |
+| `/api/admin/products/{id}`         | GET    | Product details                       | ✅ Completed       | ✅ UT, IT |
+| `/api/admin/products/{id}`         | POST   | Create a product                      | ✅ Completed       | ✅ UT, IT |
+| `/api/admin/products/{id}`         | PUT    | Update a product                      | ✅ Completed       | ✅ UT, IT |
+| `/api/admin/products/{id}`         | DELETE | Soft Delete a product                 | ✅ Completed       | ✅ UT, IT |
+| `/api/admin/products/{id}/ratings` | GET    | Rating listing, filters, pagination   | ✅ Completed       | ✅ UT, IT |
+| `/api/admin/products/{id}/rating`  | POST   | Add rating and comment to a product   | ✅ Completed       | ✅ UT, IT |
+| `/api/admin/orders`                | GET    | Order listing, filters, pagination    | ❌ Not implemented | ❌ None   |
+| `/api/admin/customers`             | GET    | Customer listing, filters, pagination | ❌ Not implemented | ❌ None   |
+| `/api/admin/customers/{id}`        | DELETE | Disable customer account              | ❌ Not implemented | ❌ None   |
 
 ## Current Supporting Pages for Customer only
 
