@@ -1,7 +1,6 @@
-using System.Net;
 using System.Net.Http.Json;
 using Microsoft.Extensions.DependencyInjection;
-using NashFridayStore.API.Features.Categories.GetCategories;
+using NashFridayStore.SharedFeatures.Features.Categories.GetCategories;
 using NashFridayStore.Domain.Entities;
 using NashFridayStore.Infrastructure.Builders;
 using NashFridayStore.Infrastructure.Data;

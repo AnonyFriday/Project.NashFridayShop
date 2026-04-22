@@ -5,7 +5,7 @@ namespace NashFridayStore.API.Endpoints.Products;
 
 [ApiController]
 [Route("api/products/{productId:guid}/rating")]
-internal sealed class PostProductRatingEndpoint(Handler handler) : ControllerBase
+public sealed class PostProductRatingEndpoint(Handler handler) : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> Post(

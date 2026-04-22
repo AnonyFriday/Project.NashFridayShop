@@ -2,6 +2,7 @@ using NashFridayStore.API.Extensions;
 using NashFridayStore.Domain.Commons;
 using NashFridayStore.Infrastructure.Data;
 using NashFridayStore.Infrastructure.Extensions;
+using NashFridayStore.SharedFeatures.Extensions;
 
 // Configure services
 
@@ -9,6 +10,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApiServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddSharedFeatures();
 
 WebApplication app = builder.Build();
 

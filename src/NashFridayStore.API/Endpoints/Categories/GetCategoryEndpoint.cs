@@ -6,7 +6,7 @@ namespace NashFridayStore.API.Endpoints.Categories;
 
 [ApiController]
 [Route("api/categories/{id:guid}")]
-internal sealed class GetCategoryEndpoint(Handler handler) : ControllerBase
+public sealed class GetCategoryEndpoint(Handler handler) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> Get([FromRoute] Guid id, CancellationToken ct)

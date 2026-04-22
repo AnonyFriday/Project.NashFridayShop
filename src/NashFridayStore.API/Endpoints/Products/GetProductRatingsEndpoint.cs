@@ -5,7 +5,7 @@ namespace NashFridayStore.API.Endpoints.Products;
 
 [ApiController]
 [Route("api/products/{productId:guid}/ratings")]
-internal sealed class GetProductRatingsEndpoint(Handler handler) : ControllerBase
+public sealed class GetProductRatingsEndpoint(Handler handler) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> Get([FromRoute] Guid productId, [FromQuery] Request request, CancellationToken ct)

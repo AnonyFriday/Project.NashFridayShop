@@ -5,7 +5,7 @@ namespace NashFridayStore.API.Endpoints.Products;
 
 [ApiController]
 [Route("api/products")]
-internal sealed class GetProductsEndpoint(Handler handler) : ControllerBase
+public sealed class GetProductsEndpoint(Handler handler) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> Get(
