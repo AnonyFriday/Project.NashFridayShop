@@ -3,6 +3,7 @@ using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using NashFridayStore.Domain.Commons;
 using NashFridayStore.Infrastructure.Data;
+using NashFridayStore.SharedFeatures.Features.Categories.GetCategories;
 
 namespace NashFridayStore.SharedFeatures.Features.Products.GetProducts;
 
