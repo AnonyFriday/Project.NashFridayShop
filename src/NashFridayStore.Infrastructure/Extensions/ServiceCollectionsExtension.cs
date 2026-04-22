@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using NashFridayStore.Infrastructure.Data;
 using NashFridayStore.Infrastructure.AppOptions;
 using Microsoft.Extensions.Options;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace NashFridayStore.Infrastructure.Extensions;
 

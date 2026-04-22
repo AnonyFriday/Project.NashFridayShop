@@ -2,6 +2,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using NashFridayStore.Domain.Commons;
+using NashFridayStore.Domain.Entities.Products;
 using NashFridayStore.Infrastructure.Data;
 using NashFridayStore.SharedFeatures.Features.Categories.GetCategories;
 
@@ -29,7 +30,7 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
         }
 
         // Implementing logic
-        var query = dbContext.Products.AsQueryable();
+        IQueryable<Product> query = dbContext.Products.AsQueryable();
 
         query = query
             .AsNoTracking()

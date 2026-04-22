@@ -1,5 +1,3 @@
-using System.Net;
-
 namespace NashFridayStore.Domain.Commons;
 
 public static class AppCts

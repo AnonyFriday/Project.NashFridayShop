@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\NashFridayStore.Infrastructure\NashFridayStore.Infrastructure.csproj" />
+    <ProjectReference Include="../NashFridayStore.Infrastructure/NashFridayStore.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

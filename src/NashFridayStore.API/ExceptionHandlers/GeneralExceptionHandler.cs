@@ -13,6 +13,24 @@ internal sealed class GeneralExceptionHandler(
     {
         switch (exception)
         {
+            // Handle text related exception only
+            case AppException appException:
+                {
+                    var problemDetails = new ProblemDetails()
+                    {
+                        Title = appException.Title,
+                        Detail = appException.Message,
+                        Type = appException.TypeName,
+                        Status = appException.StatusCode
+                    };
+
+                    logger.LogError(exception, "Handle : {Message}", exception.Message);
+                    httpContext.Response.ContentType = "application/json";
+                    httpContext.Response.StatusCode = appException.StatusCode;
+                    await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken: cancellationToken);
+                    break;
+                }
+
             // Handle only validation errors
             case AppValidationException requestValidationException:
                 {
@@ -37,24 +55,6 @@ internal sealed class GeneralExceptionHandler(
 
                     httpContext.Response.ContentType = "application/json";
                     httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-                    await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken: cancellationToken);
-                    break;
-                }
-
-            // Handle text related exception only
-            case AppException appException:
-                {
-                    var problemDetails = new ProblemDetails()
-                    {
-                        Title = appException.Title,
-                        Detail = appException.Message,
-                        Type = appException.Type,
-                        Status = appException.StatusCode
-                    };
-
-                    logger.LogError(exception, "Handle : {Message}", exception.Message);
-                    httpContext.Response.ContentType = "application/json";
-                    httpContext.Response.StatusCode = appException.StatusCode;
                     await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken: cancellationToken);
                     break;
                 }

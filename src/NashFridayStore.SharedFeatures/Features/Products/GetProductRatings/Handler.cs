@@ -2,6 +2,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using NashFridayStore.Domain.Commons;
+using NashFridayStore.Domain.Entities;
 using NashFridayStore.Infrastructure.Data;
 
 namespace NashFridayStore.SharedFeatures.Features.Products.GetProductRatings;
@@ -35,7 +36,7 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
         }
 
         // Get ratings
-        var query = dbContext.ProductRatings.AsQueryable();
+        IQueryable<ProductRating> query = dbContext.ProductRatings.AsQueryable();
 
         query = query
             .AsNoTracking()
