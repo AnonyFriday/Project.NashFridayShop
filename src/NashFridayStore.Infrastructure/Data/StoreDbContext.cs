@@ -21,6 +21,7 @@ public class StoreDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        modelBuilder.HasDefaultSchema("store");
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(StoreDbContext).Assembly);
     }
 }
