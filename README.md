@@ -15,39 +15,32 @@
 - **🎪 Payment**: `Stripe`
 - **🛒 Cart**: `Redis`
 
-## Current Supporting APIs for Admin only
+## Current Supporting APIs
 
-| API Endpoint                       | Method | Description                           | Status             | Tests     |
-| ---------------------------------- | ------ | ------------------------------------- | ------------------ | --------- |
-| `/api/admin/categories`            | GET    | Category menu / list categories       | ✅ Completed       | ✅ UT, IT |
-| `/api/admin/categories/{id}`       | GET    | Category details                      | ✅ Completed       | ✅ UT, IT |
-| `/api/admin/products`              | GET    | Product listing, filters, pagination  | ✅ Completed       | ✅ UT, IT |
-| `/api/admin/products/{id}`         | GET    | Product details                       | ✅ Completed       | ✅ UT, IT |
-| `/api/admin/products/{id}`         | POST   | Create a product                      | ✅ Completed       | ✅ UT, IT |
-| `/api/admin/products/{id}`         | PUT    | Update a product                      | ✅ Completed       | ✅ UT, IT |
-| `/api/admin/products/{id}`         | DELETE | Soft Delete a product                 | ✅ Completed       | ✅ UT, IT |
-| `/api/admin/products/{id}/ratings` | GET    | Rating listing, filters, pagination   | ✅ Completed       | ✅ UT, IT |
-| `/api/admin/products/{id}/rating`  | POST   | Add rating and comment to a product   | ✅ Completed       | ✅ UT, IT |
-| `/api/admin/orders`                | GET    | Order listing, filters, pagination    | ❌ Not implemented | ❌ None   |
-| `/api/admin/customers`             | GET    | Customer listing, filters, pagination | ❌ Not implemented | ❌ None   |
-| `/api/admin/customers/{id}`        | DELETE | Disable customer account              | ❌ Not implemented | ❌ None   |
+| API Endpoint                 | Method | Description                           | Status             | Tests     |
+| ---------------------------- | ------ | ------------------------------------- | ------------------ | --------- |
+| `/api/categories`            | GET    | Category menu / list categories       | ✅ Completed       | ✅ UT, IT |
+| `/api/categories/{id}`       | GET    | Category details                      | ✅ Completed       | ✅ UT, IT |
+| `/api/products`              | GET    | Product listing, filters, pagination  | ✅ Completed       | ✅ UT, IT |
+| `/api/products/{id}`         | GET    | Product details                       | ✅ Completed       | ✅ UT, IT |
+| `/api/products/`             | POST   | Create a product                      | ✅ Completed       | ✅ UT, IT |
+| `/api/products/{id}`         | PUT    | Update a product                      | ✅ Completed       | ✅ UT, IT |
+| `/api/products/{id}`         | DELETE | Soft Delete a product                 | ✅ Completed       | ✅ UT, IT |
+| `/api/products/{id}/ratings` | GET    | Rating listing, filters, pagination   | ✅ Completed       | ✅ UT, IT |
+| `/api/products/{id}/rating`  | POST   | Add rating and comment to a product   | ✅ Completed       | ✅ UT, IT |
+| `/api/orders`                | GET    | Order listing, filters, pagination    | ❌ Not implemented | ❌ None   |
+| `/api/customers`             | GET    | Customer listing, filters, pagination | ❌ Not implemented | ❌ None   |
+| `/api/customers/{id}`        | DELETE | Disable customer account              | ❌ Not implemented | ❌ None   |
+| `/connect/authorize`         | GET    | Start OIDC login flow                 | ❌ Not implemented | ❌ None   |
+| `/connect/token`             | POST   | Exchange code → tokens                | ❌ Not implemented | ❌ None   |
+| `/connect/logout`            | POST   | Logout (OIDC)                         | ❌ Not implemented | ❌ None   |
 
-## Current Supporting Pages for Customer only
+## Current Supporting Pages For Identity Server
 
-| Page Route         | Description                                  | Status             |
-| ------------------ | -------------------------------------------- | ------------------ |
-| `/`                | Home (categories + featured products)        | ❌ Not implemented |
-| `/categories`      | List categories                              | ❌ Not implemented |
-| `/categories/{id}` | Category details (products by category)      | ❌ Not implemented |
-| `/products`        | Product listing (filter/search) + avg rating | ❌ Not implemented |
-| `/products/{id}`   | Product details + ratings + comments         | ❌ Not implemented |
-| `/cart`            | View cart                                    | ❌ Not implemented |
-| `/checkout`        | Checkout                                     | ❌ Not implemented |
-| `/orders`          | Order listing                                | ❌ Not implemented |
-| `/orders/{id}`     | Order details                                | ❌ Not implemented |
-| `/auth/register`   | Customer registration                        | ❌ Not implemented |
-| `/auth/login`      | Customer login                               | ❌ Not implemented |
-| `/auth/logout`     | Customer logout                              | ❌ Not implemented |
+| Page Route          | Description        | Status             |
+| ------------------- | ------------------ | ------------------ |
+| `/Account/Login`    | User login Page    | ❌ Not implemented |
+| `/Account/Register` | User register Page | ❌ Not implemented |
 
 ## ERD (V1)
 
@@ -203,7 +196,7 @@ internal static class Exceptions
 using NashFridayStore.SharedFeatures.Features.Products.GetProduct;
 
 [ApiController]
-[Route("api/admin/products/{id:guid}")]
+[Route("api/products/{id:guid}")]
 public sealed class GetProductEndpoint(Handler handler) : ControllerBase
 {
     [HttpGet]
@@ -236,7 +229,7 @@ public async Task GetProduct_ById_ShouldReturnProduct()
     await _dbContext.SaveChangesAsync(cancellationToken);
 
     // Act
-    HttpResponseMessage response = await _client.GetAsync($"/api/admin/products/{product.Id}", cancellationToken);
+    HttpResponseMessage response = await _client.GetAsync($"/api/products/{product.Id}", cancellationToken);
 
     // Assert
     response.EnsureSuccessStatusCode();
