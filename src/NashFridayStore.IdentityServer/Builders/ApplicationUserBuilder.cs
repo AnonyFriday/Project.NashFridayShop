@@ -6,6 +6,18 @@ public class ApplicationUserBuilder
 {
     protected ApplicationUser _user = new();
 
+    public ApplicationUserBuilder WithAddress(string address)
+    {
+        _user.Address = address;
+        return this;
+    }
+
+    public ApplicationUserBuilder WithFullName(string fullName)
+    {
+        _user.FullName = fullName;
+        return this;
+    }
+
     public ApplicationUserBuilder WithEmail(string email)
     {
         _user.Email = email;

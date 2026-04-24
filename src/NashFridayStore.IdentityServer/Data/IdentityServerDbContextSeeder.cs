@@ -39,6 +39,8 @@ public class IdentityServerDbContextSeeder(
         var admin = new Admin
         {
             Id = Guid.NewGuid(),
+            FullName = "Vu Thi Rau",
+            Address = "Random Address which you dont know",
             UserName = "admin@nashstore.com",
             Email = "admin@nashstore.com",
             PhoneNumber = "0123456789",
@@ -55,6 +57,8 @@ public class IdentityServerDbContextSeeder(
         var customer1 = new Customer
         {
             Id = Guid.NewGuid(),
+            FullName = "My meme 1",
+            Address = "Random Address which you dont know",
             UserName = "customer1@nashstore.com",
             Email = "customer1@nashstore.com",
             PhoneNumber = "0987654321",
@@ -69,6 +73,8 @@ public class IdentityServerDbContextSeeder(
         var customer2 = new Customer
         {
             Id = Guid.NewGuid(),
+            FullName = "My meme 2",
+            Address = "Random Address which you dont know",
             UserName = "customer2@nashstore.com",
             Email = "customer2@nashstore.com",
             PhoneNumber = "0987654321",

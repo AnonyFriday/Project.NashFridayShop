@@ -197,6 +197,11 @@ namespace NashFridayStore.IdentityServer.Migrations
                         .HasColumnType("int")
                         .HasColumnName("access_failed_count");
 
+                    b.Property<string>("Address")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)")
+                        .HasColumnName("address");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)")
@@ -219,6 +224,11 @@ namespace NashFridayStore.IdentityServer.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit")
                         .HasColumnName("email_confirmed");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("full_name");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -270,8 +280,9 @@ namespace NashFridayStore.IdentityServer.Migrations
                         .HasColumnName("updated_at_utc");
 
                     b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("user_name");
 
                     b.HasKey("Id");

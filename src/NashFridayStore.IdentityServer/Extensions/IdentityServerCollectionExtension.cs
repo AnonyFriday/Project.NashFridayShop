@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NashFridayStore.IdentityServer.AppOptions;
 using NashFridayStore.IdentityServer.Data;
 using NashFridayStore.IdentityServer.Domain;
+using OpenIddict.Abstractions;
 
 namespace NashFridayStore.IdentityServer.Extensions;
 
@@ -38,6 +38,12 @@ public static class IdentityServerCollectionExtension
         .AddEntityFrameworkStores<IdentityServerDbContext>()
         .AddDefaultTokenProviders();
 
+        // Configure Cookies for Authentication
+        services.ConfigureApplicationCookie(otp =>
+        {
+            otp.LoginPath = "/Account/Login";
+        });
+
         // Add OpenIddict
         services
             .AddOpenIddict()
@@ -48,9 +54,20 @@ public static class IdentityServerCollectionExtension
             })
             .AddServer(opt =>
             {
-                // enable password flow client credentials
-                opt.AllowClientCredentialsFlow().AllowRefreshTokenFlow(); // Machine to Machine authentication
-                opt.AllowPasswordFlow().AllowRefreshTokenFlow();          // User type username and password
+                // opt.AllowClientCredentialsFlow().AllowRefreshTokenFlow(); // Machine to Machine authentication
+                // opt.AllowPasswordFlow().AllowRefreshTokenFlow();          // User type username and password
+
+                opt.AllowAuthorizationCodeFlow().AllowRefreshTokenFlow(); // Communicate with BFF via authorization code
+                opt.RequireProofKeyForCodeExchange(); // code verifier for BFF
+
+                // add scope
+                opt.RegisterScopes(
+                    OpenIddictConstants.Scopes.OpenId,
+                    OpenIddictConstants.Scopes.Profile,
+                    OpenIddictConstants.Scopes.Email,
+                    OpenIddictConstants.Scopes.Roles,
+                    "api" // my api scope
+                );
 
                 // Using dev cert, but disable access token  encryption for learning purpose
                 opt
@@ -58,19 +75,22 @@ public static class IdentityServerCollectionExtension
                     .AddDevelopmentSigningCertificate()
                     .DisableAccessTokenEncryption();
 
-                // Enable those option, I will authenticate, OpenIddict issue token only
+                // I manually handle those process via endpoint
                 opt
                     .UseAspNetCore() // go through
                     .EnableAuthorizationEndpointPassthrough()
                     .EnableTokenEndpointPassthrough()
                     .EnableEndSessionEndpointPassthrough()
-                    .DisableTransportSecurityRequirement();
+                    .DisableTransportSecurityRequirement(); // using in local dev for now
 
                 // Setup token, authorize, logout for our own
                 opt.SetAuthorizationEndpointUris("/connect/authorize");
                 opt.SetTokenEndpointUris("/connect/token");
                 opt.SetEndSessionEndpointUris("/connect/logout");
-
             });
+
+        // Add Razor Page + Controller Endpoints
+        services.AddRazorPages();
+        services.AddControllers();
     }
 }

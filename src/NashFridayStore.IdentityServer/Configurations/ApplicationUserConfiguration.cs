@@ -13,6 +13,14 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 
         builder.HasKey(x => x.Id);
 
+        builder.Property(x => x.UserName)
+                .IsRequired()
+                .HasMaxLength(100);
+
+        builder.Property(x => x.Address)
+                .IsRequired(false)
+                .HasMaxLength(300);
+
         builder.ConfigureSoftDeletable("users");
         builder.ConfigureAuditable();
     }
