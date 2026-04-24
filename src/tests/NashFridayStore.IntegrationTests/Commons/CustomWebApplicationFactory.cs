@@ -42,7 +42,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             // Register sqlite in-memory connection
             services.AddSingleton<DbConnection>((service) =>
             {
-                string sqliteTestingConnectionString = service.GetRequiredService<IOptions<ConnectionStringsOptions>>().Value.SqliteTesting;
+                string sqliteTestingConnectionString = service.GetRequiredService<IOptions<ConnectionStringsOptions>>().Value.DatabaseTesting;
                 var connection = new SqliteConnection(sqliteTestingConnectionString);
                 connection.Open();
 

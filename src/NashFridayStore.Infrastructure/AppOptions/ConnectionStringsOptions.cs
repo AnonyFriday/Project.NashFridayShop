@@ -13,5 +13,5 @@ public sealed record ConnectionStringsOptions
     public string Caching { get; init; } = string.Empty;
 
     [Required]
-    public string SqliteTesting { get; set; } = string.Empty;
+    public string DatabaseTesting { get; set; } = string.Empty;
 }
