@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -92,5 +93,22 @@ public static class IdentityServerCollectionExtension
         // Add Razor Page + Controller Endpoints
         services.AddRazorPages();
         services.AddControllers();
+
+        // Add all handlers
+        RegisterAllFeatureHandlers(services);
+    }
+
+    private static void RegisterAllFeatureHandlers(IServiceCollection serviceCollection)
+    {
+        Assembly assembly = typeof(IdentityServerCollectionExtension).Assembly;
+
+        IEnumerable<Type> handlers = assembly
+            .GetTypes()
+            .Where(t => t.Name == "Handler" && t.IsClass && !t.IsInterface && !t.IsAbstract);
+
+        foreach (Type handler in handlers)
+        {
+            serviceCollection.AddScoped(handler);
+        }
     }
 }
