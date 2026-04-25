@@ -17,30 +17,37 @@
 
 ## Current Supporting APIs
 
-| API Endpoint                 | Method | Description                           | Status             | Tests     |
-| ---------------------------- | ------ | ------------------------------------- | ------------------ | --------- |
-| `/api/categories`            | GET    | Category menu / list categories       | ✅ Completed       | ✅ UT, IT |
-| `/api/categories/{id}`       | GET    | Category details                      | ✅ Completed       | ✅ UT, IT |
-| `/api/products`              | GET    | Product listing, filters, pagination  | ✅ Completed       | ✅ UT, IT |
-| `/api/products/{id}`         | GET    | Product details                       | ✅ Completed       | ✅ UT, IT |
-| `/api/products/`             | POST   | Create a product                      | ✅ Completed       | ✅ UT, IT |
-| `/api/products/{id}`         | PUT    | Update a product                      | ✅ Completed       | ✅ UT, IT |
-| `/api/products/{id}`         | DELETE | Soft Delete a product                 | ✅ Completed       | ✅ UT, IT |
-| `/api/products/{id}/ratings` | GET    | Rating listing, filters, pagination   | ✅ Completed       | ✅ UT, IT |
-| `/api/products/{id}/rating`  | POST   | Add rating and comment to a product   | ✅ Completed       | ✅ UT, IT |
-| `/api/orders`                | GET    | Order listing, filters, pagination    | ❌ Not implemented | ❌ None   |
-| `/api/customers`             | GET    | Customer listing, filters, pagination | ❌ Not implemented | ❌ None   |
-| `/api/customers/{id}`        | DELETE | Disable customer account              | ❌ Not implemented | ❌ None   |
-| `/connect/authorize`         | GET    | Start OIDC login flow                 | ❌ Not implemented | ❌ None   |
-| `/connect/token`             | POST   | Exchange code → tokens                | ❌ Not implemented | ❌ None   |
-| `/connect/logout`            | POST   | Logout (OIDC)                         | ❌ Not implemented | ❌ None   |
+| Layer           | Endpoint                     | Method | Description                                         | Status             | Tests     |
+| --------------- | ---------------------------- | ------ | --------------------------------------------------- | ------------------ | --------- |
+| API             | `/api/categories`            | GET    | Category menu / list categories                     | ✅ Completed       | ✅ UT, IT |
+| API             | `/api/categories/{id}`       | GET    | Category details                                    | ✅ Completed       | ✅ UT, IT |
+| API             | `/api/products`              | GET    | Product listing, filters, pagination                | ✅ Completed       | ✅ UT, IT |
+| API             | `/api/products/{id}`         | GET    | Product details                                     | ✅ Completed       | ✅ UT, IT |
+| API             | `/api/products`              | POST   | Create product                                      | ✅ Completed       | ✅ UT, IT |
+| API             | `/api/products/{id}`         | PUT    | Update product                                      | ✅ Completed       | ✅ UT, IT |
+| API             | `/api/products/{id}`         | DELETE | Soft delete product                                 | ✅ Completed       | ✅ UT, IT |
+| API             | `/api/products/{id}/ratings` | GET    | Product ratings list                                | ✅ Completed       | ✅ UT, IT |
+| API             | `/api/products/{id}/rating`  | POST   | Add rating/comment                                  | ✅ Completed       | ✅ UT, IT |
+| API             | `/api/orders`                | GET    | Order listing                                       | ❌ Not implemented | ❌ None   |
+| API             | `/api/customers`             | GET    | Customer listing                                    | ❌ Not implemented | ❌ None   |
+| API             | `/api/customers/{id}`        | DELETE | Disable customer                                    | ❌ Not implemented | ❌ None   |
+| Identity Server | `/connect/authorize`         | GET    | Start authorization code flow                       | ✅ Completed       | ❌ None   |
+| Identity Server | `/connect/token`             | POST   | Exchange auth code → tokens                         | ✅ Completed       | ❌ None   |
+| Identity Server | `/connect/logout`            | POST   | Identity logout flow                                | ❌ Not implemented | ❌ None   |
+| BFF             | `/login`                     | GET    | Start login from React → redirect to IdentityServer | ❌ Not implemented | ❌ None   |
+| BFF             | `/signin-oidc`               | GET    | OIDC callback endpoint (middleware handled)         | ❌ Not implemented | ❌ None   |
+| BFF             | `/logout`                    | POST   | Logout BFF session + Identity session               | ❌ Not implemented | ❌ None   |
+| BFF             | `/me`                        | GET    | Return current logged-in user info to React         | ❌ Not implemented | ❌ None   |
+| BFF             | `/api/{**catch-all}`         | ALL    | Reverse proxy React requests → API                  | ❌ Not implemented | ❌ None   |
 
 ## Current Supporting Pages For Identity Server
 
-| Page Route          | Description        | Status             |
-| ------------------- | ------------------ | ------------------ |
-| `/Account/Login`    | User login Page    | ❌ Not implemented |
-| `/Account/Register` | User register Page | ❌ Not implemented |
+| Layer           | Endpoint            | Method | Description              | Status             | Tests   |
+| --------------- | ------------------- | ------ | ------------------------ | ------------------ | ------- |
+| Identity Server | `/Account/Login`    | GET    | Render Razor login page  | ✅ Completed       | ❌ None |
+| Identity Server | `/Account/Login`    | POST   | Submit login credentials | ✅ Completed       | ❌ None |
+| Identity Server | `/Account/Register` | GET    | Render registration page | ❌ Not implemented | ❌ None |
+| Identity Server | `/Account/Register` | POST   | Submit registration form | ❌ Not implemented | ❌ None |
 
 ## ERD (V1)
 
