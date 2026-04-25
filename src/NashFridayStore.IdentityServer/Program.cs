@@ -16,7 +16,9 @@ if (app.Environment.IsDevelopment())
 
     using IServiceScope scope = app.Services.CreateScope();
     IdentityServerDbContextSeeder seeder = scope.ServiceProvider.GetRequiredService<IdentityServerDbContextSeeder>();
-    await seeder.SeedAsync();
+    await seeder.SeedAccountsAsync();
+    await seeder.SeedBff();
+    await seeder.SeedOidcDebugger();
 }
 
 app.UseHttpsRedirection();

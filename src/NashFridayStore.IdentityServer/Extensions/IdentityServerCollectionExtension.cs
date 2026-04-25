@@ -1,4 +1,5 @@
 using System.Reflection;
+using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -93,6 +94,9 @@ public static class IdentityServerCollectionExtension
         // Add Razor Page + Controller Endpoints
         services.AddRazorPages();
         services.AddControllers();
+
+        // Fluent Validation
+        services.AddValidatorsFromAssembly(typeof(IdentityServerCollectionExtension).Assembly);
 
         // Add all handlers
         RegisterAllFeatureHandlers(services);

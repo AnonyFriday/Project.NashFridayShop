@@ -1,7 +1,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using NashFridayStore.IdentityServer.AppOptions;
 using NashFridayStore.IdentityServer.Commons;
 using NashFridayStore.IdentityServer.Domain;
+using OpenIddict.Abstractions;
+using static OpenIddict.Abstractions.OpenIddictConstants;
 
 namespace NashFridayStore.IdentityServer.Data;
 
@@ -9,11 +13,13 @@ public class IdentityServerDbContextSeeder(
     IdentityServerDbContext dbContext,
     UserManager<ApplicationUser> userManager,
     RoleManager<IdentityRole<Guid>> roleManager,
+    IOptions<ClientUrlsOption> options,
+    IOpenIddictApplicationManager openIddictApplicationManager,
     ILogger<IdentityServerDbContext> logger)
 {
-    public async Task SeedAsync()
+    public async Task SeedAccountsAsync()
     {
-        logger.LogInformation("Starting database seeding...");
+        logger.LogInformation("Starting accounts seeding...");
         await dbContext.Database.MigrateAsync();
 
         if (await userManager.Users.AnyAsync()
@@ -88,5 +94,107 @@ public class IdentityServerDbContextSeeder(
         #endregion
 
         logger.LogInformation("Identity database seeding completed.");
+    }
+
+    public async Task SeedBff()
+    {
+        logger.LogInformation("Starting BFF seeding...");
+        BffOptions bffOptions = options.Value.Bff;
+
+        object? existingClient = await openIddictApplicationManager.FindByClientIdAsync(bffOptions.ClientId);
+
+        if (existingClient != null)
+        {
+            logger.LogInformation("BFF client alreay exists.");
+            return;
+        }
+
+        await openIddictApplicationManager.CreateAsync(new OpenIddictApplicationDescriptor()
+        {
+            ClientId = bffOptions.ClientId,
+            ClientSecret = bffOptions.ClientSecret,
+            RedirectUris =
+            {
+                new Uri($"{bffOptions.SignInCallbackUrl}")
+            },
+
+            PostLogoutRedirectUris =
+            {
+                new Uri($"{bffOptions.SignOutCallbackUrl}")
+            },
+
+            Permissions =
+            {
+                    Permissions.Endpoints.Authorization,
+                    Permissions.Endpoints.Token,
+                    Permissions.Endpoints.EndSession,
+
+                    Permissions.GrantTypes.AuthorizationCode,
+                    Permissions.GrantTypes.RefreshToken,
+
+                    Permissions.ResponseTypes.Code,
+
+                    Permissions.Scopes.Profile,
+                    Permissions.Scopes.Email,
+                    Permissions.Scopes.Roles,
+                    Permissions.Prefixes.Scope + bffOptions.ApiScope
+            },
+
+            Requirements =
+            {
+                Requirements.Features.ProofKeyForCodeExchange
+            }
+        });
+
+        logger.LogInformation("BFF client seeded successfully.");
+    }
+
+    public async Task SeedOidcDebugger()
+    {
+        logger.LogInformation("Starting OIDC Debugger seeding...");
+        OidcDebuggerOptions oidcDebuggerOptions = options.Value.OidcDebugger;
+
+        object? existingClient = await openIddictApplicationManager.FindByClientIdAsync(oidcDebuggerOptions.ClientId);
+
+        if (existingClient != null)
+        {
+            logger.LogInformation("BFF client alreay exists.");
+            return;
+        }
+
+        await openIddictApplicationManager.CreateAsync(new OpenIddictApplicationDescriptor()
+        {
+            ClientId = oidcDebuggerOptions.ClientId,
+            ClientType = ClientTypes.Public,
+
+            RedirectUris =
+            {
+                new Uri($"{oidcDebuggerOptions.SignInCallbackUrl}")
+            },
+
+            Permissions =
+            {
+                    Permissions.Endpoints.Authorization,
+                    Permissions.Endpoints.Token,
+                    Permissions.Endpoints.EndSession,
+
+                    Permissions.GrantTypes.AuthorizationCode,
+                    Permissions.GrantTypes.RefreshToken,
+
+                    Permissions.ResponseTypes.Code,
+
+                    Permissions.Scopes.Profile,
+                    Permissions.Scopes.Email,
+                    Permissions.Scopes.Roles,
+                    Permissions.Prefixes.Scope + oidcDebuggerOptions.ApiScope
+            },
+
+            Requirements =
+            {
+                Requirements.Features.ProofKeyForCodeExchange
+            }
+        });
+
+        logger.LogInformation("Oidc Debugger client seeded successfully.");
     }
 }
