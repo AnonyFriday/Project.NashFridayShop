@@ -34,19 +34,35 @@ public class Endpoint(
         );
 
         identity.AddClaims([
-            new Claim(OpenIddictConstants.Claims.Subject, user.Id.ToString()), // if dont include, the openiddict raise error
-            new Claim(OpenIddictConstants.Claims.Email, user.Email ?? string.Empty),
-            new Claim(OpenIddictConstants.Claims.Username, user.UserName ?? string.Empty),
+            // if dont include, the openiddict raise error
+            new Claim(OpenIddictConstants.Claims.Subject, user.Id.ToString())
+                .SetDestinations([
+                    OpenIddictConstants.Destinations.AccessToken,
+                    OpenIddictConstants.Destinations.IdentityToken
+                    ]),
+
+            new Claim(OpenIddictConstants.Claims.Email, user.Email ?? string.Empty)
+                .SetDestinations(OpenIddictConstants.Destinations.IdentityToken),
+
+            new Claim(OpenIddictConstants.Claims.Username, user.UserName ?? string.Empty)
+                .SetDestinations(OpenIddictConstants.Destinations.IdentityToken),
 
             // If include lieral string then raise error 
             // new Claim(OpenIddictConstants.Claims.Address, user.Address ?? string.Empty)
-            new Claim(OpenIddictConstants.Claims.PhoneNumber, user.PhoneNumber ?? string.Empty),
+            new Claim(OpenIddictConstants.Claims.PhoneNumber, user.PhoneNumber ?? string.Empty)
+                .SetDestinations(OpenIddictConstants.Destinations.IdentityToken),
         ]);
 
         IList<string> userRoles = await userManager.GetRolesAsync(user);
         foreach (string role in userRoles)
         {
-            identity.AddClaim(new Claim(OpenIddictConstants.Claims.Role, role));
+            identity.AddClaim(
+                new Claim(OpenIddictConstants.Claims.Role, role)
+                .SetDestinations([
+                    OpenIddictConstants.Destinations.AccessToken,
+                    OpenIddictConstants.Destinations.IdentityToken
+                ])
+            );
         }
 
         var principal = new ClaimsPrincipal(identity);
