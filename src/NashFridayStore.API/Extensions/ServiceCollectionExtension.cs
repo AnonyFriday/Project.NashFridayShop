@@ -27,9 +27,9 @@ public static class ServiceCollectionExtension
         {
             options.AddPolicy(AppCts.Policy.AdminSite, policy =>
             {
-                if (clientUrls.AdminSites.Length > 0)
+                if (clientUrls.AdminUrls.Length > 0)
                 {
-                    policy.WithOrigins(clientUrls.AdminSites)
+                    policy.WithOrigins(clientUrls.AdminUrls)
                             .AllowAnyMethod()
                             .AllowAnyHeader()
                             .AllowCredentials();
