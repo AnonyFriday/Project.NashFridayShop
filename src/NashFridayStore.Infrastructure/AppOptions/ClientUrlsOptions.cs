@@ -7,5 +7,5 @@ public sealed record ClientUrlsOption
     public const string ClientUrls = "ClientUrls";
 
     [Required]
-    public string[] AdminSites { get; init; } = [];
+    public string[] AdminUrls { get; init; } = [];
 }

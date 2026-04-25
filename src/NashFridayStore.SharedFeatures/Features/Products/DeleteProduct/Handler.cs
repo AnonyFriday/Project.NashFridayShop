@@ -29,7 +29,7 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
         // Perform soft delete
         product.IsDeleted = true;
         product.DeletedAtUtc = DateTime.UtcNow;
-      
+
         dbContext.Products.Update(product);
         await dbContext.SaveChangesAsync(ct);
 

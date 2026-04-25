@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace NashFridayStore.Infrastructure.AppOptions;
+namespace NashFridayStore.IdentityServer.AppOptions;
 
 public sealed record ConnectionStringsOptions
 {
@@ -8,10 +8,4 @@ public sealed record ConnectionStringsOptions
 
     [Required]
     public string Database { get; init; } = string.Empty;
-
-    [Required]
-    public string Caching { get; init; } = string.Empty;
-
-    [Required]
-    public string DatabaseTesting { get; set; } = string.Empty;
 }
