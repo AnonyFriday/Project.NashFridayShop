@@ -1,0 +1,9 @@
+ignore:
+  - "**/Migrations/*.cs"
+  - "**/Extensions/*.cs"
+  - "**/*DbContextModelSnapshot.cs"
+  - "**/*.Designer.cs"
+  - "**/StoreDbContext.cs"
+  - "**/StoreDbContextSeeder.cs"
+  - "**/IdentityServerDbContext.cs"
+  - "**/IdentityServerDbContextSeeder.cs"
