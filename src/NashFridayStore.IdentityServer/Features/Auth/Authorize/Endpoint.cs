@@ -14,7 +14,7 @@ public class Endpoint(
 ) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetAsync()
+    public async Task<IActionResult> Authorize()
     {
         if (User == null || User.Identity == null || !User.Identity.IsAuthenticated)
         {
