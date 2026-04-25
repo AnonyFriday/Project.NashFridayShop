@@ -1,5 +1,3 @@
-using System.Reflection;
-using FluentValidation;
 using Microsoft.Extensions.Options;
 using NashFridayStore.API.ExceptionHandlers;
 using NashFridayStore.Domain.Commons;

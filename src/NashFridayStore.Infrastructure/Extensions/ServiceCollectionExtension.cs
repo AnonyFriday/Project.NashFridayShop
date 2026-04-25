@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 
 namespace NashFridayStore.Infrastructure.Extensions;
 
-public static class ServiceCollectionsExtension
+public static class ServiceCollectionExtension
 {
     public static void AddInfrastructureServices(
         this IServiceCollection services,

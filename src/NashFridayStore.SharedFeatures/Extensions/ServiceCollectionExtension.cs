@@ -12,10 +12,10 @@ public static class ServiceCollectionExtension
         serviceCollection.AddValidatorsFromAssembly(typeof(ServiceCollectionExtension).Assembly);
 
         // All Handlers
-        RegisterAllApiHandlers(serviceCollection);
+        RegisterAllFeatureHandlers(serviceCollection);
     }
 
-    private static void RegisterAllApiHandlers(IServiceCollection serviceCollection)
+    private static void RegisterAllFeatureHandlers(IServiceCollection serviceCollection)
     {
         Assembly assembly = typeof(ServiceCollectionExtension).Assembly;
 
