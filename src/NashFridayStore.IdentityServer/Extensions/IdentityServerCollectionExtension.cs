@@ -37,8 +37,8 @@ public static class IdentityServerCollectionExtension
 
         // Identity
         services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
-        .AddEntityFrameworkStores<IdentityServerDbContext>()
-        .AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<IdentityServerDbContext>()
+                .AddDefaultTokenProviders();
 
         // Configure Cookies for Authentication
         services.ConfigureApplicationCookie(otp =>

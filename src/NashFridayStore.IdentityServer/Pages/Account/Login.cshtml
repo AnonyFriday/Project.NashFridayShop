@@ -1,0 +1,48 @@
+@page
+@model NashFridayStore.IdentityServer.Pages.Account.Login
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="post">
+    @Html.AntiForgeryToken()
+    
+    <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+
+    <div>
+        <label asp-for="Input.Email">Email</label>
+        <input asp-for="Input.Email" />
+        <span asp-validation-for="Input.Email"></span>
+    </div>
+
+    <div>
+        <label asp-for="Input.Password">Password</label>
+        <input asp-for="Input.Password" type="password" />
+        <span asp-validation-for="Input.Password"></span>
+    </div>
+
+    <div>
+        <label asp-for="Input.RememberMe">Remember Me</label>
+        <input asp-for="Input.RememberMe" type="checkbox" />
+    </div>
+
+    <button type="submit">
+        Login
+    </button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <p style="color:red">
+        @Model.ErrorMessage
+    </p>
+}
+
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <p style="color:green">
+        @Model.SuccessMessage
+    </p>
+}
