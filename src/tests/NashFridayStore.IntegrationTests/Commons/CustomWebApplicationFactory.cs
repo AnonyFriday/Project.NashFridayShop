@@ -21,7 +21,7 @@ namespace NashFridayStore.IntegrationTests.Commons;
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
     // Create the JsonStringEnumConverter to serialize enum values as string
-    public static readonly JsonSerializerOptions DefaultJsonOptions = new()
+    public static readonly JsonSerializerOptions DefaultJsonOptions = new(JsonSerializerDefaults.Web)
     {
         Converters = { new JsonStringEnumConverter() }
     };
