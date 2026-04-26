@@ -1,5 +1,6 @@
 using System.Net;
 using System.Security.Claims;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NashFridayStore.IdentityServer.Domain;
@@ -30,50 +31,91 @@ public class Endpoint(
             return Unauthorized();
         }
 
-        // Build Claims
+        // Original request from Server
+        OpenIddictRequest? request = HttpContext.GetOpenIddictServerRequest();
+
+        if (request is null)
+        {
+            return BadRequest("OIDC request not found");
+        }
+
         var identity = new ClaimsIdentity(
             OpenIddictServerAspNetCoreDefaults.AuthenticationScheme
         );
 
+        // Build Claims
+        // Claim is a must to have 
         identity.AddClaims([
             // if dont include, the openiddict raise error
             new Claim(OpenIddictConstants.Claims.Subject, user.Id.ToString())
                 .SetDestinations([
                     OpenIddictConstants.Destinations.AccessToken,
                     OpenIddictConstants.Destinations.IdentityToken
-                    ]),
-
-            new Claim(OpenIddictConstants.Claims.Email, user.Email ?? string.Empty)
-                .SetDestinations(OpenIddictConstants.Destinations.IdentityToken),
-
-            new Claim(OpenIddictConstants.Claims.Username, user.UserName ?? string.Empty)
-                .SetDestinations(OpenIddictConstants.Destinations.IdentityToken),
-
-            // If include lieral string then raise error 
-            // new Claim(OpenIddictConstants.Claims.Address, user.Address ?? string.Empty)
-            new Claim(OpenIddictConstants.Claims.PhoneNumber, user.PhoneNumber ?? string.Empty)
-                .SetDestinations(OpenIddictConstants.Destinations.IdentityToken),
+                    ])
         ]);
 
-        IList<string> userRoles = await userManager.GetRolesAsync(user);
-        foreach (string role in userRoles)
+        // If BFF requires scope Email
+        if (request.HasScope(
+            OpenIddictConstants.Scopes.Email))
         {
             identity.AddClaim(
-                new Claim(OpenIddictConstants.Claims.Role, role)
-                .SetDestinations([
-                    OpenIddictConstants.Destinations.AccessToken,
+                new Claim(
+                    OpenIddictConstants.Claims.Email,
+                    user.Email ?? string.Empty
+                )
+                .SetDestinations(
                     OpenIddictConstants.Destinations.IdentityToken
-                ])
+                )
             );
         }
 
+        // If BFF requires scope Profile
+        if (request.HasScope(
+           OpenIddictConstants.Scopes.Profile))
+        {
+            identity.AddClaim(
+                new Claim(
+                    OpenIddictConstants.Claims.Username,
+                    user.UserName ?? string.Empty
+                )
+                .SetDestinations(
+                    OpenIddictConstants.Destinations.IdentityToken
+                )
+            );
+
+            identity.AddClaim(
+                new Claim(
+                    OpenIddictConstants.Claims.PhoneNumber,
+                    user.PhoneNumber ?? string.Empty
+                )
+                .SetDestinations(
+                    OpenIddictConstants.Destinations.IdentityToken
+                )
+            );
+        }
+
+        // If BFF requires scope api
+        if (request.HasScope("api"))
+        {
+            IList<string> roles =
+                await userManager.GetRolesAsync(user);
+
+            foreach (string role in roles)
+            {
+                identity.AddClaim(
+                    new Claim(
+                        OpenIddictConstants.Claims.Role,
+                        role
+                    )
+                    .SetDestinations(
+                        OpenIddictConstants.Destinations.AccessToken
+                    )
+                );
+            }
+        }
+
         var principal = new ClaimsPrincipal(identity);
-        principal.SetScopes(
-            OpenIddictConstants.Scopes.OpenId,
-            OpenIddictConstants.Scopes.Email,
-            OpenIddictConstants.Scopes.Profile,
-            "api"
-        );
+        principal.SetScopes(request.GetScopes());
 
         // OpenIddict will issue a token
         return SignIn(principal, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
