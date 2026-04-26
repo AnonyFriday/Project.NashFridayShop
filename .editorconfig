@@ -8,6 +8,7 @@ dotnet_diagnostic.S101.severity = none
 
 # C# files
 [*.cs]
+dotnet_diagnostic.S6964.severity = none
 
 #### Core EditorConfig Options ####
 
