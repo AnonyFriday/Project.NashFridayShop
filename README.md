@@ -102,15 +102,14 @@
 
 ```
 src/
-├── NashFridayStore.API/            # Endpoints
-├── NashFridayStore.Domain/         # Domain entities
-├── NashFridayStore.Infrastructure/ # Data access, configurations, migrations
-├── NashFridayStore.SharedFeatures/ # Business logic handlers, validators, requests/responses
-├── NashFridayStore.BFF/            # Backend for Frontend service
-├── NashFridayStore.IdentityServer/ # Auth, Authz service
-├── NashFridayStore.StoreFront/     # Frontend Customer-site
-├── admin-site/                     # Frontend Admin-site
-└── tests/                          # Unit and integration tests
+├── NashFridayStore.API/                  # Endpoints, Business logic handlers, validators, requests/responses
+├── NashFridayStore.Domain/           # Domain entities
+├── NashFridayStore.Infrastructure/  # Data access, configurations, migrations
+├── NashFridayStore.BFF/                 # Backend for Frontend service
+├── NashFridayStore.IdentityServer/  # Auth, Authz service
+├── NashFridayStore.StoreFront/       # Frontend Customer-site
+├── admin-site/                                   # Frontend Admin-site
+└── tests/                                             # Unit and integration tests
 ```
 
 ## Vertical Slice Architecture Explanation
