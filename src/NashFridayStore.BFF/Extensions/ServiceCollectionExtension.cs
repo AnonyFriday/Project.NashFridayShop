@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.Options;
@@ -24,7 +25,7 @@ public static class ServiceCollectionExtension
             otp.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             otp.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
         })
-        .AddCookie(otp =>
+        .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, otp =>
         {
             otp.Cookie.Name = "NashFridayStore.BFF.Session";
             otp.Cookie.HttpOnly = true;
@@ -32,9 +33,6 @@ public static class ServiceCollectionExtension
             otp.Cookie.SecurePolicy = CookieSecurePolicy.Always;
         })
         .AddOpenIdConnect();
-
-        // Add Authorization
-        services.AddAuthorization();
 
         // Configure OpenIdConnect with options
         services
@@ -49,23 +47,47 @@ public static class ServiceCollectionExtension
                 opt.CallbackPath = identityServerOpts.SignInCallbackPath;
                 opt.SignedOutCallbackPath = identityServerOpts.SignOutCallbackPath;
                 opt.ResponseType = OpenIdConnectResponseType.Code;
+                opt.SaveTokens = true;
                 opt.UsePkce = true;
                 opt.RequireHttpsMetadata = false; // disable for development only
 
                 opt.Scope.Add(OpenIdConnectScope.OpenId);
                 opt.Scope.Add(OpenIdConnectScope.Profile);
                 opt.Scope.Add(OpenIdConnectScope.Email);
+                opt.Scope.Add(OpenIdConnectScope.OfflineAccess);
                 opt.Scope.Add(identityServerOpts.ApiScope);
-            });
 
 #pragma warning disable S125 // Sections of code should not be commented out
-        // opt.SaveTokens();
-        // otp.Scope.Clear();
-        // otp.Scope.Add(identityServiceOptions.Roles);
-        // otp.Scope.Add(OpenIdConnectScope.OfflineAccess);
+                // otp.Scope.Clear();
+                // otp.Scope.Add(identityServiceOptions.Roles);
 #pragma warning restore S125 // Sections of code should not be commented out
+
+            });
+
+        // Add Authorization
+        services.AddAuthorization();
 
         // Add Controllers
         services.AddControllers();
+
+        // Add HttpContext
+        services.AddHttpContextAccessor();
+
+        // Register Handlers
+        RegisterAllFeatureHandlers(services);
+    }
+
+    private static void RegisterAllFeatureHandlers(IServiceCollection services)
+    {
+        Assembly assembly = typeof(ServiceCollectionExtension).Assembly;
+
+        IEnumerable<Type> handlers = assembly
+            .GetTypes()
+            .Where(t => t.Name == "Handler" && t.IsClass && !t.IsInterface && !t.IsAbstract);
+
+        foreach (Type handler in handlers)
+        {
+            services.AddScoped(handler);
+        }
     }
 }
