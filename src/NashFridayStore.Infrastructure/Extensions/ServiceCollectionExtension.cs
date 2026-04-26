@@ -18,8 +18,8 @@ public static class ServiceCollectionExtension
             .Bind(configuration.GetSection(ConnectionStringsOptions.ConnectionStrings))
             .ValidateOnStart();
 
-        services.AddOptions<ClientUrlsOption>()
-            .Bind(configuration.GetSection(ClientUrlsOption.ClientUrls))
+        services.AddOptions<SiteUrlsOption>()
+            .Bind(configuration.GetSection(SiteUrlsOption.SiteUrls))
             .ValidateOnStart();
 
         // DbContext + SQL Server + Seeder

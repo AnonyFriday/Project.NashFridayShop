@@ -1,6 +1,6 @@
 using FluentValidation.Results;
 using FluentValidation.TestHelper;
-using NashFridayStore.SharedFeatures.Features.Products.DeleteProduct;
+using NashFridayStore.API.Features.Products.DeleteProduct;
 
 namespace NashFridayStore.UnitTests.Features.Products;
 

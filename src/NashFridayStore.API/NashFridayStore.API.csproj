@@ -6,10 +6,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
   </ItemGroup>
-
+ 
   <ItemGroup>
-    <ProjectReference Include="..\NashFridayStore.SharedFeatures\NashFridayStore.SharedFeatures.csproj" />
+    <ProjectReference Include="..\NashFridayStore.Infrastructure\NashFridayStore.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

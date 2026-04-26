@@ -2,12 +2,12 @@ using System.Net;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using NashFridayStore.SharedFeatures.Features.Products.UpdateProduct;
 using NashFridayStore.Domain.Entities;
 using NashFridayStore.Domain.Entities.Products;
 using NashFridayStore.Infrastructure.Builders;
 using NashFridayStore.Infrastructure.Data;
 using NashFridayStore.IntegrationTests.Commons;
+using NashFridayStore.API.Features.Products.UpdateProduct;
 
 namespace NashFridayStore.IntegrationTests.Features.Products;
 
@@ -47,7 +47,7 @@ public class UpdateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         var productIdNotExists = Guid.NewGuid();
-        var body = new UpdateProductRequest(
+        var body = new RequestBody(
             category.Id,
             "Updated Name",
             "Updated Description",
@@ -58,7 +58,7 @@ public class UpdateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         // Act
         HttpResponseMessage response = await _client.PutAsJsonAsync(
-            $"/api/admin/products/{productIdNotExists}", body, cancellationToken);
+            $"/api/products/{productIdNotExists}", body, cancellationToken);
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -85,7 +85,7 @@ public class UpdateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         var categoryIdNotExists = Guid.NewGuid();
-        var body = new UpdateProductRequest(
+        var body = new RequestBody(
             categoryIdNotExists,
             "Updated Name",
             "Updated Description",
@@ -96,7 +96,7 @@ public class UpdateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         // Act
         HttpResponseMessage response = await _client.PutAsJsonAsync(
-            $"/api/admin/products/{product.Id}", body, cancellationToken);
+            $"/api/products/{product.Id}", body, cancellationToken);
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -119,7 +119,7 @@ public class UpdateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
         _dbContext.Products.Add(product);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        var body = new UpdateProductRequest(
+        var body = new RequestBody(
             category.Id,
             string.Empty,
             "Updated Description",
@@ -130,7 +130,7 @@ public class UpdateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         // Act
         HttpResponseMessage response = await _client.PutAsJsonAsync(
-            $"/api/admin/products/{product.Id}", body, cancellationToken);
+            $"/api/products/{product.Id}", body, cancellationToken);
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -151,7 +151,7 @@ public class UpdateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
         _dbContext.Products.Add(product);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        var body = new UpdateProductRequest(
+        var body = new RequestBody(
             category.Id,
             "Updated Name",
             "Updated Description",
@@ -162,7 +162,7 @@ public class UpdateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         // Act
         HttpResponseMessage response = await _client.PutAsJsonAsync(
-            $"/api/admin/products/{product.Id}", body, cancellationToken);
+            $"/api/products/{product.Id}", body, cancellationToken);
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -186,7 +186,7 @@ public class UpdateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
         _dbContext.Products.Add(product);
         await _dbContext.SaveChangesAsync(ct);
 
-        var body = new UpdateProductRequest(
+        var body = new RequestBody(
             category.Id,
             "Updated Name",
             "Updated Description",
@@ -197,7 +197,7 @@ public class UpdateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         // Act
         HttpResponseMessage response = await _client.PutAsJsonAsync(
-            $"/api/admin/products/{product.Id}", body, ct);
+            $"/api/products/{product.Id}", body, ct);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -230,7 +230,7 @@ public class UpdateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         DateTime? originalUpdatedAt = product.UpdatedAtUtc;
 
-        var body = new UpdateProductRequest(
+        var body = new RequestBody(
             category.Id,
             "Updated Name",
             "Updated Description",
@@ -241,7 +241,7 @@ public class UpdateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         // Act
         HttpResponseMessage response = await _client.PutAsJsonAsync(
-            $"/api/admin/products/{product.Id}", body, ct);
+            $"/api/products/{product.Id}", body, ct);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -267,7 +267,7 @@ public class UpdateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
         _dbContext.Products.Add(product);
         await _dbContext.SaveChangesAsync(ct);
 
-        var body = new UpdateProductRequest(
+        var body = new RequestBody(
             category.Id,
             "Updated Name",
             "Updated Description",
@@ -278,7 +278,7 @@ public class UpdateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         // Act
         HttpResponseMessage response = await _client.PutAsJsonAsync(
-            $"/api/admin/products/{product.Id}", body, ct);
+            $"/api/products/{product.Id}", body, ct);
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -286,11 +286,4 @@ public class UpdateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
     #endregion
 }
 
-public sealed record UpdateProductRequest(
-    Guid CategoryId,
-    string Name,
-    string Description,
-    decimal PriceUsd,
-    string ImageUrl,
-    int Quantity,
-    ProductStatus Status);
+

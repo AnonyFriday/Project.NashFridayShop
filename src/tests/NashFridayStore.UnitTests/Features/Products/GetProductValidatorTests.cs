@@ -1,6 +1,6 @@
 using FluentValidation.Results;
 using FluentValidation.TestHelper;
-using NashFridayStore.SharedFeatures.Features.Products.GetProduct;
+using NashFridayStore.API.Features.Products.GetProduct;
 
 namespace NashFridayStore.UnitTests.Features.Products;
 

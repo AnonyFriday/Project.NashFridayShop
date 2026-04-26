@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="FluentValidation" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="xunit.v3" />
     <PackageReference Include="xunit.runner.visualstudio" />
@@ -17,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\NashFridayStore.SharedFeatures\NashFridayStore.SharedFeatures.csproj" />
+    <ProjectReference Include="..\..\NashFridayStore.API\NashFridayStore.API.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="../../NashFridayStore.API/NashFridayStore.API.csproj" />
-    <ProjectReference Include="../../NashFridayStore.SharedFeatures/NashFridayStore.SharedFeatures.csproj" />
   </ItemGroup>
 
   <ItemGroup>

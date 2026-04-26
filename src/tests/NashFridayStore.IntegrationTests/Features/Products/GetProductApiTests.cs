@@ -1,11 +1,11 @@
 using System.Net.Http.Json;
 using Microsoft.Extensions.DependencyInjection;
-using NashFridayStore.SharedFeatures.Features.Products.GetProduct;
 using NashFridayStore.Domain.Entities;
 using NashFridayStore.Domain.Entities.Products;
 using NashFridayStore.Infrastructure.Builders;
 using NashFridayStore.Infrastructure.Data;
 using NashFridayStore.IntegrationTests.Commons;
+using NashFridayStore.API.Features.Products.GetProduct;
 
 namespace NashFridayStore.IntegrationTests.Features.Products;
 
@@ -48,7 +48,7 @@ public class GetProductApiTests : IClassFixture<CustomWebApplicationFactory>, ID
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         // Act
-        HttpResponseMessage response = await _client.GetAsync($"/api/admin/products/{product.Id}", cancellationToken);
+        HttpResponseMessage response = await _client.GetAsync($"/api/products/{product.Id}", cancellationToken);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -87,7 +87,7 @@ public class GetProductApiTests : IClassFixture<CustomWebApplicationFactory>, ID
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         // Act
-        HttpResponseMessage response = await _client.GetAsync($"/api/admin/products/{product.Id}", cancellationToken);
+        HttpResponseMessage response = await _client.GetAsync($"/api/products/{product.Id}", cancellationToken);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -123,7 +123,7 @@ public class GetProductApiTests : IClassFixture<CustomWebApplicationFactory>, ID
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         // Act
-        HttpResponseMessage response = await _client.GetAsync($"/api/admin/products/{product.Id}", cancellationToken);
+        HttpResponseMessage response = await _client.GetAsync($"/api/products/{product.Id}", cancellationToken);
 
         // Assert
         response.EnsureSuccessStatusCode();

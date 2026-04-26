@@ -6,39 +6,39 @@
 
 - **🔧 Backend**: .NET 10 (ASP.NET Core Web Api, Entity Framework Core, FluentValidation)
 - **🌐 Frontend**: Next.js (Admin Site), ASP.NET Razor Pages (StoreFront)
-- **🧩 BFF**: Backend for Frontend service
-- **🔐 Identity**: `(Updating)`
+- **🧩 BFF**: OIDC client, YARP Reverse Proxy, Cookie-based authentication
+- **🔐 Identity**: OpenIddict, Authorization Code Flow + PKCE
 - **🗄️ Database**: SQL Server
 - **🏗️ Architecture**: Vertical Slice Architecture
 - **🧪 Testing**: xUnit, Coverlet
-- **🛠️ Tooling**: `Directory.Packages.props`, `Directory.Build.props`, `docker-compose.yaml`
-- **🎪 Payment**: `Stripe`
-- **🛒 Cart**: `Redis`
+- **🛠️ Tooling**: Directory.Packages.props, Directory.Build.props, docker-compose.yaml
+- **🎪 Payment**: Stripe
+- **🛒 Cart**: Redis
 
 ## Current Supporting APIs
 
-| Layer           | Endpoint                     | Method | Description                                         | Status             | Tests     |
-| --------------- | ---------------------------- | ------ | --------------------------------------------------- | ------------------ | --------- |
-| API             | `/api/categories`            | GET    | Category menu / list categories                     | ✅ Completed       | ✅ UT, IT |
-| API             | `/api/categories/{id}`       | GET    | Category details                                    | ✅ Completed       | ✅ UT, IT |
-| API             | `/api/products`              | GET    | Product listing, filters, pagination                | ✅ Completed       | ✅ UT, IT |
-| API             | `/api/products/{id}`         | GET    | Product details                                     | ✅ Completed       | ✅ UT, IT |
-| API             | `/api/products`              | POST   | Create product                                      | ✅ Completed       | ✅ UT, IT |
-| API             | `/api/products/{id}`         | PUT    | Update product                                      | ✅ Completed       | ✅ UT, IT |
-| API             | `/api/products/{id}`         | DELETE | Soft delete product                                 | ✅ Completed       | ✅ UT, IT |
-| API             | `/api/products/{id}/ratings` | GET    | Product ratings list                                | ✅ Completed       | ✅ UT, IT |
-| API             | `/api/products/{id}/rating`  | POST   | Add rating/comment                                  | ✅ Completed       | ✅ UT, IT |
-| API             | `/api/orders`                | GET    | Order listing                                       | ❌ Not implemented | ❌ None   |
-| API             | `/api/customers`             | GET    | Customer listing                                    | ❌ Not implemented | ❌ None   |
-| API             | `/api/customers/{id}`        | DELETE | Disable customer                                    | ❌ Not implemented | ❌ None   |
-| Identity Server | `/connect/authorize`         | GET    | Start authorization code flow                       | ✅ Completed       | ❌ None   |
-| Identity Server | `/connect/token`             | POST   | Exchange auth code → tokens                         | ✅ Completed       | ❌ None   |
-| Identity Server | `/connect/logout`            | POST   | Identity logout flow                                | ❌ Not implemented | ❌ None   |
-| BFF             | `/login`                     | GET    | Start login from React → redirect to IdentityServer | ❌ Not implemented | ❌ None   |
-| BFF             | `/signin-oidc`               | GET    | OIDC callback endpoint (middleware handled)         | ❌ Not implemented | ❌ None   |
-| BFF             | `/logout`                    | POST   | Logout BFF session + Identity session               | ❌ Not implemented | ❌ None   |
-| BFF             | `/me`                        | GET    | Return current logged-in user info to React         | ❌ Not implemented | ❌ None   |
-| BFF             | `/api/{**catch-all}`         | ALL    | Reverse proxy React requests → API                  | ❌ Not implemented | ❌ None   |
+| Layer           | Endpoint                     | Method | Description                                         | Status                | Tests     |
+| --------------- | ---------------------------- | ------ | --------------------------------------------------- | --------------------- | --------- |
+| API             | `/api/categories`            | GET    | Category menu / list categories                     | ✅ Completed          | ✅ UT, IT |
+| API             | `/api/categories/{id}`       | GET    | Category details                                    | ✅ Completed          | ✅ UT, IT |
+| API             | `/api/products`              | GET    | Product listing, filters, pagination                | ✅ Completed          | ✅ UT, IT |
+| API             | `/api/products/{id}`         | GET    | Product details                                     | ✅ Completed          | ✅ UT, IT |
+| API             | `/api/products`              | POST   | Create product                                      | ✅ Completed          | ✅ UT, IT |
+| API             | `/api/products/{id}`         | PUT    | Update product                                      | ✅ Completed          | ✅ UT, IT |
+| API             | `/api/products/{id}`         | DELETE | Soft delete product                                 | ✅ Completed          | ✅ UT, IT |
+| API             | `/api/products/{id}/ratings` | GET    | Product ratings list                                | ✅ Completed          | ✅ UT, IT |
+| API             | `/api/products/{id}/rating`  | POST   | Add rating/comment                                  | ✅ Completed          | ✅ UT, IT |
+| API             | `/api/orders`                | GET    | Order listing                                       | ❌ Not implemented    | ❌ None   |
+| API             | `/api/customers`             | GET    | Customer listing                                    | ❌ Not implemented    | ❌ None   |
+| API             | `/api/customers/{id}`        | DELETE | Disable customer                                    | ❌ Not implemented    | ❌ None   |
+| Identity Server | `/connect/authorize`         | GET    | Start authorization code flow                       | ✅ Completed          | ❌ None   |
+| Identity Server | `/connect/token`             | POST   | Exchange auth code → tokens                         | ✅ Completed          | ❌ None   |
+| Identity Server | `/connect/logout`            | POST   | Identity logout flow                                | ✅ Completed          | ❌ None   |
+| BFF             | `/api/auth/login`            | GET    | Start login from React → redirect to IdentityServer | ✅ Completed          | ❌ None   |
+| BFF             | `/apit/auth/logout`          | POST   | Logout BFF session + Identity session               | ✅ Completed          | ❌ None   |
+| BFF             | `/signin-oidc`               | GET    | OIDC callback endpoint (middleware handled)         | ✅ Middleware handled | ❌ None   |
+| BFF             | `/dev/auth/tokens`           | GET    | Return access_token, id_token, refresh_token (dev)  | ✅ Completed          | ❌ None   |
+| BFF             | `/api/{**catch-all}`         | ALL    | Reverse proxy React requests → API                  | ❌ Not implemented    | ❌ None   |
 
 ## Current Supporting Pages For Identity Server
 
@@ -53,60 +53,68 @@
 
 ![ERD Diagram](./images/erd_v1_no_identity.png)
 
-## Week 1 Summary
+## Week 1-2 Summary
 
-### Setup FE + BE Source Code
+### Project Foundation & Environment
 
-- 3rd Softwares: fork, Postman, VSCode, Docker Desktop, SSMT,
-- Dev environment: `secrets`, `appsettings.Development.json`, `IOptions`
-- Coding convention: `.editorconfig`
-- Central package management: `Directory.Packages.props`
-- Central project setting: `Directory.Build.props`
-- Code analysis: `SonarAnalyzer`
-- DbContext setup, Migrations and seed data preparation: `Product`, `Category`, `ProductRating`
-- CORS configuration
+- Development tooling setup:
+  - Fork
+  - Postman
+  - VS Code
+  - Docker Desktop
+  - SSMS
+- Environment configuration:
+  - `User Secrets`
+  - `appsettings.Development.json`
+  - `IOptions`
+
+### Testing Infrastructure
+
+- `xUnit`
+- `SQLite In-Memory`
+- `WebApplicationFactory`
 - Code coverage setup
-- HTTPS support: `dotnet dev-certs`, `Next.js dev cert`
-- API Documentation tool: `Scalar`
-- Testing stack: `xUnit`, `SQLite In-Memory`, `WebApplicationFactory`
-- Exception handler: API exception, validation exception, general exception handler
-- API versioning
-- Razor Pages store front scaffold
-- BFF service scaffold
-- Identity Server scaffold
-- Next.js admin site scaffold
+
+### 🌐 Frontend & Services
+
+- Next.js Admin Site scaffold
+- Razor Pages StoreFront scaffold
+- BFF Project
+- Identity Server project + seperate Database
+
+### Authentication & Authorization
+
+- Authorization Code Flow + PKCE
+- Access Token
+- ID Token
+- Refresh Token
+- Scope-based claim issuance
+- Cookie-based BFF session
 
 ### CI/CD and Services
 
-- CI: Next.JS CI
-- CI: .NET Projects CI
-- CD: (later)
+- Next.JS CI Pipeline
+- .NET CI pipeline
+- CD Pipeline (later)
 - Docker Compose for images: Redis, SQL Server, Redis Insight
-
-### Research
-
-- Identity Server research
-- BFF research
-- Vertical Slice Architecture research
 
 ## Project Structure
 
 ```
 src/
-├── NashFridayStore.API/            # Endpoints
-├── NashFridayStore.Domain/         # Domain entities
-├── NashFridayStore.Infrastructure/ # Data access, configurations, migrations
-├── NashFridayStore.SharedFeatures/ # Business logic handlers, validators, requests/responses
-├── NashFridayStore.BFF/            # Backend for Frontend service
-├── NashFridayStore.IdentityServer/ # Auth, Authz service
-├── NashFridayStore.StoreFront/     # Frontend Customer-site
-├── admin-site/                     # Frontend Admin-site
-└── tests/                          # Unit and integration tests
+├── NashFridayStore.API/              # Endpoints, Business logic handlers, validators, requests/responses
+├── NashFridayStore.Domain/           # Domain entities
+├── NashFridayStore.Infrastructure/   # Data access, configurations, migrations
+├── NashFridayStore.BFF/              # Backend for Frontend service
+├── NashFridayStore.IdentityServer/   # Auth, Authz service
+├── NashFridayStore.StoreFront/       # Frontend Customer-site
+├── admin-site/                       # Frontend Admin-site
+└── tests/                            # Unit and integration tests
 ```
 
 ## Vertical Slice Architecture Explanation
 
-Each feature is organized in its own "slice" within the **SharedFeatures** project with all related business logic together:
+Each feature is organized in its own "slice" within the **API** project with all related business logic together:
 
 - **Request**: Request contract object
 - **Response**: Response contract returned by the handler
@@ -114,9 +122,7 @@ Each feature is organized in its own "slice" within the **SharedFeatures** proje
 - **Validator**: FluentValidation rules for requests
 - **Exceptions**: Custom exceptions for the feature
 
-The **API** project contains thin endpoint controllers that only route requests to handlers.
-
-Example from `src/NashFridayStore.SharedFeatures/Features/Products/GetProduct/`:
+Example from `src/NashFridayStore.API/Features/Products/GetProduct/`:
 
 **Request.cs**:
 
@@ -197,10 +203,10 @@ internal static class Exceptions
 }
 ```
 
-**API Endpoint** (from `src/NashFridayStore.API/Endpoints/Products/GetProductEndpoint.cs`):
+Endpoint.cs
 
 ```csharp
-using NashFridayStore.SharedFeatures.Features.Products.GetProduct;
+using NashFridayStore.API.Features.Products.GetProduct;
 
 [ApiController]
 [Route("api/products/{id:guid}")]
@@ -274,6 +280,30 @@ This keeps features isolated, testable, and easy to maintain. The separation bet
 - ProblemDetails / API error handling: https://medium.com/@aseem2372005/handling-api-errors-the-right-way-understanding-problemdetails-in-asp-net-core-web-api-e3f7d404672c
 - HTTP error type reference: https://datatracker.ietf.org/doc/html/rfc7231#section-6.6.1
 - Content type RFC: https://datatracker.ietf.org/doc/html/rfc7807
+
+### Backend For Frontend (BFF)
+
+- Auth0 BFF guide: https://auth0.com/blog/the-backend-for-frontend-pattern-bff/
+- BFF explanation video: https://www.youtube.com/watch?v=hWJuX-8Ur2k
+
+### Identity Server
+
+- Duende docs: https://docs.duendesoftware.com/
+- IdentityServer docs: https://docs.duendesoftware.com/identityserver/
+- IdentityServer overview: https://docs.duendesoftware.com/identityserver/overview/big-picture/
+
+### OpenIddict
+
+- OpenIddict guide: https://dev.to/naeemsahil/implementing-openid-connect-with-openiddict-4fmp
+- Client credentials flow: https://dev.to/robinvanderknaap/setting-up-an-authorization-server-with-openiddict-part-iii-client-credentials-flow-55lp
+- PAR configuration: https://documentation.openiddict.com/configuration/pushed-authorization-requests#allowing-client-applications-to-use-the-pushed-authorization-endpoint
+
+### OAuth2 / OpenID Connect
+
+- OAuth2 + OIDC video: https://www.youtube.com/watch?v=uUxD1uF244E
+- OAuth2 article: https://viblo.asia/p/tim-hieu-doi-chut-ve-oauth2-eW65GvMLlDO
+- OAuth2 RFC: https://datatracker.ietf.org/doc/html/rfc6749#section-1.1
+- Required OIDC claims: https://openid.net/specs/openid-connect-core-1_0.html#IDToken
 
 ### Architecture & Testing
 

@@ -1,7 +1,7 @@
 using FluentValidation.Results;
 using FluentValidation.TestHelper;
+using NashFridayStore.API.Features.Products.UpdateProduct;
 using NashFridayStore.Domain.Entities.Products;
-using NashFridayStore.SharedFeatures.Features.Products.UpdateProduct;
 
 namespace NashFridayStore.UnitTests.Features.Products;
 
