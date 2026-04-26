@@ -1,3 +1,4 @@
+using System.Net;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,8 @@ public class Endpoint(
         if (User == null || User.Identity == null || !User.Identity.IsAuthenticated)
         {
             string returnUrl = Request.Path + Request.QueryString;
-            return Redirect($"/Account/Login?returnUrl={returnUrl}");
+            string encondedReturnUrl = WebUtility.UrlEncode(returnUrl);
+            return Redirect($"/Account/Login?returnUrl={encondedReturnUrl}");
         }
 
         ApplicationUser? user = await userManager.GetUserAsync(User);

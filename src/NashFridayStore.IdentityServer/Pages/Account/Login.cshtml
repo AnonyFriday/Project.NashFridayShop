@@ -9,7 +9,7 @@
 <form method="post">
     @Html.AntiForgeryToken()
     
-    <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+    <input asp-for="@Model.ReturnUrl" type="hidden" />
 
     <div>
         <label asp-for="Input.Email">Email</label>
@@ -37,12 +37,5 @@
 {
     <p style="color:red">
         @Model.ErrorMessage
-    </p>
-}
-
-@if (!string.IsNullOrEmpty(Model.SuccessMessage))
-{
-    <p style="color:green">
-        @Model.SuccessMessage
     </p>
 }

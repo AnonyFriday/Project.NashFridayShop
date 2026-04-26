@@ -18,11 +18,9 @@ public class Login(
         public bool RememberMe { get; set; }
     }
 
-    [BindProperty]
-    public RequestBodyFormInput Input { get; set; } = new();
-    public string? ReturnUrl { get; set; }
+    [BindProperty] public RequestBodyFormInput Input { get; set; } = new();
+    [BindProperty] public string? ReturnUrl { get; set; }
     public string? ErrorMessage { get; set; }
-    public string? SuccessMessage { get; set; }
 
     // GET
     public void OnGet(string? returnUrl = null)
@@ -48,7 +46,7 @@ public class Login(
 
         if (Url.IsLocalUrl(returnUrl))
         {
-            SuccessMessage = $"User {Input.Email} logged in successfully";
+            // avoid https://your-bff.com/login?returnUrl=https://hacker-site.com
             return LocalRedirect(returnUrl);
         }
         else
