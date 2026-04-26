@@ -6,7 +6,7 @@ public sealed record SiteUrlsOption
 {
     public const string SiteUrls = "SiteUrls";
 
-    public IdentityServerOptions IdentityServerOptions { get; init; } = new();
+    public IdentityServerOptions IdentityServer { get; init; } = new();
 }
 
 public sealed record IdentityServerOptions
@@ -24,11 +24,11 @@ public sealed record IdentityServerOptions
     public string SignInCallbackPath { get; set; } = string.Empty;
 
     [Required]
-    public string SignInCallbackUrl { get; set; } = string.Empty;
-
-    [Required]
     public string SignOutCallbackPath { get; set; } = string.Empty;
 
     [Required]
-    public string SignOutCallbackUrl { get; set; } = string.Empty;
+    public string ApiScope { get; set; } = string.Empty;
+
+    [Required]
+    public string RolesScope { get; set; } = string.Empty;
 }

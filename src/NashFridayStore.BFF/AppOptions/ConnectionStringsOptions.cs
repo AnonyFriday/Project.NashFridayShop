@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace NashFridayStore.IdentityServer.AppOptions;
+namespace NashFridayStore.BFF.AppOptions;
 
 public sealed record ConnectionStringsOptions
 {

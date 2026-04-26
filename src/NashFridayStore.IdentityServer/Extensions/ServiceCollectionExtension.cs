@@ -10,7 +10,7 @@ using OpenIddict.Abstractions;
 
 namespace NashFridayStore.IdentityServer.Extensions;
 
-public static class IdentityServerCollectionExtension
+public static class ServiceCollectionExtension
 {
     public static void AddServices(this IServiceCollection services, IConfiguration configuration)
     {
@@ -96,7 +96,7 @@ public static class IdentityServerCollectionExtension
         services.AddControllers();
 
         // Fluent Validation
-        services.AddValidatorsFromAssembly(typeof(IdentityServerCollectionExtension).Assembly);
+        services.AddValidatorsFromAssembly(typeof(ServiceCollectionExtension).Assembly);
 
         // Add all handlers
         RegisterAllFeatureHandlers(services);
@@ -104,7 +104,7 @@ public static class IdentityServerCollectionExtension
 
     private static void RegisterAllFeatureHandlers(IServiceCollection serviceCollection)
     {
-        Assembly assembly = typeof(IdentityServerCollectionExtension).Assembly;
+        Assembly assembly = typeof(ServiceCollectionExtension).Assembly;
 
         IEnumerable<Type> handlers = assembly
             .GetTypes()
