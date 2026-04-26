@@ -50,7 +50,7 @@ public class PostProductRatingApiTests : IClassFixture<CustomWebApplicationFacto
             $"/api/products/{productIdNotExists}/rating", request, cancellationToken);
 
         // Assert
-        ProblemDetails? problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>(cancellationToken: cancellationToken);
+        ProblemDetails? problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.NotNull(problemDetails);
         Assert.Equal("Product Not Found", problemDetails.Title);
@@ -86,7 +86,7 @@ public class PostProductRatingApiTests : IClassFixture<CustomWebApplicationFacto
 
         // Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: ct);
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: ct);
 
         Assert.NotNull(result);
         Assert.Equal(product.Id, result!.ProductId);

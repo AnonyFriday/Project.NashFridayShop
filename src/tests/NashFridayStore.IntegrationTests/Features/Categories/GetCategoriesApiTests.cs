@@ -53,7 +53,7 @@ public class GetCategoriesApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: cancellationToken);
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.NotNull(result);
         Assert.Equal(2, result.TotalItems);
@@ -95,7 +95,7 @@ public class GetCategoriesApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: cancellationToken);
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.NotNull(result);
         Assert.Equal(1, result.TotalItems);
@@ -131,7 +131,7 @@ public class GetCategoriesApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: cancellationToken);
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.NotNull(result);
         Assert.Equal(5, result.TotalItems);
@@ -162,7 +162,7 @@ public class GetCategoriesApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: cancellationToken);
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.NotNull(result);
         Assert.Equal(5, result.TotalItems);
@@ -194,7 +194,7 @@ public class GetCategoriesApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: cancellationToken);
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.NotNull(result);
         Assert.Equal(2, result.TotalItems);

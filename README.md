@@ -53,6 +53,10 @@
 
 ![ERD Diagram](./images/erd_v1_no_identity.png)
 
+## BFF and Identity Server Communication
+
+![BFF and Identity Server Communication](./images/BFF_IdentityServer.png)
+
 ## Week 1-2 Summary
 
 ### Project Foundation & Environment
