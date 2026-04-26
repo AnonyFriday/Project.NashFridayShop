@@ -2,12 +2,12 @@ using System.Net;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using NashFridayStore.SharedFeatures.Features.Products.PostProductRating;
 using NashFridayStore.Domain.Entities;
 using NashFridayStore.Domain.Entities.Products;
 using NashFridayStore.Infrastructure.Builders;
 using NashFridayStore.Infrastructure.Data;
 using NashFridayStore.IntegrationTests.Commons;
+using NashFridayStore.API.Features.Products.PostProductRating;
 
 namespace NashFridayStore.IntegrationTests.Features.Products;
 
@@ -47,7 +47,7 @@ public class PostProductRatingApiTests : IClassFixture<CustomWebApplicationFacto
 
         // Act
         HttpResponseMessage response = await _client.PostAsJsonAsync(
-            $"/api/admin/products/{productIdNotExists}/rating", request, cancellationToken);
+            $"/api/products/{productIdNotExists}/rating", request, cancellationToken);
 
         // Assert
         ProblemDetails? problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>(cancellationToken: cancellationToken);
@@ -79,7 +79,7 @@ public class PostProductRatingApiTests : IClassFixture<CustomWebApplicationFacto
 
         // Act
         HttpResponseMessage response = await _client.PostAsJsonAsync(
-            $"/api/admin/products/{product.Id}/rating",
+            $"/api/products/{product.Id}/rating",
             request,
             ct
         );

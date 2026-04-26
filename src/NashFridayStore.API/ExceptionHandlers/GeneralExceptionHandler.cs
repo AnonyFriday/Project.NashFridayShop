@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using NashFridayStore.SharedFeatures.Commons.Exceptions;
+using NashFridayStore.API.Commons.Exceptions;
 
 namespace NashFridayStore.API.ExceptionHandlers;
 

@@ -1,12 +1,12 @@
 using System.Net;
 using System.Net.Http.Json;
 using Microsoft.Extensions.DependencyInjection;
-using NashFridayStore.SharedFeatures.Features.Products.GetProductRatings;
 using NashFridayStore.Domain.Entities;
 using NashFridayStore.Domain.Entities.Products;
 using NashFridayStore.Infrastructure.Builders;
 using NashFridayStore.Infrastructure.Data;
 using NashFridayStore.IntegrationTests.Commons;
+using NashFridayStore.API.Features.Products.GetProductRatings;
 
 namespace NashFridayStore.IntegrationTests.Features.Products;
 
@@ -72,7 +72,7 @@ public class GetProductRatingsApiTests : IClassFixture<CustomWebApplicationFacto
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         // Act
-        HttpResponseMessage response = await _client.GetAsync($"/api/admin/products/{product.Id}/ratings", cancellationToken);
+        HttpResponseMessage response = await _client.GetAsync($"/api/products/{product.Id}/ratings", cancellationToken);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -110,7 +110,7 @@ public class GetProductRatingsApiTests : IClassFixture<CustomWebApplicationFacto
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         // Act
-        HttpResponseMessage response = await _client.GetAsync($"/api/admin/products/{product.Id}/ratings", cancellationToken);
+        HttpResponseMessage response = await _client.GetAsync($"/api/products/{product.Id}/ratings", cancellationToken);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -153,7 +153,7 @@ public class GetProductRatingsApiTests : IClassFixture<CustomWebApplicationFacto
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         // Act
-        HttpResponseMessage response = await _client.GetAsync($"/api/admin/products/{product.Id}/ratings?pageIndex=1&pageSize=2", cancellationToken);
+        HttpResponseMessage response = await _client.GetAsync($"/api/products/{product.Id}/ratings?pageIndex=1&pageSize=2", cancellationToken);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -178,7 +178,7 @@ public class GetProductRatingsApiTests : IClassFixture<CustomWebApplicationFacto
         var nonExistentProductId = Guid.NewGuid();
 
         // Act
-        HttpResponseMessage response = await _client.GetAsync($"/api/admin/products/{nonExistentProductId}/ratings", cancellationToken);
+        HttpResponseMessage response = await _client.GetAsync($"/api/products/{nonExistentProductId}/ratings", cancellationToken);
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -215,7 +215,7 @@ public class GetProductRatingsApiTests : IClassFixture<CustomWebApplicationFacto
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         // Act
-        HttpResponseMessage response = await _client.GetAsync($"/api/admin/products/{product.Id}/ratings", cancellationToken);
+        HttpResponseMessage response = await _client.GetAsync($"/api/products/{product.Id}/ratings", cancellationToken);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -248,7 +248,7 @@ public class GetProductRatingsApiTests : IClassFixture<CustomWebApplicationFacto
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         // Act
-        HttpResponseMessage response = await _client.GetAsync($"/api/admin/products/{product.Id}/ratings?pageSize=150", cancellationToken);
+        HttpResponseMessage response = await _client.GetAsync($"/api/products/{product.Id}/ratings?pageSize=150", cancellationToken);
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);

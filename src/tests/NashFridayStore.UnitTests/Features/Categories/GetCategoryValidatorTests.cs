@@ -1,6 +1,6 @@
 using FluentValidation.Results;
 using FluentValidation.TestHelper;
-using NashFridayStore.SharedFeatures.Features.Categories.GetCategory;
+using NashFridayStore.API.Features.Categories.GetCategory;
 
 namespace NashFridayStore.UnitTests.Features.Categories;
 

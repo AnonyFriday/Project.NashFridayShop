@@ -1,7 +1,6 @@
-#pragma warning disable IDE0008
-
+using FluentValidation.Results;
 using FluentValidation.TestHelper;
-using NashFridayStore.SharedFeatures.Features.Categories.GetCategories;
+using NashFridayStore.API.Features.Categories.GetCategories;
 
 namespace NashFridayStore.UnitTests.Features.Categories;
 
@@ -23,7 +22,7 @@ public class GetCategoriesValidatorTests
         var request = new Request(SearchName: "Electronics");
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<Request> result = _validator.TestValidate(request);
 
         // Assert
         Assert.True(result.IsValid);
@@ -35,15 +34,15 @@ public class GetCategoriesValidatorTests
     public void Validate_SearchNameExceedsMaxLength_ShouldHaveValidationError()
     {
         // Arrange
-        var searchName = new string('a', 101);
+        string searchName = new string('a', 101);
         var request = new Request(SearchName: searchName);
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<Request> result = _validator.TestValidate(request);
 
         // Assert
         Assert.False(result.IsValid);
-        var error = Assert.Single(result.Errors);
+        ValidationFailure error = Assert.Single(result.Errors);
         Assert.Equal(nameof(Request.SearchName), error.PropertyName);
         Assert.Equal(Validator.SearchNameMaxLength, error.ErrorMessage);
     }
@@ -58,11 +57,11 @@ public class GetCategoriesValidatorTests
         var request = new Request(null, PageIndex: -1);
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<Request> result = _validator.TestValidate(request);
 
         // Assert
         Assert.False(result.IsValid);
-        var error = Assert.Single(result.Errors);
+        ValidationFailure error = Assert.Single(result.Errors);
         Assert.Equal(nameof(Request.PageIndex), error.PropertyName);
         Assert.Equal(Validator.PageIndexGreaterThanOrEqualZero, error.ErrorMessage);
     }
@@ -75,7 +74,7 @@ public class GetCategoriesValidatorTests
         var request = new Request(null, PageIndex: 1);
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<Request> result = _validator.TestValidate(request);
 
         // Assert
         Assert.True(result.IsValid);
@@ -92,11 +91,11 @@ public class GetCategoriesValidatorTests
         var request = new Request(null, PageSize: 0);
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<Request> result = _validator.TestValidate(request);
 
         // Assert
         Assert.False(result.IsValid);
-        var error = Assert.Single(result.Errors);
+        ValidationFailure error = Assert.Single(result.Errors);
         Assert.Equal(nameof(Request.PageSize), error.PropertyName);
         Assert.Equal(Validator.PageSizeBetweenRange, error.ErrorMessage);
     }
@@ -109,11 +108,11 @@ public class GetCategoriesValidatorTests
         var request = new Request(null, PageSize: 101);
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<Request> result = _validator.TestValidate(request);
 
         // Assert
         Assert.False(result.IsValid);
-        var error = Assert.Single(result.Errors);
+        ValidationFailure error = Assert.Single(result.Errors);
         Assert.Equal(nameof(Request.PageSize), error.PropertyName);
         Assert.Equal(Validator.PageSizeBetweenRange, error.ErrorMessage);
     }
@@ -126,7 +125,7 @@ public class GetCategoriesValidatorTests
         var request = new Request(null, PageSize: 50);
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<Request> result = _validator.TestValidate(request);
 
         // Assert
         Assert.True(result.IsValid);
@@ -143,7 +142,7 @@ public class GetCategoriesValidatorTests
         var request = new Request(null, PageIndex: -1, IsAll: true);
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<Request> result = _validator.TestValidate(request);
 
         // Assert
         Assert.True(result.IsValid);
@@ -158,7 +157,7 @@ public class GetCategoriesValidatorTests
         var request = new Request(null, PageSize: 0, IsAll: true);
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<Request> result = _validator.TestValidate(request);
 
         // Assert
         Assert.True(result.IsValid);
@@ -173,7 +172,7 @@ public class GetCategoriesValidatorTests
         var request = new Request(null, PageIndex: 0, PageSize: 10, IsAll: false);
 
         // Act
-        var result = _validator.TestValidate(request);
+        TestValidationResult<Request> result = _validator.TestValidate(request);
 
         // Assert
         Assert.True(result.IsValid);
