@@ -13,7 +13,7 @@ public class IdentityServerDbContextSeeder(
     IdentityServerDbContext dbContext,
     UserManager<ApplicationUser> userManager,
     RoleManager<IdentityRole<Guid>> roleManager,
-    IOptions<ClientUrlsOption> options,
+    IOptions<SiteUrlsOption> options,
     IOpenIddictApplicationManager openIddictApplicationManager,
     ILogger<IdentityServerDbContext> logger)
 {

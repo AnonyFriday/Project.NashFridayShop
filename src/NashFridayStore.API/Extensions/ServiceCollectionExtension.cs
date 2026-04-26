@@ -21,15 +21,15 @@ public static class ServiceCollectionExtension
         serviceCollection.AddOpenApi();
 
         // CORS
-        ClientUrlsOption clientUrls = serviceCollection.BuildServiceProvider().GetRequiredService<IOptions<ClientUrlsOption>>().Value;
+        SiteUrlsOption SiteUrls = serviceCollection.BuildServiceProvider().GetRequiredService<IOptions<SiteUrlsOption>>().Value;
 
         serviceCollection.AddCors(options =>
         {
             options.AddPolicy(AppCts.Policy.AdminSite, policy =>
             {
-                if (clientUrls.AdminUrls.Length > 0)
+                if (SiteUrls.AdminUrls.Length > 0)
                 {
-                    policy.WithOrigins(clientUrls.AdminUrls)
+                    policy.WithOrigins(SiteUrls.AdminUrls)
                             .AllowAnyMethod()
                             .AllowAnyHeader()
                             .AllowCredentials();

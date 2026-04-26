@@ -2,12 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NashFridayStore.IdentityServer.AppOptions;
 
-public sealed record ClientUrlsOption
+public sealed record SiteUrlsOption
 {
-    public const string ClientUrls = "ClientUrls";
-
-    [Required]
-    public string[] AdminUrls { get; init; } = [];
+    public const string SiteUrls = "SiteUrls";
 
     public BffOptions Bff { get; init; } = new();
 
