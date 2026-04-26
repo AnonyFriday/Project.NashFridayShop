@@ -57,7 +57,7 @@ public class CreateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-        ProblemDetails? problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>(cancellationToken: cancellationToken);
+        ProblemDetails? problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
         Assert.NotNull(problemDetails);
         Assert.Equal("Category Not Found", problemDetails.Title);
         Assert.Contains(categoryIdNotExists.ToString(), problemDetails.Detail);
@@ -169,7 +169,7 @@ public class CreateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: ct);
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: ct);
 
         Assert.NotNull(result);
         Assert.NotEqual(Guid.Empty, result!.Id);
@@ -203,8 +203,8 @@ public class CreateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
         response1.EnsureSuccessStatusCode();
         response2.EnsureSuccessStatusCode();
 
-        Response? result1 = await response1.Content.ReadFromJsonAsync<Response>(cancellationToken: ct);
-        Response? result2 = await response2.Content.ReadFromJsonAsync<Response>(cancellationToken: ct);
+        Response? result1 = await response1.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: ct);
+        Response? result2 = await response2.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: ct);
 
         Assert.NotNull(result1);
         Assert.NotNull(result2);
@@ -239,7 +239,7 @@ public class CreateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: ct);
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: ct);
 
         Assert.NotNull(result);
         Assert.Equal(ProductStatus.InStock, result!.Status);

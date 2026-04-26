@@ -49,7 +49,7 @@ public class GetCategoryApiTests : IClassFixture<CustomWebApplicationFactory>, I
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: cancellationToken);
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.NotNull(result);
         Assert.Equal(category.Id, result!.Id);

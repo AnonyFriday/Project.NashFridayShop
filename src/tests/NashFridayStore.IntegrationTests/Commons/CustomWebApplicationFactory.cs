@@ -1,4 +1,6 @@
 using System.Data.Common;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
@@ -18,6 +20,12 @@ namespace NashFridayStore.IntegrationTests.Commons;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
+    // Create the JsonStringEnumConverter to serialize enum values as string
+    public static readonly JsonSerializerOptions DefaultJsonOptions = new()
+    {
+        Converters = { new JsonStringEnumConverter() }
+    };
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseEnvironment(AppCts.Environment.Testing);

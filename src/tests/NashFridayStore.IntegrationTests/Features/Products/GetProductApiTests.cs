@@ -52,7 +52,7 @@ public class GetProductApiTests : IClassFixture<CustomWebApplicationFactory>, ID
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: cancellationToken);
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.NotNull(result);
         Assert.Equal(product.Id, result!.Id);
@@ -91,7 +91,7 @@ public class GetProductApiTests : IClassFixture<CustomWebApplicationFactory>, ID
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: cancellationToken);
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.NotNull(result);
         Assert.Equal(product.Id, result!.Id);
@@ -127,7 +127,7 @@ public class GetProductApiTests : IClassFixture<CustomWebApplicationFactory>, ID
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: cancellationToken);
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.NotNull(result);
         Assert.Equal(product.Id, result!.Id);

@@ -65,7 +65,7 @@ public class GetProductsApiTests : IClassFixture<CustomWebApplicationFactory>, I
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: cancellationToken);
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.NotNull(result);
         Assert.Single(result.ProductItems);
@@ -92,7 +92,7 @@ public class GetProductsApiTests : IClassFixture<CustomWebApplicationFactory>, I
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken);
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken);
 
         Assert.NotNull(result);
         Assert.Empty(result.ProductItems);
@@ -121,7 +121,7 @@ public class GetProductsApiTests : IClassFixture<CustomWebApplicationFactory>, I
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: cancellationToken);
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.Single(result!.ProductItems);
         Assert.Equal("Laptop", result.ProductItems[0].Name);
@@ -142,7 +142,7 @@ public class GetProductsApiTests : IClassFixture<CustomWebApplicationFactory>, I
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: cancellationToken);
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.Empty(result!.ProductItems);
     }
@@ -170,7 +170,7 @@ public class GetProductsApiTests : IClassFixture<CustomWebApplicationFactory>, I
         // Assert
         response.EnsureSuccessStatusCode();
 
-        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: cancellationToken);
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.NotNull(result);
         Assert.Single(result.ProductItems);
@@ -198,7 +198,7 @@ public class GetProductsApiTests : IClassFixture<CustomWebApplicationFactory>, I
         // Assert
         response.EnsureSuccessStatusCode();
 
-        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: cancellationToken);
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.NotNull(result);
         Assert.Single(result.ProductItems);
@@ -239,7 +239,7 @@ public class GetProductsApiTests : IClassFixture<CustomWebApplicationFactory>, I
         // Assert
         response.EnsureSuccessStatusCode();
 
-        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: cancellationToken);
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.NotNull(result);
         Assert.Single(result.ProductItems);
@@ -277,7 +277,7 @@ public class GetProductsApiTests : IClassFixture<CustomWebApplicationFactory>, I
         // Assert
         response.EnsureSuccessStatusCode();
 
-        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: cancellationToken);
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.NotNull(result);
         Assert.Single(result.ProductItems);
@@ -328,7 +328,7 @@ public class GetProductsApiTests : IClassFixture<CustomWebApplicationFactory>, I
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: cancellationToken);
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.NotNull(result);
         Assert.Equal(2, result.ProductItems.Count);
@@ -361,7 +361,7 @@ public class GetProductsApiTests : IClassFixture<CustomWebApplicationFactory>, I
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: cancellationToken);
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.NotNull(result);
         Assert.Single(result.ProductItems);
@@ -396,7 +396,7 @@ public class GetProductsApiTests : IClassFixture<CustomWebApplicationFactory>, I
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: cancellationToken);
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.NotNull(result);
         Assert.Single(result.ProductItems);

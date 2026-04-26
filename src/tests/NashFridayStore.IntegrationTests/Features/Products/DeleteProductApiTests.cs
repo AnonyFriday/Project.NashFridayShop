@@ -51,7 +51,7 @@ public class DeleteProductApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-        ProblemDetails? problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>(cancellationToken: cancellationToken);
+        ProblemDetails? problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
         Assert.NotNull(problemDetails);
         Assert.Equal("Product Not Found", problemDetails.Title);
         Assert.Contains(productIdNotExists.ToString(), problemDetails.Detail);
@@ -82,7 +82,7 @@ public class DeleteProductApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: ct);
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: ct);
 
         Assert.NotNull(result);
         Assert.Equal(originalId, result!.Id);
@@ -179,7 +179,7 @@ public class DeleteProductApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Response? result = await response.Content.ReadFromJsonAsync<Response>(cancellationToken: ct);
+        Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: ct);
 
         Assert.NotNull(result);
         Assert.True(result!.DeletedAtUtc >= beforeDelete);
