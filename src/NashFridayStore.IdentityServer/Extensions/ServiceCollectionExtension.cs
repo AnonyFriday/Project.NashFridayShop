@@ -10,7 +10,7 @@ using OpenIddict.Abstractions;
 
 namespace NashFridayStore.IdentityServer.Extensions;
 
-public static class IdentityServerCollectionExtension
+public static class ServiceCollectionExtension
 {
     public static void AddServices(this IServiceCollection services, IConfiguration configuration)
     {
@@ -19,8 +19,8 @@ public static class IdentityServerCollectionExtension
             .Bind(configuration.GetSection(ConnectionStringsOptions.ConnectionStrings))
             .ValidateOnStart();
 
-        services.AddOptions<ClientUrlsOption>()
-            .Bind(configuration.GetSection(ClientUrlsOption.ClientUrls))
+        services.AddOptions<SiteUrlsOption>()
+            .Bind(configuration.GetSection(SiteUrlsOption.SiteUrls))
             .ValidateOnStart();
 
         // DbContext + SQL Server + Seeder
@@ -67,7 +67,7 @@ public static class IdentityServerCollectionExtension
                     OpenIddictConstants.Scopes.OpenId,
                     OpenIddictConstants.Scopes.Profile,
                     OpenIddictConstants.Scopes.Email,
-                    OpenIddictConstants.Scopes.Roles,
+                    OpenIddictConstants.Scopes.OfflineAccess,
                     "api" // my api scope
                 );
 
@@ -79,7 +79,7 @@ public static class IdentityServerCollectionExtension
 
                 // I manually handle those process via endpoint
                 opt
-                    .UseAspNetCore() // go through
+                    .UseAspNetCore()
                     .EnableAuthorizationEndpointPassthrough()
                     .EnableTokenEndpointPassthrough()
                     .EnableEndSessionEndpointPassthrough()
@@ -96,7 +96,7 @@ public static class IdentityServerCollectionExtension
         services.AddControllers();
 
         // Fluent Validation
-        services.AddValidatorsFromAssembly(typeof(IdentityServerCollectionExtension).Assembly);
+        services.AddValidatorsFromAssembly(typeof(ServiceCollectionExtension).Assembly);
 
         // Add all handlers
         RegisterAllFeatureHandlers(services);
@@ -104,7 +104,7 @@ public static class IdentityServerCollectionExtension
 
     private static void RegisterAllFeatureHandlers(IServiceCollection serviceCollection)
     {
-        Assembly assembly = typeof(IdentityServerCollectionExtension).Assembly;
+        Assembly assembly = typeof(ServiceCollectionExtension).Assembly;
 
         IEnumerable<Type> handlers = assembly
             .GetTypes()
