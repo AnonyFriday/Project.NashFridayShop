@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.Json.Serialization;
 using FluentValidation;
 using Microsoft.Extensions.Options;
 using NashFridayStore.API.ExceptionHandlers;
@@ -17,7 +18,11 @@ public static class ServiceCollectionExtension
         serviceCollection.AddExceptionHandler<InternalServerErrorExceptionHandler>();
 
         // Controllers 
-        serviceCollection.AddControllers();
+        serviceCollection.AddControllers()
+        .AddJsonOptions(opt =>
+        {
+            opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        });
 
         // Documentation
         serviceCollection.AddOpenApi();

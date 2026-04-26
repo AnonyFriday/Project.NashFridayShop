@@ -14,7 +14,6 @@ public static class CommonPropertiesConfigurationExtension
             .IsRequired();
 
         builder.Property(x => x.UpdatedAtUtc)
-            .ValueGeneratedOnAddOrUpdate()
             .IsRequired(false);
     }
 
