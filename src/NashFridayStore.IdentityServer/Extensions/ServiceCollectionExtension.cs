@@ -67,7 +67,7 @@ public static class ServiceCollectionExtension
                     OpenIddictConstants.Scopes.OpenId,
                     OpenIddictConstants.Scopes.Profile,
                     OpenIddictConstants.Scopes.Email,
-                    OpenIddictConstants.Scopes.Roles,
+                    OpenIddictConstants.Scopes.OfflineAccess,
                     "api" // my api scope
                 );
 
@@ -79,7 +79,7 @@ public static class ServiceCollectionExtension
 
                 // I manually handle those process via endpoint
                 opt
-                    .UseAspNetCore() // go through
+                    .UseAspNetCore()
                     .EnableAuthorizationEndpointPassthrough()
                     .EnableTokenEndpointPassthrough()
                     .EnableEndSessionEndpointPassthrough()

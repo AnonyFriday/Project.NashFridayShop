@@ -28,7 +28,4 @@ public sealed record IdentityServerOptions
 
     [Required]
     public string ApiScope { get; set; } = string.Empty;
-
-    [Required]
-    public string RolesScope { get; set; } = string.Empty;
 }

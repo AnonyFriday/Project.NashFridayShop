@@ -51,17 +51,12 @@ public static class ServiceCollectionExtension
                 opt.UsePkce = true;
                 opt.RequireHttpsMetadata = false; // disable for development only
 
+                // BFF requires claims based on supported scope from identity server
                 opt.Scope.Add(OpenIdConnectScope.OpenId);
                 opt.Scope.Add(OpenIdConnectScope.Profile);
                 opt.Scope.Add(OpenIdConnectScope.Email);
                 opt.Scope.Add(OpenIdConnectScope.OfflineAccess);
                 opt.Scope.Add(identityServerOpts.ApiScope);
-
-#pragma warning disable S125 // Sections of code should not be commented out
-                // otp.Scope.Clear();
-                // otp.Scope.Add(identityServiceOptions.Roles);
-#pragma warning restore S125 // Sections of code should not be commented out
-
             });
 
         // Add Authorization
