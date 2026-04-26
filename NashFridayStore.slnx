@@ -5,7 +5,6 @@
     <Project Path="src/NashFridayStore.Domain/NashFridayStore.Domain.csproj" />
     <Project Path="src/NashFridayStore.IdentityServer/NashFridayStore.IdentityServer.csproj" />
     <Project Path="src/NashFridayStore.Infrastructure/NashFridayStore.Infrastructure.csproj" />
-    <Project Path="src/NashFridayStore.SharedFeatures/NashFridayStore.SharedFeatures.csproj" />
     <Project Path="src/NashFridayStore.StoreFront/NashFridayStore.StoreFront.csproj" />
   </Folder>
   <Folder Name="/src/tests/">

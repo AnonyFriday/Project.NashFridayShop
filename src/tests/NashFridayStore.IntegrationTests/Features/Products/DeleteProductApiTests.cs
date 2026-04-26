@@ -2,14 +2,13 @@ using System.Net;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using NashFridayStore.SharedFeatures.Features.Products.DeleteProduct;
 using NashFridayStore.Domain.Entities;
 using NashFridayStore.Infrastructure.Builders;
 using NashFridayStore.Infrastructure.Data;
 using NashFridayStore.IntegrationTests.Commons;
 using NashFridayStore.Domain.Entities.Products;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
+using NashFridayStore.API.Features.Products.DeleteProduct;
 
 namespace NashFridayStore.IntegrationTests.Features.Products;
 
@@ -48,7 +47,7 @@ public class DeleteProductApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         // Act
         HttpResponseMessage response = await _client.DeleteAsync(
-            $"/api/admin/products/{productIdNotExists}", cancellationToken);
+            $"/api/products/{productIdNotExists}", cancellationToken);
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -79,7 +78,7 @@ public class DeleteProductApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         // Act
         HttpResponseMessage response = await _client.DeleteAsync(
-            $"/api/admin/products/{product.Id}", ct);
+            $"/api/products/{product.Id}", ct);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -115,11 +114,11 @@ public class DeleteProductApiTests : IClassFixture<CustomWebApplicationFactory>,
         _dbContext.Categories.Add(category);
         _dbContext.Products.Add(product);
         await _dbContext.SaveChangesAsync(ct);
-        await _client.DeleteAsync($"/api/admin/products/{product.Id}", ct);
+        await _client.DeleteAsync($"/api/products/{product.Id}", ct);
 
         // Act
         HttpResponseMessage response = await _client.GetAsync(
-            $"/api/admin/products/{product.Id}", ct);
+            $"/api/products/{product.Id}", ct);
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -141,7 +140,7 @@ public class DeleteProductApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         // Act
         HttpResponseMessage response = await _client.DeleteAsync(
-            $"/api/admin/products/{product1.Id}", ct);
+            $"/api/products/{product1.Id}", ct);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -174,7 +173,7 @@ public class DeleteProductApiTests : IClassFixture<CustomWebApplicationFactory>,
 
         // Act
         HttpResponseMessage response = await _client.DeleteAsync(
-            $"/api/admin/products/{product.Id}", ct);
+            $"/api/products/{product.Id}", ct);
 
         DateTime afterDelete = DateTime.UtcNow;
 
