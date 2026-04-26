@@ -53,7 +53,7 @@
 
 ![ERD Diagram](./images/erd_v1_no_identity.png)
 
-## BFF and Identity Server Communication
+## BFF + Reverse Proxy, Identity Server, API Server, Frontends communications
 
 ![BFF and Identity Server Communication](./images/BFF_IdentityServer.png)
 
@@ -106,7 +106,8 @@
 
 ```
 src/
-├── NashFridayStore.API/              # Endpoints, Business logic handlers, validators, requests/responses
+├── NashFridayStore.API/              # Endpoints, Business logic
+                                      # handlers, exceptions
 ├── NashFridayStore.Domain/           # Domain entities
 ├── NashFridayStore.Infrastructure/   # Data access, configurations, migrations
 ├── NashFridayStore.BFF/              # Backend for Frontend service

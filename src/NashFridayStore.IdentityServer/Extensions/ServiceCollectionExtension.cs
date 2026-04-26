@@ -41,9 +41,13 @@ public static class ServiceCollectionExtension
                 .AddDefaultTokenProviders();
 
         // Configure Cookies for Authentication
-        services.ConfigureApplicationCookie(otp =>
+        services.ConfigureApplicationCookie(opt =>
         {
-            otp.LoginPath = "/Account/Login";
+            opt.Cookie.Name = "NashFridayStore.Identity.LoginSession";
+            opt.Cookie.HttpOnly = true;
+            opt.Cookie.SameSite = SameSiteMode.Lax;
+            opt.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            opt.LoginPath = "/Account/Login";
         });
 
         // Add OpenIddict
