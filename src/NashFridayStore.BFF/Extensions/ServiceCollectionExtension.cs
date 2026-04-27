@@ -1,9 +1,11 @@
+using System.Collections;
 using System.Reflection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using NashFridayStore.BFF.AppOptions;
+using Yarp.ReverseProxy.Configuration;
 
 namespace NashFridayStore.BFF.Extensions;
 
@@ -16,6 +18,7 @@ public static class ServiceCollectionExtension
         // Settings at appsettings.json
         services.AddOptions<SiteUrlsOption>()
             .Bind(configuration.GetSection(SiteUrlsOption.SiteUrls))
+            .ValidateDataAnnotations()
             .ValidateOnStart();
 
         // Add Cookie as default authen mechanism for BFF
@@ -70,6 +73,42 @@ public static class ServiceCollectionExtension
 
         // Register Handlers
         RegisterAllFeatureHandlers(services);
+
+        // Add Reverse Proxy
+        RegisterReverseProxy(services, configuration);
+    }
+
+    private static void RegisterReverseProxy(IServiceCollection services, IConfiguration configuration)
+    {
+        SiteUrlsOption? siteUrls = configuration.GetSection(SiteUrlsOption.SiteUrls).Get<SiteUrlsOption>();
+        string apiServerUrl = siteUrls!.ApiServer.Url;
+
+        services.AddReverseProxy()
+            .LoadFromMemory(
+                routes: [
+                    new RouteConfig() {
+                        RouteId = "api-route",
+                        ClusterId = "api-cluster",
+                        Match = new RouteMatch() {
+                            Methods = ["GET", "POST", "PUT", "DELETE", "PATCH"],
+                            Path = "/api/{**catch-all}" // catch all request with /api/products, /api/categories,..
+                        }
+                    }
+                ],
+                clusters: [
+                    new ClusterConfig() {
+                        ClusterId = "api-cluster",
+                        Destinations = new Dictionary<string, DestinationConfig>() {
+                            {
+                                "api-destination",
+                                new DestinationConfig() {
+                                    Address = apiServerUrl,
+                                }
+                            }
+                        }
+                    }
+                ]
+            );
     }
 
     private static void RegisterAllFeatureHandlers(IServiceCollection services)

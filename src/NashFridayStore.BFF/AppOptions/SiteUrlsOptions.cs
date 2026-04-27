@@ -6,9 +6,16 @@ public sealed record SiteUrlsOption
 {
     public const string SiteUrls = "SiteUrls";
 
+    public ApiServerOptions ApiServer { get; init; } = new();
+
     public IdentityServerOptions IdentityServer { get; init; } = new();
 }
 
+public sealed record ApiServerOptions
+{
+    [Required]
+    public string Url { get; set; } = string.Empty;
+}
 public sealed record IdentityServerOptions
 {
     [Required]
