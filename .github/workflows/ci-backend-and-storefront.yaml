@@ -7,11 +7,9 @@ on:
       - main
       - "release/*"
     paths:
-      - "src/ApiService/**"
-      - "src/BFF/**"
-      - "src/IdentityServer/**"
-      - "src/StoreFront/**"
-      - "src/Tests/**"
+      - "src/**"
+      - "!src/admin-site/**"
+      - "src/tests/*.csproj"
       - ".github/workflows/ci-backend-and-storefront.yaml"
 
   push:
@@ -20,11 +18,9 @@ on:
       - main
       - "release/*"
     paths:
-      - "src/ApiService/**"
-      - "src/BFF/**"
-      - "src/IdentityServer/**"
-      - "src/StoreFront/**"
-      - "src/Tests/**"
+      - "src/**"
+      - "!src/admin-site/**"
+      - "src/tests/*.csproj"
       - ".github/workflows/ci-backend-and-storefront.yaml"
 
 jobs:
@@ -47,7 +43,7 @@ jobs:
 
       - name: Test
         run: dotnet test
-          src/Tests/NashFridayStore.UnitTests/NashFridayStore.UnitTests.csproj
+          src/tests/NashFridayStore.UnitTests/NashFridayStore.UnitTests.csproj
           --configuration Release --no-build --collect:"XPlat Code Coverage"
 
       - name: Upload coverage reports to Codecov
@@ -76,7 +72,7 @@ jobs:
 
       - name: Test
         run: dotnet test
-          src/Tests/NashFridayStore.IntegrationTests/NashFridayStore.IntegrationTests.csproj
+          src/tests/NashFridayStore.IntegrationTests/NashFridayStore.IntegrationTests.csproj
           --configuration Release --no-build --collect:"XPlat Code Coverage"
 
       - name: Upload coverage reports to Codecov

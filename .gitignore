@@ -16,6 +16,8 @@
 **/*.suo
 **/*.userosscache
 **/*.sln.docstates
+**/*.http
+**/*.postman*
 
 # IDEs
 **/.vs/

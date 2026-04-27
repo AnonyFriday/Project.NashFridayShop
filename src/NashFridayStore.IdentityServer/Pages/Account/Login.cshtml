@@ -1,0 +1,99 @@
+@page
+@model NashFridayStore.IdentityServer.Pages.Account.Login
+@{
+    ViewData["Title"] = "Login";
+}
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<div class="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 font-sans">
+    <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-2xl shadow-xl border border-gray-100">
+        
+        <div class="text-center">
+            <div class="mx-auto h-16 w-16 bg-red-600 rounded-full flex items-center justify-center shadow-lg mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+            </div>
+            <h2 class="text-3xl font-black text-gray-900 tracking-tight">
+                NASH<span class="text-red-600">FRIDAY</span>
+            </h2>
+            <p class="mt-2 text-sm text-gray-500 italic">
+                Lưu giữ kỷ niệm qua từng món quà
+            </p>
+        </div>
+
+        <form method="post" class="mt-8 space-y-6">
+            @Html.AntiForgeryToken()
+            <input asp-for="@Model.ReturnUrl" type="hidden" />
+
+            <div class="rounded-md shadow-sm space-y-4">
+                <div>
+                    <label asp-for="Input.Email" class="block text-sm font-semibold text-gray-700 ml-1">Email của
+                        bạn</label>
+                        <input asp-for="Input.Email"
+                               class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all sm:text-sm"
+                               placeholder="yourname@gmail.com" />
+                        <span asp-validation-for="Input.Email" class="text-xs text-red-600 mt-1 block"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="Input.Password" class="block text-sm font-semibold text-gray-700 ml-1">Mật
+                            khẩu</label>
+                            <input asp-for="Input.Password" type="password"
+                                   class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all sm:text-sm"
+                                   placeholder="••••••••" />
+                            <span asp-validation-for="Input.Password" class="text-xs text-red-600 mt-1 block"></span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <input asp-for="Input.RememberMe" type="checkbox"
+                                   class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded" />
+                            <label asp-for="Input.RememberMe" class="ml-2 block text-sm text-gray-600">Ghi nhớ tôi</label>
+                        </div>
+                        <div class="text-sm">
+                            <a href="#" class="font-medium text-red-600 hover:text-red-700 transition-colors">Quên mật khẩu?</a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button type="submit"
+                                class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-xl text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all transform active:scale-95 shadow-lg shadow-red-200">
+                            ĐĂNG NHẬP NGAY
+                        </button>
+                    </div>
+                </form>
+
+                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                {
+                    <div class="mt-4 bg-red-50 border-l-4 border-red-600 p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-red-600" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                          clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-red-700 font-medium">@Model.ErrorMessage</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="mt-6 text-center">
+                    <p class="text-xs text-gray-400">
+                        Bạn chưa có tài khoản? <a href="#" class="text-red-600 font-bold hover:underline">Đăng ký</a>
+                    </p>
+                    <div
+                        class="mt-8 flex justify-center space-x-4 grayscale opacity-50 hover:grayscale-0 transition-all duration-500">
+                        <span class="text-[10px] uppercase tracking-tighter text-gray-500 font-bold">Rookie Việt Nam</span>
+                    </div>
+                </div>
+            </div>
+        </div>
