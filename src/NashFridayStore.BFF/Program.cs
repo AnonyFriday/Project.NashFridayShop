@@ -23,5 +23,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapReverseProxy();
 
 await app.RunAsync();
