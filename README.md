@@ -37,8 +37,8 @@
 | BFF             | `/api/auth/login`            | GET    | Start login from React → redirect to IdentityServer | ✅ Completed          | ❌ None   |
 | BFF             | `/apit/auth/logout`          | POST   | Logout BFF session + Identity session               | ✅ Completed          | ❌ None   |
 | BFF             | `/signin-oidc`               | GET    | OIDC callback endpoint (middleware handled)         | ✅ Middleware handled | ❌ None   |
-| BFF             | `/dev/auth/tokens`           | GET    | Return access_token, id_token, refresh_token (dev)  | ✅ Completed          | ❌ None   |
-| BFF             | `/api/{**catch-all}`         | ALL    | Reverse proxy React requests → API                  | ❌ Not implemented    | ❌ None   |
+| BFF             | `/dev/auth/tokens`(Dev Only) | GET    | Return access_token, id_token, refresh_token | ✅ Completed          | ❌ None   |
+| BFF             | `/api/{**catch-all}`         | ALL    | Reverse proxy React requests → API                  | ✅ Completed          | ❌ None   |
 
 ## Current Supporting Pages For Identity Server
 
@@ -57,34 +57,27 @@
 
 ![BFF and Identity Server Communication](./images/BFF_IdentityServer.png)
 
-## Week 1-2 Summary
+## Week 1-2-3 Summary
 
 ### Project Foundation & Environment
 
-- Development tooling setup:
-  - Fork
-  - Postman
-  - VS Code
-  - Docker Desktop
-  - SSMS
-- Environment configuration:
-  - `User Secrets`
-  - `appsettings.Development.json`
-  - `IOptions`
+- **Development tooling setup**: Fork, Postman, VS Code, Docker Desktop, SSMS
+- **Environment configuration**: User Secrets, appsettings.Development.json, IOptions
 
 ### Testing Infrastructure
 
-- `xUnit`
-- `SQLite In-Memory`
-- `WebApplicationFactory`
+- xUnit
+- SQLite In-Memory
+- WebApplicationFactory
 - Code coverage setup
 
-### 🌐 Frontend & Services
+### Frontend & Services
 
 - Next.js Admin Site scaffold
 - Razor Pages StoreFront scaffold
-- BFF Project
+- BFF storing tokens + YARP Reverse Proxy
 - Identity Server project + seperate Database
+- API Server
 
 ### Authentication & Authorization
 
@@ -106,11 +99,10 @@
 
 ```
 src/
-├── NashFridayStore.API/              # Endpoints, Business logic
-                                      # handlers, exceptions
+├── NashFridayStore.API/              # Endpoints, Validations, Handlers, Exceptions
 ├── NashFridayStore.Domain/           # Domain entities
 ├── NashFridayStore.Infrastructure/   # Data access, configurations, migrations
-├── NashFridayStore.BFF/              # Backend for Frontend service
+├── NashFridayStore.BFF/              # Storing Tokens, Reverse Proxy
 ├── NashFridayStore.IdentityServer/   # Auth, Authz service
 ├── NashFridayStore.StoreFront/       # Frontend Customer-site
 ├── admin-site/                       # Frontend Admin-site
@@ -126,23 +118,21 @@ Each feature is organized in its own "slice" within the **API** project with all
 - **Handler**: Core business logic and domain operations
 - **Validator**: FluentValidation rules for requests
 - **Exceptions**: Custom exceptions for the feature
+- **Endpoint**: THe API Endpoint based on Controller
 
 Example from `src/NashFridayStore.API/Features/Products/GetProduct/`:
 
 **Request.cs**:
-
 ```csharp
 public sealed record Request(Guid Id);
 ```
 
 **Response.cs**:
-
 ```csharp
 public sealed record Response(Guid Id, string Name, string ImageUrl, decimal PriceUsd, ProductStatus Status);
 ```
 
 **Validator.cs**:
-
 ```csharp
 public sealed class Validator : AbstractValidator<Request>
 {
@@ -156,7 +146,6 @@ public sealed class Validator : AbstractValidator<Request>
 ```
 
 **Handler.cs**:
-
 ```csharp
 public sealed class Handler(StoreDbContext dbContext, IValidator<Request> validator)
 {
@@ -185,7 +174,6 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
 ```
 
 **Exceptions.cs**:
-
 ```csharp
 internal static class Exceptions
 {
@@ -208,8 +196,7 @@ internal static class Exceptions
 }
 ```
 
-Endpoint.cs
-
+**Endpoint.cs**:
 ```csharp
 using NashFridayStore.API.Features.Products.GetProduct;
 
@@ -227,8 +214,27 @@ public sealed class GetProductEndpoint(Handler handler) : ControllerBase
 }
 ```
 
-Unit test example from integration tests:
+**Unit Test**:
+```csharp
+[Fact]
+[Trait("UT", "Id")]
+public void Validate_IdIsEmpty_ShouldHaveValidationError()
+{
+    // Arrange
+    var request = new Request(Guid.Empty);
 
+    // Act
+    TestValidationResult<Request> result = _validator.TestValidate(request);
+
+    // Assert
+    Assert.False(result.IsValid);
+    ValidationFailure error = Assert.Single(result.Errors);
+    Assert.Equal(nameof(Request.Id), error.PropertyName);
+    Assert.Equal(Validator.IdRequired, error.ErrorMessage);
+}
+``` 
+
+**Integration Test**:
 ```csharp
 [Fact]
 public async Task GetProduct_ById_ShouldReturnProduct()
@@ -261,8 +267,6 @@ public async Task GetProduct_ById_ShouldReturnProduct()
 }
 ```
 
-This keeps features isolated, testable, and easy to maintain. The separation between API endpoints, business logic handlers, and MVC Razor Pages structure.
-
 ## Design Patterns Applied
 
 - **Options Pattern**: config via `IOptions<T>`
@@ -290,6 +294,11 @@ This keeps features isolated, testable, and easy to maintain. The separation bet
 
 - Auth0 BFF guide: https://auth0.com/blog/the-backend-for-frontend-pattern-bff/
 - BFF explanation video: https://www.youtube.com/watch?v=hWJuX-8Ur2k
+
+### Reverse Proxy YARP
+
+- How to setup: https://learn.microsoft.com/en-us/aspnet/core/fundamentals/servers/yarp/yarp-overview?view=aspnetcore-10.0
+- Project YARP: https://github.com/dotnet/yarp
 
 ### Identity Server
 
