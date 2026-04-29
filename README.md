@@ -1,4 +1,4 @@
-# Nash Friday Shop
+# Nash Friday Shop (Coding Bootcamp)
 
 ![codecov](https://codecov.io/gh/AnonyFriday/Project.NashFridayShop/graph/badge.svg?token=GU9DBWMKZZ)
 
