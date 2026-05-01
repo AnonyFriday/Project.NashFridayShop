@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using NashFridayStore.BFF.AppOptions;
+using NashFridayStore.BFF.Commons;
 using Yarp.ReverseProxy.Configuration;
 
 namespace NashFridayStore.BFF.Extensions;
@@ -70,6 +71,23 @@ public static class ServiceCollectionExtension
 
         // Add HttpContext
         services.AddHttpContextAccessor();
+
+        // Add Cors
+        SiteUrlsOption SiteUrls = services.BuildServiceProvider().GetRequiredService<IOptions<SiteUrlsOption>>().Value;
+
+        services.AddCors(options =>
+        {
+            options.AddPolicy(AppCts.Policy.AdminSite, policy =>
+            {
+                if (SiteUrls.AdminUrls.Length > 0)
+                {
+                    policy.WithOrigins(SiteUrls.AdminUrls)
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowCredentials();
+                }
+            });
+        });
 
         // Register Handlers
         RegisterAllFeatureHandlers(services);

@@ -1,3 +1,4 @@
+using NashFridayStore.BFF.Commons;
 using NashFridayStore.BFF.Extensions;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -16,7 +17,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors(AppCts.Policy.AdminSite);
 app.UseRouting();
 
 app.UseAuthentication();
