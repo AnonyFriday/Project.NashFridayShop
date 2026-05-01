@@ -68,8 +68,8 @@ public class GetProductsApiTests : IClassFixture<CustomWebApplicationFactory>, I
         Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.NotNull(result);
-        Assert.Single(result.ProductItems);
-        Assert.Equal("Laptop", result.ProductItems[0].Name);
+        Assert.Single(result.Items);
+        Assert.Equal("Laptop", result.Items[0].Name);
     }
 
     [Fact]
@@ -95,7 +95,7 @@ public class GetProductsApiTests : IClassFixture<CustomWebApplicationFactory>, I
         Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken);
 
         Assert.NotNull(result);
-        Assert.Empty(result.ProductItems);
+        Assert.Empty(result.Items);
     }
     #endregion
 
@@ -123,8 +123,8 @@ public class GetProductsApiTests : IClassFixture<CustomWebApplicationFactory>, I
         response.EnsureSuccessStatusCode();
         Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
-        Assert.Single(result!.ProductItems);
-        Assert.Equal("Laptop", result.ProductItems[0].Name);
+        Assert.Single(result!.Items);
+        Assert.Equal("Laptop", result.Items[0].Name);
     }
 
     [Fact]
@@ -144,7 +144,7 @@ public class GetProductsApiTests : IClassFixture<CustomWebApplicationFactory>, I
         response.EnsureSuccessStatusCode();
         Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
-        Assert.Empty(result!.ProductItems);
+        Assert.Empty(result!.Items);
     }
     #endregion
 
@@ -173,8 +173,8 @@ public class GetProductsApiTests : IClassFixture<CustomWebApplicationFactory>, I
         Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.NotNull(result);
-        Assert.Single(result.ProductItems);
-        Assert.Equal(100, result.ProductItems[0].PriceUsd);
+        Assert.Single(result.Items);
+        Assert.Equal(100, result.Items[0].PriceUsd);
     }
 
     [Fact]
@@ -201,8 +201,8 @@ public class GetProductsApiTests : IClassFixture<CustomWebApplicationFactory>, I
         Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.NotNull(result);
-        Assert.Single(result.ProductItems);
-        Assert.Equal(100, result.ProductItems[0].PriceUsd);
+        Assert.Single(result.Items);
+        Assert.Equal(100, result.Items[0].PriceUsd);
     }
     #endregion
 
@@ -242,8 +242,8 @@ public class GetProductsApiTests : IClassFixture<CustomWebApplicationFactory>, I
         Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.NotNull(result);
-        Assert.Single(result.ProductItems);
-        Assert.Equal("Laptop", result.ProductItems[0].Name);
+        Assert.Single(result.Items);
+        Assert.Equal("Laptop", result.Items[0].Name);
     }
 
     [Fact]
@@ -280,8 +280,8 @@ public class GetProductsApiTests : IClassFixture<CustomWebApplicationFactory>, I
         Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.NotNull(result);
-        Assert.Single(result.ProductItems);
-        Assert.Equal(ProductStatus.InStock, result.ProductItems[0].Status);
+        Assert.Single(result.Items);
+        Assert.Equal(ProductStatus.InStock, result.Items[0].Status);
     }
 
     #endregion
@@ -331,10 +331,10 @@ public class GetProductsApiTests : IClassFixture<CustomWebApplicationFactory>, I
         Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.NotNull(result);
-        Assert.Equal(2, result.ProductItems.Count);
+        Assert.Equal(2, result.Items.Count);
 
-        ProductItem laptopItem = result.ProductItems.First(p => p.Name == "Laptop");
-        ProductItem mouseItem = result.ProductItems.First(p => p.Name == "Mouse");
+        ProductItem laptopItem = result.Items.First(p => p.Name == "Laptop");
+        ProductItem mouseItem = result.Items.First(p => p.Name == "Mouse");
 
         Assert.Equal(4.0m, laptopItem.AverageStars); // (5+4+3)/3 = 4
         Assert.Equal(5.0m, mouseItem.AverageStars); // (5+5)/2 = 5
@@ -364,8 +364,8 @@ public class GetProductsApiTests : IClassFixture<CustomWebApplicationFactory>, I
         Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.NotNull(result);
-        Assert.Single(result.ProductItems);
-        Assert.Equal(0.0m, result.ProductItems[0].AverageStars);
+        Assert.Single(result.Items);
+        Assert.Equal(0.0m, result.Items[0].AverageStars);
     }
 
     [Fact]
@@ -399,8 +399,8 @@ public class GetProductsApiTests : IClassFixture<CustomWebApplicationFactory>, I
         Response? result = await response.Content.ReadFromJsonAsync<Response>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: cancellationToken);
 
         Assert.NotNull(result);
-        Assert.Single(result.ProductItems);
-        Assert.Equal(5.0m, result.ProductItems[0].AverageStars); // Only the active rating (5) is counted
+        Assert.Single(result.Items);
+        Assert.Equal(5.0m, result.Items[0].AverageStars); // Only the active rating (5) is counted
     }
     #endregion
 }
