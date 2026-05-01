@@ -6,6 +6,7 @@ export const APP_ROUTES = {
   PRODUCTS: "/products",
   ORDERS: "/orders",
   CUSTOMERS: "/customers",
+  CATEGORIES: "/categories",
   PROFILE: "/profile",
   LOGIN: `${ENV_CONFIGS.bffUrl}/api/auth/login`,
   REGISTER: `${ENV_CONFIGS.bffUrl}/api/auth/register`,

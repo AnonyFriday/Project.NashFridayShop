@@ -1,15 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface UiDrawerState {
+interface DrawerState {
   isSidebarOpen: boolean;
 }
 
-const initialState: UiDrawerState = {
+const initialState: DrawerState = {
   isSidebarOpen: false,
 };
 
-export const uiDrawerSlice = createSlice({
-  name: "uiDrawer",
+export const drawerSlice = createSlice({
+  name: "drawerSlice",
   initialState,
   reducers: {
     toggleSidebar: (state) => {
@@ -21,5 +21,5 @@ export const uiDrawerSlice = createSlice({
   },
 });
 
-export const { toggleSidebar, setSidebarOpen } = uiDrawerSlice.actions;
-export default uiDrawerSlice.reducer;
+export const { toggleSidebar, setSidebarOpen } = drawerSlice.actions;
+export default drawerSlice.reducer;

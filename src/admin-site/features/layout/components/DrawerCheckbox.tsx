@@ -1,10 +1,10 @@
 "use client";
 
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import { setSidebarOpen } from "@/features/layout/slices/uiDrawerSlice";
+import { setSidebarOpen } from "@/features/layout/drawer.slice";
 
 export default function DrawerCheckbox() {
-  const isSidebarOpen = useAppSelector((state) => state.uiDrawer.isSidebarOpen);
+  const isSidebarOpen = useAppSelector((state) => state.drawerSlice.isSidebarOpen);
   const dispatch = useAppDispatch();
   return (
     <input

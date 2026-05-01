@@ -5,9 +5,7 @@ export default function AuthComponent() {
   return (
     <>
       <div className="flex items-center gap-3">
-        <p className="bg-primary text-primary-content px-3 py-1 rounded-full text-sm font-semibold hidden sm:block">
-          Admin
-        </p>
+        <p className="bg-primary text-primary-content px-3 py-1 rounded-full text-sm font-semibold">Admin</p>
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar border border-base-300">
             <div className="w-9 rounded-full bg-base-300 flex items-center justify-center">
