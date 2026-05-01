@@ -5,11 +5,13 @@ import { usePathname } from "next/navigation";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { setSidebarOpen } from "@/features/layout/slices/uiDrawerSlice";
 
+import { APP_ROUTES } from "@/lib/api/routes";
+
 const sidebarItems = [
-  { label: "Dashboard", href: "/dashboard" },
-  { label: "Products", href: "/products" },
-  { label: "Orders", href: "/orders" },
-  { label: "Customers", href: "/customers" },
+  { label: "Dashboard", href: APP_ROUTES.DASHBOARD },
+  { label: "Products", href: APP_ROUTES.PRODUCTS },
+  { label: "Orders", href: APP_ROUTES.ORDERS },
+  { label: "Customers", href: APP_ROUTES.CUSTOMERS },
 ];
 
 export default function Sidebar() {

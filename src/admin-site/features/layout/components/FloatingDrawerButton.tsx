@@ -2,7 +2,7 @@ export default function FloatingDrawerButton() {
   return (
     <label
       htmlFor="admin-drawer"
-      className="btn btn-circle btn-primary fixed top-20 right-4 md:hidden z-50 shadow-lg"
+      className="btn btn-circle btn-primary fixed top-3/6 right-4 md:hidden z-50 shadow-lg"
       aria-label="open sidebar"
     >
       <svg
