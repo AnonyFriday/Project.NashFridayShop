@@ -8,7 +8,7 @@ const getEnv = (key: string, value: string | undefined): string => {
 }
 
 // Export environment variables
-export const envConfig = {
+export const ENV_CONFIGS = {
     bffUrl: getEnv('NEXT_PUBLIC_BFF_URL', process.env.NEXT_PUBLIC_BFF_URL),
     firebaseApiKey: getEnv('NEXT_PUBLIC_FIREBASE_API_KEY', process.env.NEXT_PUBLIC_FIREBASE_API_KEY),
     firebaseAuthDomain: getEnv('NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN', process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN),

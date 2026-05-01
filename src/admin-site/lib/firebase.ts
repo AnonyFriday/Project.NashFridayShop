@@ -1,14 +1,14 @@
 import { initializeApp, getApps } from "firebase/app";
 import { getStorage } from "firebase/storage";
-import { envConfig } from "./config/env";
+import { ENV_CONFIGS } from "./config/env";
 
 const firebaseConfig = {
-  apiKey: envConfig.firebaseApiKey,
-  authDomain: envConfig.firebaseAuthDomain,
-  projectId: envConfig.firebaseProjectId,
-  storageBucket: envConfig.firebaseStorageBucket,
-  messagingSenderId: envConfig.firebaseMessagingSenderId,
-  appId: envConfig.firebaseAppId
+  apiKey: ENV_CONFIGS.firebaseApiKey,
+  authDomain: ENV_CONFIGS.firebaseAuthDomain,
+  projectId: ENV_CONFIGS.firebaseProjectId,
+  storageBucket: ENV_CONFIGS.firebaseStorageBucket,
+  messagingSenderId: ENV_CONFIGS.firebaseMessagingSenderId,
+  appId: ENV_CONFIGS.firebaseAppId
 };
 
 // Initialize Firebase
