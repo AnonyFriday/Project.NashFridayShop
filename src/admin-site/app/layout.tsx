@@ -14,7 +14,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Admin Panel",
+  title: {
+    default: "Admin Panel",
+    template: "%s | NashFridayStore Panel",
+  },
   description: "Admin Panel Management",
 };
 
@@ -26,7 +29,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased bg-base-100 text-base-content`}
     >
       <body className="min-h-full flex flex-col">
         <StoreProvider>{children}</StoreProvider>

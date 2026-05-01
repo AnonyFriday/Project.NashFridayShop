@@ -1,10 +1,12 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { baseApiSlice } from '../api/baseApiSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import { baseApiSlice } from "../api/baseApiSlice";
+import uiDrawerReducer from "@/features/layout/slices/uiDrawerSlice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       [baseApiSlice.reducerPath]: baseApiSlice.reducer,
+      uiDrawer: uiDrawerReducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(baseApiSlice.middleware),
