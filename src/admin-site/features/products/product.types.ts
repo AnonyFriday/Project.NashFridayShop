@@ -5,7 +5,22 @@ import { PaginationRequest, PaginationResponse } from "@/lib/types/generic.types
 export enum ProductStatus {
     InStock = "InStock",
     OutOfStock = "OutOfStock",
-    Draft = "Draft",
+    Discontinued = "Discontinued",
+}
+
+export namespace ProductStatus {
+    export function toBadgeClassName(status: ProductStatus): string {
+        switch (status) {
+            case ProductStatus.InStock:
+                return "badge badge-success text-white py-4 px-4"
+            case ProductStatus.OutOfStock:
+                return "badge badge-error text-white py-4 px-4"
+            case ProductStatus.Discontinued:
+                return "badge badge-warning text-white py-4 px-4"
+            default:
+                return "badge badge-ghost"
+        }
+    }
 }
 
 // === APIs
