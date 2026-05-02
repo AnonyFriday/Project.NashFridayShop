@@ -5,10 +5,12 @@ export interface ActionButtonProps {
   onClick?: () => void;
   href?: string;
   title?: string;
+  className?: string;
 }
 
-export function ViewButton({ onClick, href, title = "View" }: ActionButtonProps) {
-  const className = "btn btn-sm btn-ghost btn-square";
+export function ViewButton({ onClick, href, title, className }: ActionButtonProps) {
+  const baseClassName = "btn btn-sm btn-ghost btn-square";
+  const baseTitle = title || "View";
   const icon = (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -28,18 +30,19 @@ export function ViewButton({ onClick, href, title = "View" }: ActionButtonProps)
   );
 
   return href ? (
-    <Link href={href} className={className} title={title}>
-      {icon}
+    <Link href={href} className={className ?? baseClassName} title={baseTitle}>
+      {icon} {baseTitle ? title : ""}
     </Link>
   ) : (
-    <button className={className} title={title} onClick={onClick}>
-      {icon}
+    <button className={className ?? baseClassName} title={baseTitle} onClick={onClick}>
+      {icon} {baseTitle ? title : ""}
     </button>
   );
 }
 
-export function EditButton({ onClick, href, title = "Edit" }: ActionButtonProps) {
-  const className = "btn btn-sm btn-ghost btn-square text-info";
+export function EditButton({ onClick, href, title, className }: ActionButtonProps) {
+  const baseClassName = "btn btn-sm btn-ghost btn-square text-info";
+  const baseTitle = title || "Edit";
   const icon = (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -58,18 +61,19 @@ export function EditButton({ onClick, href, title = "Edit" }: ActionButtonProps)
   );
 
   return href ? (
-    <Link href={href} className={className} title={title}>
-      {icon}
+    <Link href={href} className={className ?? baseClassName} title={baseTitle}>
+      {icon} {baseTitle ? title : ""}
     </Link>
   ) : (
-    <button className={className} title={title} onClick={onClick}>
-      {icon}
+    <button className={className ?? baseClassName} title={baseTitle} onClick={onClick}>
+      {icon} {baseTitle ? title : ""}
     </button>
   );
 }
 
-export function DeleteButton({ onClick, href, title = "Delete" }: ActionButtonProps) {
-  const className = "btn btn-sm btn-ghost btn-square text-error";
+export function DeleteButton({ onClick, href, title, className }: ActionButtonProps) {
+  const baseClassName = "btn btn-sm btn-ghost btn-square text-error";
+  const baseTitle = title || "Delete";
   const icon = (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -88,12 +92,12 @@ export function DeleteButton({ onClick, href, title = "Delete" }: ActionButtonPr
   );
 
   return href ? (
-    <Link href={href} className={className} title={title}>
-      {icon}
+    <Link href={href} className={className ?? baseClassName} title={baseTitle}>
+      {icon} {baseTitle ? title : ""}
     </Link>
   ) : (
-    <button className={className} title={title} onClick={onClick}>
-      {icon}
+    <button className={className ?? baseClassName} title={baseTitle} onClick={onClick}>
+      {icon} {baseTitle ? title : ""}
     </button>
   );
 }
