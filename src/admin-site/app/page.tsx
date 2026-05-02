@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 
 export default function Home() {
   // Will implement authentication later
-  let isAuthenticated = true;
+  const isAuthenticated = true;
 
   if (isAuthenticated) {
     redirect(APP_ROUTES.DASHBOARD);

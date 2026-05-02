@@ -8,6 +8,6 @@ export const baseApiSlice = createApi({
     credentials: 'include', // send bff cookies
   }),
   tagTypes: ['Category', 'Product', 'Order', 'Customer'],
-  endpoints: (builder) => ({
+  endpoints: () => ({
   }),
 });

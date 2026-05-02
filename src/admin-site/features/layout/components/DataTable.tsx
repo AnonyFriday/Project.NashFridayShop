@@ -58,7 +58,9 @@ export default function DataTable<T>({
                   onClick={() => onRowClick && onRowClick(row)}
                 >
                   {columns.map((col) => (
-                    <td key={col.key as string}>{col.render ? col.render(row) : (row as any)[col.key]}</td>
+                    <td key={col.key as string}>
+                      {col.render ? col.render(row) : (row as Record<string, ReactNode>)[col.key]}
+                    </td>
                   ))}
                 </tr>
               ))

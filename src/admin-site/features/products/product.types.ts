@@ -10,6 +10,7 @@ export enum ProductStatus {
 
 // === APIs
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace GetProducts {
 
     export interface Request extends PaginationRequest {
@@ -30,7 +31,6 @@ export namespace GetProducts {
         averageStars: number
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     export interface Response extends PaginationResponse<Item> { }
 }
-
-
