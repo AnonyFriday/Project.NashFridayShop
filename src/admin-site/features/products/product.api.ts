@@ -1,5 +1,5 @@
 import { baseApiSlice } from "@/lib/api/base.api";
-import { GetProducts, GetProductById } from "./product.types";
+import { GetProducts, GetProductById, UpdateProduct } from "./product.types";
 
 export const productApiSlice = baseApiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -8,14 +8,21 @@ export const productApiSlice = baseApiSlice.injectEndpoints({
                 url: "products",
                 params,
             }),
-            providesTags: ['Product'],
+
         }),
         getProductById: builder.query<GetProductById.Response, GetProductById.Request>({
             query: ({ id, includeDeleted = false }) => ({
                 url: `products/${id}`,
                 params: { IncludeDeleted: includeDeleted },
             }),
-            providesTags: ['Product']
+
+        }),
+        updateProduct: builder.mutation<UpdateProduct.Response, UpdateProduct.Request>({
+            query: ({ id, body }) => ({
+                url: `products/${id}`,
+                method: 'PUT',
+                body,
+            }),
         }),
     }),
     overrideExisting: false,
@@ -25,5 +32,6 @@ export const {
     useGetProductsQuery,
     useLazyGetProductsQuery,
     useGetProductByIdQuery,
-    useLazyGetProductByIdQuery
+    useLazyGetProductByIdQuery,
+    useUpdateProductMutation
 } = productApiSlice;

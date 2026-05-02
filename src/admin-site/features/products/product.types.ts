@@ -66,5 +66,33 @@ export namespace GetProductById {
         priceUsd: number
         status: ProductStatus
         averageStars: number
+        quantity: number
     };
+}
+
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace UpdateProduct {
+    export interface Request {
+        id: string;
+        body: {
+            categoryId: string;
+            name: string;
+            description: string;
+            priceUsd: number;
+            imageUrl: string;
+            quantity: number;
+            status: ProductStatus;
+        }
+    }
+    export interface Response {
+        id: string;
+        categoryId: string;
+        name: string;
+        description: string;
+        priceUsd: number;
+        imageUrl: string;
+        quantity: number;
+        status: ProductStatus;
+        createdAtUtc: string;
+    }
 }
