@@ -2,14 +2,9 @@
 
 import { useState } from "react";
 import { useGetProductsQuery } from "@/features/products/product.api";
-import DataTable, { ColumnDef } from "@/features/layout/components/DataTable";
-import Pagination from "@/features/layout/components/Pagination";
-import {
-  ActionGroupInDataTable,
-  ViewButton,
-  EditButton,
-  DeleteButton,
-} from "@/features/layout/components/Buttons/DataTableButtons";
+import DataTable, { ColumnDef } from "@/features/shared/components/DataTable";
+import Pagination from "@/features/shared/components/Pagination";
+import { ActionGroupInDataTable, ViewButton, EditButton, DeleteButton } from "@/features/shared/components/Buttons/DataTableButtons";
 import { GetProducts, ProductStatus } from "@/features/products/product.types";
 import Image from "next/image";
 

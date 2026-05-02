@@ -1,5 +1,5 @@
 import { APP_ROUTES } from "@/lib/api/routes";
-import Logo from "@/features/layout/components/Logo";
+import Logo from "@/features/shared/components/Logo";
 import { redirect } from "next/navigation";
 
 export default function Home() {

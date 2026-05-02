@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import GoBackButton from "@/features/layout/components/Buttons/GoBackButton";
-import { DeleteButton, EditButton } from "@/features/layout/components/Buttons/DataTableButtons";
+import GoBackButton from "@/features/shared/components/Buttons/GoBackButton";
+import { DeleteButton, EditButton } from "@/features/shared/components/Buttons/DataTableButtons";
 import { APP_ROUTES } from "@/lib/api/routes";
 import { useGetProductByIdQuery } from "@/features/products/product.api";
 import { useParams } from "next/navigation";

@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { baseApiSlice } from "../api/base.api";
-import { drawerSlice } from "@/features/layout/drawer.slice";
+import { drawerSlice } from "@/features/shared/drawer.slice";
 
 export const makeStore = () => {
   return configureStore({

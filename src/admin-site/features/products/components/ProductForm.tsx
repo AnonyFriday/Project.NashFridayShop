@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { ProductStatus } from "../product.types";
-import { SubmitButton, CancelButton } from "@/features/layout/components/Buttons/FormButtons";
+import { SubmitButton, CancelButton } from "@/features/shared/components/Buttons/FormButtons";
 import { GetCategories } from "@/features/categories/category.types";
 
 export const productSchema = z.object({
