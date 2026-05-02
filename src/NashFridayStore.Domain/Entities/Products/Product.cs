@@ -1,4 +1,4 @@
-﻿using NashFridayStore.Domain.Commons;
+using NashFridayStore.Domain.Commons;
 
 namespace NashFridayStore.Domain.Entities.Products;
 
