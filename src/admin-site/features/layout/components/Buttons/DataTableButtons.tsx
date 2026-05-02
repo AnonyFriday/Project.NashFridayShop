@@ -1,14 +1,13 @@
-import React from "react";
 import Link from "next/link";
 
-export interface ActionButtonProps {
+export interface DataTableButtonProps {
   onClick?: () => void;
   href?: string;
   title?: string;
   className?: string;
 }
 
-export function ViewButton({ onClick, href, title, className }: ActionButtonProps) {
+export function ViewButton({ onClick, href, title, className }: DataTableButtonProps) {
   const baseClassName = "btn btn-sm btn-ghost btn-square";
   const baseTitle = title || "View";
   const icon = (
@@ -40,7 +39,7 @@ export function ViewButton({ onClick, href, title, className }: ActionButtonProp
   );
 }
 
-export function EditButton({ onClick, href, title, className }: ActionButtonProps) {
+export function EditButton({ onClick, href, title, className }: DataTableButtonProps) {
   const baseClassName = "btn btn-sm btn-ghost btn-square text-info";
   const baseTitle = title || "Edit";
   const icon = (
@@ -71,7 +70,7 @@ export function EditButton({ onClick, href, title, className }: ActionButtonProp
   );
 }
 
-export function DeleteButton({ onClick, href, title, className }: ActionButtonProps) {
+export function DeleteButton({ onClick, href, title, className }: DataTableButtonProps) {
   const baseClassName = "btn btn-sm btn-ghost btn-square text-error";
   const baseTitle = title || "Delete";
   const icon = (

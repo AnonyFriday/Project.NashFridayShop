@@ -25,7 +25,6 @@ export namespace ProductStatus {
 
 // === APIs
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace GetProducts {
 
     export interface Request extends PaginationRequest {
@@ -44,13 +43,12 @@ export namespace GetProducts {
         priceUsd: number
         status: ProductStatus
         averageStars: number
+        quantity?: number
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     export interface Response extends PaginationResponse<Item> { }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace GetProductById {
     export interface Request {
         id: string;
@@ -59,7 +57,8 @@ export namespace GetProductById {
 
     export type Response = {
         description?: string;
-        categoryId?: string;
+        categoryId: string;
+        categoryName?: string;
         id: string
         name: string
         imageUrl: string
@@ -70,7 +69,6 @@ export namespace GetProductById {
     };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace UpdateProduct {
     export interface Request {
         id: string;

@@ -10,6 +10,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
     "@reduxjs/toolkit": "^2.11.2",
     "daisyui": "^5.5.19",
     "firebase": "^12.12.1",
@@ -18,7 +19,9 @@
     "postcss": "^8.5.12",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "react-redux": "^9.2.0"
+    "react-hook-form": "^7.75.0",
+    "react-redux": "^9.2.0",
+    "zod": "^4.4.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.2.4",

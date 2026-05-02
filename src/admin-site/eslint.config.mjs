@@ -13,6 +13,12 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+    rules: {
+      "@typescript-eslint/no-namespace": "off",
+      "@typescript-eslint/no-empty-object-type": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;

@@ -1,7 +1,6 @@
 export interface PaginationRequest {
-    pageIndex: number;
-    pageSize: number;
-    isAll?: boolean;
+    pageIndex?: number;
+    pageSize?: number;
 }
 
 export interface PaginationResponse<T> {
