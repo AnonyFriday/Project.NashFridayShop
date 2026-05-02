@@ -4,6 +4,12 @@ import { useState } from "react";
 import { useGetProductsQuery } from "@/features/products/product.api";
 import DataTable, { ColumnDef } from "@/features/layout/components/DataTable";
 import Pagination from "@/features/layout/components/Pagination";
+import {
+  ActionGroupInDataTable,
+  ViewButton,
+  EditButton,
+  DeleteButton,
+} from "@/features/layout/components/Buttons/ActionButtons";
 import { GetProducts } from "@/features/products/product.types";
 import Image from "next/image";
 
@@ -15,6 +21,10 @@ export default function ProductsPage() {
     pageIndex,
     pageSize,
   });
+
+  const handleDelete = (id: string) => {
+    console.log("Delete product", id);
+  };
 
   const columns: ColumnDef<GetProducts.Item>[] = [
     {
@@ -62,6 +72,17 @@ export default function ProductsPage() {
           <span className="text-warning">★</span>
           <span>{product.averageStars.toFixed(1)}</span>
         </div>
+      ),
+    },
+    {
+      key: "actions",
+      header: "Actions",
+      render: (product) => (
+        <ActionGroupInDataTable>
+          <ViewButton href={`/products/${product.id}`} />
+          <EditButton href={`/products/${product.id}/edit`} />
+          <DeleteButton onClick={() => handleDelete(product.id)} />
+        </ActionGroupInDataTable>
       ),
     },
   ];
