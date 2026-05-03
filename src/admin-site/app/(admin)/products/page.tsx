@@ -1,25 +1,47 @@
 "use client";
 
 import { useState } from "react";
-import { useGetProductsQuery } from "@/features/products/product.api";
+import { useGetProductsQuery, useDeleteProductMutation } from "@/features/products/product.api";
 import DataTable, { ColumnDef } from "@/features/shared/components/DataTable";
 import Pagination from "@/features/shared/components/Pagination";
 import { ActionGroupInDataTable, ViewButton, EditButton, DeleteButton } from "@/features/shared/components/Buttons/DataTableButtons";
 import { GetProducts } from "@/features/products/product.types";
 import Image from "next/image";
 import ProductStatusBadge from "@/features/products/components/ProductStatusBadge";
+import ArchiveStatusBadge from "@/features/shared/components/ArchiveStatusBadge";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { enqueueToast, ToastType } from "@/features/shared/toast.slice";
 
 export default function ProductsPage() {
+  const dispatch = useAppDispatch();
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
 
   const { data, isLoading, error } = useGetProductsQuery({
     pageIndex,
     pageSize,
+    includeDeleted: true, // Show deleted products so we can toggle them back
   });
 
-  const handleDelete = (id: string) => {
-    console.log("Delete product", id);
+  const [toggleDelete] = useDeleteProductMutation();
+
+  const handleDelete = async (id: string, isDeleted: boolean) => {
+    try {
+      await toggleDelete(id).unwrap();
+      dispatch(
+        enqueueToast({
+          message: `Product ${isDeleted ? "restored" : "archived"} successfully.`,
+          type: ToastType.Success,
+        }),
+      );
+    } catch (err) {
+      dispatch(
+        enqueueToast({
+          message: "Failed to update product archived status.",
+          type: ToastType.Error,
+        }),
+      );
+    }
   };
 
   const columns: ColumnDef<GetProducts.Item>[] = [
@@ -63,11 +85,7 @@ export default function ProductsPage() {
     {
       key: "isDeleted",
       header: "Archived",
-      render: (product) => (
-        <div className={`badge badge-sm font-medium ${product.isDeleted ? "badge-error" : "badge-ghost opacity-50"}`}>
-          {product.isDeleted ? "DELETED" : "ACTIVE"}
-        </div>
-      ),
+      render: (product) => <ArchiveStatusBadge isDeleted={product.isDeleted} size="sm" />,
     },
     {
       key: "averageStars",
@@ -86,7 +104,7 @@ export default function ProductsPage() {
         <ActionGroupInDataTable>
           <ViewButton href={`/products/${product.id}`} />
           <EditButton href={`/products/${product.id}/edit`} />
-          <DeleteButton onClick={() => handleDelete(product.id)} />
+          <DeleteButton onClick={() => handleDelete(product.id, product.isDeleted)} />
         </ActionGroupInDataTable>
       ),
     },
