@@ -8,6 +8,7 @@ export const productApiSlice = baseApiSlice.injectEndpoints({
                 url: "products",
                 params,
             }),
+            providesTags: ['Product'],
             keepUnusedDataFor: 0,
         }),
         getProductById: builder.query<GetProductById.Response, GetProductById.Request>({
@@ -15,7 +16,8 @@ export const productApiSlice = baseApiSlice.injectEndpoints({
                 url: `products/${id}`,
                 params: { IncludeDeleted: includeDeleted },
             }),
-            keepUnusedDataFor: 0
+            providesTags: ['Product'],
+            keepUnusedDataFor: 0,
         }),
         updateProduct: builder.mutation<UpdateProduct.Response, UpdateProduct.Request>({
             query: ({ id, body, includeDeleted = false }) => ({
@@ -24,12 +26,14 @@ export const productApiSlice = baseApiSlice.injectEndpoints({
                 params: { includeDeleted },
                 body,
             }),
+            invalidatesTags: ['Product'],
         }),
         deleteProduct: builder.mutation<void, string>({
             query: (id) => ({
                 url: `products/${id}`,
                 method: 'PATCH',
             }),
+            invalidatesTags: ['Product'],
         }),
     }),
     overrideExisting: false,
