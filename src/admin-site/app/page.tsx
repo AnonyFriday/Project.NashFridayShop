@@ -2,32 +2,11 @@
 
 import { APP_ROUTES } from "@/lib/api/routes";
 import Logo from "@/features/shared/components/Logo";
-import { redirect } from "next/navigation";
-
-import { useGetUserInfoQuery } from "@/features/auth/auth.api";
-import LoadingSpinner from "@/features/shared/components/LoadingSpinner";
 
 export default function Home() {
-  const { data: user, isLoading } = useGetUserInfoQuery();
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <LoadingSpinner />
-      </div>
-    );
-  }
-
-  if (user?.isAuthenticated) {
-    redirect(APP_ROUTES.DASHBOARD);
-  }
-
   return (
-    <div
-      className="min-h-screen flex flex-col items-center justify-center p-4 bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: `url('/admin_login_background_1777840914166.png')` }}>
-      {/* Overlay for better readability */}
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"></div>
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-cover bg-center bg-no-repeat">
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-[2px]"></div>
 
       <div className="relative z-10 bg-base-100/80 backdrop-blur-xl p-10 rounded-3xl shadow-2xl flex flex-col items-center max-w-md w-full border border-white/10">
         <div className="transform hover:scale-105 transition-transform duration-300">
