@@ -11,6 +11,12 @@ public static class AppCts
         }
     }
 
+    public static class Api
+    {
+        public const int PageSize = 10;
+        public const int PageIndex = 0;
+    }
+
     public static class ProblemDetailsTypes
     {
         public sealed record ProblemType(int StatusCode, string TypeLink);

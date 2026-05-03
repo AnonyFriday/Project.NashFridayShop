@@ -100,10 +100,20 @@ public static class ServiceCollectionExtension
     {
         SiteUrlsOption? siteUrls = configuration.GetSection(SiteUrlsOption.SiteUrls).Get<SiteUrlsOption>();
         string apiServerUrl = siteUrls!.ApiServer.Url;
+        string identityServerUrl = siteUrls.IdentityServer.Authority;
 
         services.AddReverseProxy()
             .LoadFromMemory(
                 routes: [
+                    new RouteConfig() {
+                        RouteId = "identity-route",
+                        ClusterId = "identity-cluster",
+                        Match = new RouteMatch() {
+                            Methods = ["GET", "POST", "PUT", "DELETE", "PATCH"],
+                            Path = "/api/customers/{**catch-all}"
+                        }
+                    },
+
                     new RouteConfig() {
                         RouteId = "api-route",
                         ClusterId = "api-cluster",
@@ -111,7 +121,7 @@ public static class ServiceCollectionExtension
                             Methods = ["GET", "POST", "PUT", "DELETE", "PATCH"],
                             Path = "/api/{**catch-all}" // catch all request with /api/products, /api/categories,..
                         }
-                    }
+                    },
                 ],
                 clusters: [
                     new ClusterConfig() {
@@ -121,6 +131,18 @@ public static class ServiceCollectionExtension
                                 "api-destination",
                                 new DestinationConfig() {
                                     Address = apiServerUrl,
+                                }
+                            }
+                        }
+                    },
+
+                    new ClusterConfig() {
+                        ClusterId = "identity-cluster",
+                        Destinations = new Dictionary<string, DestinationConfig>() {
+                            {
+                                "identity-destination",
+                                new DestinationConfig() {
+                                    Address = identityServerUrl,
                                 }
                             }
                         }
