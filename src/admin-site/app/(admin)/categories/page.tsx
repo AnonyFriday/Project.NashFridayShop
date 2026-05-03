@@ -55,7 +55,11 @@ export default function CategoriesPage() {
     {
       key: "description",
       header: "Description",
-      render: (category) => <span className="text-sm text-base-content/70 line-clamp-1">{category.description}</span>,
+      render: (category) => (
+        <div className="max-w-3xl">
+          <span className="text-sm text-base-content/70 whitespace-pre-wrap wrap-break-word">{category.description}</span>
+        </div>
+      ),
     },
     {
       key: "actions",

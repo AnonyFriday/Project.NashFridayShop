@@ -68,7 +68,7 @@ export default function CategoryViewPage() {
 
         <div>
           <h3 className="font-semibold text-lg mb-4 uppercase tracking-widest text-base-content/50">Description</h3>
-          <p className="text-base-content/80 leading-relaxed text-justify text-lg">
+          <p className="text-base-content/80 leading-relaxed text-lg whitespace-pre-wrap wrap-break-word">
             {category.description || "No description has been provided for this category yet."}
           </p>
         </div>
