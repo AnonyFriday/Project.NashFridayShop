@@ -43,7 +43,8 @@ export namespace GetProducts {
         priceUsd: number
         status: ProductStatus
         averageStars: number
-        quantity?: number
+        quantity: number
+        isDeleted: boolean
     }
 
     export interface Response extends PaginationResponse<Item> { }
