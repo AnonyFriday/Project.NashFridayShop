@@ -7,6 +7,7 @@ import { APP_ROUTES } from "@/lib/api/routes";
 import { useGetProductByIdQuery } from "@/features/products/product.api";
 import { useParams } from "next/navigation";
 import ProductStatusBadge from "@/features/products/components/ProductStatusBadge";
+import LoadingSpinner from "@/features/shared/components/LoadingSpinner";
 
 export default function ProductViewPage() {
   const params = useParams<{ id: string }>();
@@ -17,15 +18,11 @@ export default function ProductViewPage() {
     error,
   } = useGetProductByIdQuery({
     id: params.id,
-    includeDeleted: false,
+    includeDeleted: true,
   });
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   if (error || !product) {
@@ -39,7 +36,7 @@ export default function ProductViewPage() {
   return (
     <div className="flex flex-col gap-6 p-4 max-w-6xl mx-auto w-full">
       {/* Header */}
-      <GoBackButton href="/products" title="Product Details" />
+      <GoBackButton href={APP_ROUTES.PRODUCTS} title="Product Details" />
 
       {/* Content Area */}
       <div className="grid grid-cols-1 md:grid-cols-[1fr_1.5fr] gap-8 bg-base-100 p-8 rounded-box shadow-sm border border-base-200">
