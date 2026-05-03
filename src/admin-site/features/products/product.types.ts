@@ -57,7 +57,7 @@ export namespace GetProductById {
     }
 
     export type Response = {
-        description?: string;
+        description: string;
         categoryId: string;
         categoryName?: string;
         id: string

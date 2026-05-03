@@ -9,7 +9,7 @@ import { GetCategories } from "@/features/categories/category.types";
 
 export const productSchema = z.object({
   name: z.coerce.string().min(1, "Product name is required.").max(255, "Product name must not exceed 255 characters."),
-  description: z.string().min(1, "Product description is required.").max(1000, "Product description must not exceed 1000 characters.").optional(),
+  description: z.string().min(1, "Product description is required.").max(1000, "Product description must not exceed 1000 characters."),
   priceUsd: z.number({ message: "Price must be a number." }).gt(0, "Price must be greater than 0."),
   imageUrl: z.string().url("Must be a valid URL.").min(1, "Image URL is required."),
   quantity: z.number({ message: "Quantity must be a number." }).int().min(0, "Quantity must be greater than or equal to 0."),
@@ -28,7 +28,7 @@ interface ProductFormProps {
   onCancel: () => void;
 }
 
-export default function ProductForm({ initialProduct, categoriesData, onSubmit, onCancel, isLoadingProduct, isLoadingCategories }: ProductFormProps) {
+export default function ProductForm({ initialProduct, categoriesData, onSubmit, onCancel, isLoadingProduct, isLoadingCategories }: Readonly<ProductFormProps>) {
   const {
     register,
     handleSubmit,
