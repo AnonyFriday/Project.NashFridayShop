@@ -108,7 +108,8 @@ public class Endpoint(
                         role
                     )
                     .SetDestinations(
-                        OpenIddictConstants.Destinations.AccessToken
+                        OpenIddictConstants.Destinations.AccessToken,
+                        OpenIddictConstants.Destinations.IdentityToken
                     )
                 );
             }
