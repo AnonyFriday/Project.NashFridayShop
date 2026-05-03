@@ -1,7 +1,7 @@
-import Sidebar from "@/features/layout/components/Sidebar";
-import Navbar from "@/features/layout/components/Navbar";
-import FloatingDrawerButton from "@/features/layout/components/FloatingDrawerButton";
-import DrawerCheckbox from "@/features/layout/components/DrawerCheckbox";
+import Sidebar from "@/features/shared/components/Sidebar";
+import Navbar from "@/features/shared/components/Navbar";
+import FloatingDrawerButton from "@/features/shared/components/FloatingDrawerButton";
+import DrawerCheckbox from "@/features/shared/components/DrawerCheckbox";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (

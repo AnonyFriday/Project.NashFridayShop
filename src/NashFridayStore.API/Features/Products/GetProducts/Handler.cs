@@ -59,7 +59,8 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
                 x.ImageUrl,
                 x.PriceUsd,
                 x.Status,
-                x.ProductRatings.Any() ? x.ProductRatings.Average(x => (decimal)x.Stars) % AppCts.Api.MaxStars : 0)
+                x.ProductRatings.Any() ? x.ProductRatings.Average(x => (decimal)x.Stars) % AppCts.Api.MaxStars : 0,
+                x.Quantity)
             )
             .ToListAsync(ct);
 

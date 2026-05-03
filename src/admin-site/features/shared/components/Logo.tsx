@@ -17,7 +17,7 @@ export default function Logo({ width = 120, height = 40, className = "", priorit
       className={className}
       priority={priority}
       quality={100}
-      style={{ width: "auto", height: "auto", maxWidth: width }}
+      style={{ width: "100%", height: "auto", maxWidth: width }}
     />
   );
 }

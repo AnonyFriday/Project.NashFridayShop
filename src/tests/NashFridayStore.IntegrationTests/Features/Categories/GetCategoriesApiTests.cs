@@ -59,14 +59,14 @@ public class GetCategoriesApiTests : IClassFixture<CustomWebApplicationFactory>,
         Assert.Equal(2, result.TotalItems);
         Assert.Equal(1, result.TotalPages);
         Assert.Equal(0, result.PageIndex);
-        Assert.Equal(2, result.CategoryItems.Count);
+        Assert.Equal(2, result.Items.Count);
 
-        CategoryItem electronics = result.CategoryItems.First(c => c.Name == "Electronics");
+        CategoryItem electronics = result.Items.First(c => c.Name == "Electronics");
         Assert.Equal(category1.Id, electronics.Id);
         Assert.Equal("Electronics", electronics.Name);
         Assert.Equal("Electronic devices", electronics.Description);
 
-        CategoryItem books = result.CategoryItems.First(c => c.Name == "Books");
+        CategoryItem books = result.Items.First(c => c.Name == "Books");
         Assert.Equal(category2.Id, books.Id);
         Assert.Equal("Books", books.Name);
         Assert.Equal("Books and literature", books.Description);
@@ -101,9 +101,9 @@ public class GetCategoriesApiTests : IClassFixture<CustomWebApplicationFactory>,
         Assert.Equal(1, result.TotalItems);
         Assert.Equal(1, result.TotalPages);
         Assert.Equal(0, result.PageIndex);
-        Assert.Single(result.CategoryItems);
+        Assert.Single(result.Items);
 
-        CategoryItem books = result.CategoryItems[0];
+        CategoryItem books = result.Items[0];
         Assert.Equal(category2.Id, books.Id);
         Assert.Equal("Books", books.Name);
         Assert.Equal("Books and literature", books.Description);
@@ -137,7 +137,7 @@ public class GetCategoriesApiTests : IClassFixture<CustomWebApplicationFactory>,
         Assert.Equal(5, result.TotalItems);
         Assert.Equal(3, result.TotalPages);
         Assert.Equal(1, result.PageIndex);
-        Assert.Equal(2, result.CategoryItems.Count);
+        Assert.Equal(2, result.Items.Count);
     }
 
     [Fact]
@@ -168,7 +168,7 @@ public class GetCategoriesApiTests : IClassFixture<CustomWebApplicationFactory>,
         Assert.Equal(5, result.TotalItems);
         Assert.Equal(1, result.TotalPages);
         Assert.Equal(0, result.PageIndex);
-        Assert.Equal(5, result.CategoryItems.Count);
+        Assert.Equal(5, result.Items.Count);
     }
 
     [Fact]
@@ -200,6 +200,6 @@ public class GetCategoriesApiTests : IClassFixture<CustomWebApplicationFactory>,
         Assert.Equal(2, result.TotalItems);
         Assert.Equal(1, result.TotalPages);
         Assert.Equal(0, result.PageIndex);
-        Assert.Equal(2, result.CategoryItems.Count);
+        Assert.Equal(2, result.Items.Count);
     }
 }

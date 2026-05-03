@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { useGetProductsQuery } from "@/features/products/product.api";
-import DataTable, { ColumnDef } from "@/features/layout/components/DataTable";
-import Pagination from "@/features/layout/components/Pagination";
-import { GetProducts } from "@/features/products/product.types";
+import DataTable, { ColumnDef } from "@/features/shared/components/DataTable";
+import Pagination from "@/features/shared/components/Pagination";
+import { ActionGroupInDataTable, ViewButton, EditButton, DeleteButton } from "@/features/shared/components/Buttons/DataTableButtons";
+import { GetProducts, ProductStatus } from "@/features/products/product.types";
 import Image from "next/image";
 
 export default function ProductsPage() {
@@ -15,6 +16,10 @@ export default function ProductsPage() {
     pageIndex,
     pageSize,
   });
+
+  const handleDelete = (id: string) => {
+    console.log("Delete product", id);
+  };
 
   const columns: ColumnDef<GetProducts.Item>[] = [
     {
@@ -38,6 +43,11 @@ export default function ProductsPage() {
       render: (product) => <span className="font-medium">{product.name}</span>,
     },
     {
+      key: "quantity",
+      header: "Stock",
+      render: (product) => <span className={`font-bold ${product.quantity && product.quantity > 0 ? "text-success" : "text-error"}`}>{product.quantity ?? 0}</span>,
+    },
+    {
       key: "priceUsd",
       header: "Price",
       render: (product) => <span className="font-semibold text-primary">${product.priceUsd.toFixed(2)}</span>,
@@ -46,12 +56,7 @@ export default function ProductsPage() {
       key: "status",
       header: "Status",
       render: (product) => {
-        const isInstock = product.status === "InStock";
-        return (
-          <div className={`badge ${isInstock ? "badge-success text-success-content" : "badge-ghost"}`}>
-            {product.status}
-          </div>
-        );
+        return <div className={ProductStatus.toBadgeClassName(product.status)}>{product.status.toUpperCase()}</div>;
       },
     },
     {
@@ -62,6 +67,17 @@ export default function ProductsPage() {
           <span className="text-warning">★</span>
           <span>{product.averageStars.toFixed(1)}</span>
         </div>
+      ),
+    },
+    {
+      key: "actions",
+      header: "Actions",
+      render: (product) => (
+        <ActionGroupInDataTable>
+          <ViewButton href={`/products/${product.id}`} />
+          <EditButton href={`/products/${product.id}/edit`} />
+          <DeleteButton onClick={() => handleDelete(product.id)} />
+        </ActionGroupInDataTable>
       ),
     },
   ];

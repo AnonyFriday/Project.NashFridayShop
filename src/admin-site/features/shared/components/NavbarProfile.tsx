@@ -27,7 +27,7 @@ export default function AuthComponent() {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow border border-base-200"
+            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow border border-base-200"
           >
             <li>
               <Link href={APP_ROUTES.PROFILE}>Profile</Link>

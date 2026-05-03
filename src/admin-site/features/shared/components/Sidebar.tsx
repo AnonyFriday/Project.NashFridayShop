@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAppDispatch } from "@/lib/redux/hooks";
-import { setSidebarOpen } from "@/features/layout/drawer.slice";
+import { setSidebarOpen } from "@/features/shared/drawer.slice";
 
 import { APP_ROUTES } from "@/lib/api/routes";
 
