@@ -7,8 +7,11 @@ import { APP_ROUTES } from "@/lib/api/routes";
 import ProductForm, { ProductFormData } from "@/features/products/components/ProductForm";
 import { useGetCategoriesQuery } from "@/features/categories/category.api";
 import { useParams } from "next/navigation";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { ToastType, enqueueToast } from "@/features/shared/toast.slice";
 
 export default function EditProductPage() {
+  const dispatch = useAppDispatch();
   const params = useParams<{ id: string }>();
   const router = useRouter();
 
@@ -24,14 +27,23 @@ export default function EditProductPage() {
     isAll: true,
   });
 
-  const [, { isLoading: isUpdating }] = useUpdateProductMutation();
+  const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
 
   const onCancel = () => {
     router.back();
   };
 
   const onSubmit = async (data: ProductFormData) => {
-    console.log(data);
+    try {
+      var result = await updateProduct({
+        id: params.id,
+        body: data,
+      }).unwrap();
+
+      dispatch(enqueueToast({ message: `Product "${result.name}" updated successfully.`, type: ToastType.Success }));
+    } catch (err) {
+      dispatch(enqueueToast({ message: "Product updated failed.", type: ToastType.Error }));
+    }
   };
 
   if (isFetching) {
@@ -53,7 +65,14 @@ export default function EditProductPage() {
   return (
     <div className="flex flex-col gap-6 p-4 max-w-4xl mx-auto w-full">
       <GoBackButton href={`${APP_ROUTES.PRODUCTS}/${params.id}`} title="Edit Product" />
-      <ProductForm initialProduct={product} isLoading={isUpdating} isLoadingCategories={isLoadingCategories} categoriesData={categoriesData?.items ?? []} onSubmit={onSubmit} onCancel={onCancel} />
+      <ProductForm
+        initialProduct={product}
+        isLoading={isUpdating}
+        isLoadingCategories={isLoadingCategories}
+        categoriesData={categoriesData?.items ?? []}
+        onSubmit={onSubmit}
+        onCancel={onCancel}
+      />
     </div>
   );
 }
