@@ -1,26 +1,29 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using NashFridayStore.BFF.AppOptions;
 
 namespace NashFridayStore.BFF.Features.Auth.Login;
 
 [ApiController]
 [Route("api/auth/login")]
-public class Endpoint : ControllerBase
+public class Endpoint(IOptions<SiteUrlsOption> siteUrlsOptions) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> LoginAsync(string? returnUrl = "/")
+    public async Task<IActionResult> LoginAsync([FromQuery] string? returnUrl)
     {
-        // Precheck returnUrl to avoid returnUrl sending to the malicious website
-        if (Url.IsLocalUrl(returnUrl))
+        string defaultReturnUrl = siteUrlsOptions.Value.AdminUrls.FirstOrDefault() ?? "/";
+
+        if (string.IsNullOrWhiteSpace(returnUrl))
         {
-            returnUrl = "/";
+            returnUrl = defaultReturnUrl;
         }
 
-        // autoamtically redirect to the /connect/authorize
+        // automatically redirect to the /connect/authorize
         await HttpContext.ChallengeAsync(
             OpenIdConnectDefaults.AuthenticationScheme,
-            new()
+            new AuthenticationProperties
             {
                 // url that user wants to go back after login successfully
                 RedirectUri = returnUrl

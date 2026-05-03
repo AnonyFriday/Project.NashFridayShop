@@ -7,7 +7,7 @@ export const baseApiSlice = createApi({
     baseUrl: ENV_CONFIGS.bffUrl,
     credentials: 'include', // send bff cookies
   }),
-  tagTypes: ['Category', 'Product', 'Order', 'Customer'],
+  tagTypes: ['Category', 'Product', 'Order', 'Customer', 'User'],
   endpoints: () => ({
   }),
 });

@@ -4,6 +4,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
     <PackageReference Include="Yarp.ReverseProxy" />
+
+    <PackageReference Include="OpenIddict.AspNetCore" />
   </ItemGroup>
 
 </Project>

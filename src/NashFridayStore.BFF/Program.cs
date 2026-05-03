@@ -1,6 +1,9 @@
 using NashFridayStore.BFF.Commons;
 using NashFridayStore.BFF.Extensions;
 
+// This line is the fix: it stops .NET from renaming 'email' to 'http://schemas...'
+
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
