@@ -9,7 +9,7 @@ export default function ToastContainer() {
   if (toasts.length <= 0) return null;
 
   return (
-    <div className="toast toast-top toast-end z-[100] space-y-2">
+    <div className="toast toast-top toast-end z-100 space-y-2">
       {toasts.map((toast) => (
         <ToastItem key={toast.id} toast={toast}></ToastItem>
       ))}

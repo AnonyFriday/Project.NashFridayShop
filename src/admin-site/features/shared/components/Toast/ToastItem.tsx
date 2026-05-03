@@ -15,7 +15,7 @@ export default function ToastItem({ toast }: { toast: Toast }) {
     }, toast.duration);
 
     return () => clearTimeout(timer);
-  }, [toast.id, dispatch]);
+  }, [toast.id, dispatch, toast.duration]);
 
   const typeClass =
     toast.type === ToastType.Success

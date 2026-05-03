@@ -35,13 +35,14 @@ export default function EditProductPage() {
 
   const onSubmit = async (data: ProductFormData) => {
     try {
-      var result = await updateProduct({
+      const result = await updateProduct({
         id: params.id,
         body: data,
       }).unwrap();
 
       dispatch(enqueueToast({ message: `Product "${result.name}" updated successfully.`, type: ToastType.Success }));
     } catch (err) {
+      console.error(err);
       dispatch(enqueueToast({ message: "Product updated failed.", type: ToastType.Error }));
     }
   };

@@ -35,6 +35,7 @@ export default function ProductsPage() {
         }),
       );
     } catch (err) {
+      console.error(err);
       dispatch(
         enqueueToast({
           message: "Failed to update product archived status.",
