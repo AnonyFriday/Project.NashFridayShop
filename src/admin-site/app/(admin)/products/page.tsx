@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useGetProductsQuery, useDeleteProductMutation } from "@/features/products/product.api";
 import { useGetCategoriesQuery } from "@/features/categories/category.api";
 import DataTable, { ColumnDef } from "@/features/shared/components/DataTable";
@@ -183,7 +184,9 @@ export default function ProductsPage() {
     <div className="flex flex-col gap-6 p-4">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Products</h1>
-        <button className="btn btn-primary">Add Product</button>
+        <Link href="/products/new" className="btn btn-primary">
+          Add Product
+        </Link>
       </div>
 
       {/* Product Filters */}

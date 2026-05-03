@@ -77,13 +77,38 @@ export namespace UpdateProduct {
         body: {
             categoryId: string;
             name: string;
-            description?: string;
+            description: string;
             priceUsd: number;
             imageUrl: string;
             quantity: number;
             status: ProductStatus;
         }
     }
+
+    export interface Response {
+        id: string;
+        categoryId: string;
+        name: string;
+        description: string;
+        priceUsd: number;
+        imageUrl: string;
+        quantity: number;
+        status: ProductStatus;
+        updatedAtUtc: string;
+    }
+}
+
+export namespace CreateProduct {
+    export interface Request {
+        categoryId: string;
+        name: string;
+        description: string;
+        priceUsd: number;
+        imageUrl: string;
+        quantity: number;
+        status: ProductStatus;
+    }
+
     export interface Response {
         id: string;
         categoryId: string;
