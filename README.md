@@ -29,15 +29,16 @@
 | API             | `/api/products/{id}/ratings` | GET    | Product ratings list                                | ✅ Completed          | ✅ UT, IT |
 | API             | `/api/products/{id}/rating`  | POST   | Add rating/comment                                  | ✅ Completed          | ✅ UT, IT |
 | API             | `/api/orders`                | GET    | Order listing                                       | ❌ Not implemented    | ❌ None   |
-| API             | `/api/customers`             | GET    | Customer listing                                    | ❌ Not implemented    | ❌ None   |
+| API             | `/api/customers`             | GET    | Customer listing (Paginated & Searchable)           | ✅ Completed          | ❌ None   |
 | API             | `/api/customers/{id}`        | DELETE | Disable customer                                    | ❌ Not implemented    | ❌ None   |
 | Identity Server | `/connect/authorize`         | GET    | Start authorization code flow                       | ✅ Completed          | ❌ None   |
 | Identity Server | `/connect/token`             | POST   | Exchange auth code → tokens                         | ✅ Completed          | ❌ None   |
 | Identity Server | `/connect/logout`            | POST   | Identity logout flow                                | ✅ Completed          | ❌ None   |
 | BFF             | `/api/auth/login`            | GET    | Start login from React → redirect to IdentityServer | ✅ Completed          | ❌ None   |
-| BFF             | `/apit/auth/logout`          | POST   | Logout BFF session + Identity session               | ✅ Completed          | ❌ None   |
+| BFF             | `/api/auth/me`               | GET    | Get current user info & claims                      | ✅ Completed          | ❌ None   |
+| BFF             | `/api/auth/logout`           | POST   | Logout BFF session + Identity session               | ✅ Completed          | ❌ None   |
 | BFF             | `/signin-oidc`               | GET    | OIDC callback endpoint (middleware handled)         | ✅ Middleware handled | ❌ None   |
-| BFF             | `/dev/auth/tokens`(Dev Only) | GET    | Return access_token, id_token, refresh_token | ✅ Completed          | ❌ None   |
+| BFF             | `/dev/auth/tokens`(Dev Only) | GET    | Return access_token, id_token, refresh_token        | ✅ Completed          | ❌ None   |
 | BFF             | `/api/{**catch-all}`         | ALL    | Reverse proxy React requests → API                  | ✅ Completed          | ❌ None   |
 
 ## Current Supporting Pages For Identity Server
@@ -59,41 +60,27 @@
 
 ## Week 1-2-3 Summary
 
-### Project Foundation & Environment
+### Week 1-2 Highlights
 
-- **Development tooling setup**: Fork, Postman, VS Code, Docker Desktop, SSMS
-- **Environment configuration**: User Secrets, appsettings.Development.json, IOptions
+- **Infra**: Setup Docker (SQL Server, Redis), CI Pipelines, and Vertical Slice Architecture.
+- **Testing**: Integrated xUnit & SQLite In-Memory for API integration tests.
+- **Backend**: Built API Server & Identity Server (OpenIddict + Auth Code Flow + PKCE).
+- **Security**: Implemented BFF Pattern with YARP Reverse Proxy & Cookie sessions.
+- **Frontend**: Scaffolded Admin Portal (Next.js) & StoreFront (Razor Pages).
 
-### Testing Infrastructure
+### Week 3 Highlights
 
-- xUnit
-- SQLite In-Memory
-- WebApplicationFactory
-- Code coverage setup
-
-### Frontend & Services
-
-- Next.js Admin Site scaffold
-- Razor Pages StoreFront scaffold
-- BFF storing tokens + YARP Reverse Proxy
-- Identity Server project + seperate Database
-- API Server
-
-### Authentication & Authorization
-
-- Authorization Code Flow + PKCE
-- Access Token
-- ID Token
-- Refresh Token
-- Scope-based claim issuance
-- Cookie-based BFF session
-
-### CI/CD and Services
-
-- Next.JS CI Pipeline
-- .NET CI pipeline
-- CD Pipeline (later)
-- Docker Compose for images: Redis, SQL Server, Redis Insight
+- **BE**: Added Quantity & Ratings to Products.
+- **BE**: Implemented Soft Delete (Toggle).
+- **BE**: Added searchable Customer list.
+- **BE**: Fixed Identity Server claims.
+- **Auth**: IdentityServer login UI.
+- **Auth**: Integrated full BFF Login/Session flow in Admin Portal.
+- **FE**: Built Admin Portal (Next.js 16).
+- **FE**: Added Proxy route protection.
+- **FE**: Implemented Product & Category CRUD.
+- **FE**: Added Customers listing page.
+- **Pending**: Image uploads & Logout & Dashboard & Customer-site
 
 ## Project Structure
 
@@ -123,16 +110,19 @@ Each feature is organized in its own "slice" within the **API** project with all
 Example from `src/NashFridayStore.API/Features/Products/GetProduct/`:
 
 **Request.cs**:
+
 ```csharp
 public sealed record Request(Guid Id);
 ```
 
 **Response.cs**:
+
 ```csharp
 public sealed record Response(Guid Id, string Name, string ImageUrl, decimal PriceUsd, ProductStatus Status);
 ```
 
 **Validator.cs**:
+
 ```csharp
 public sealed class Validator : AbstractValidator<Request>
 {
@@ -146,6 +136,7 @@ public sealed class Validator : AbstractValidator<Request>
 ```
 
 **Handler.cs**:
+
 ```csharp
 public sealed class Handler(StoreDbContext dbContext, IValidator<Request> validator)
 {
@@ -174,6 +165,7 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
 ```
 
 **Exceptions.cs**:
+
 ```csharp
 internal static class Exceptions
 {
@@ -197,6 +189,7 @@ internal static class Exceptions
 ```
 
 **Endpoint.cs**:
+
 ```csharp
 using NashFridayStore.API.Features.Products.GetProduct;
 
@@ -215,6 +208,7 @@ public sealed class GetProductEndpoint(Handler handler) : ControllerBase
 ```
 
 **Unit Test**:
+
 ```csharp
 [Fact]
 [Trait("UT", "Id")]
@@ -232,9 +226,10 @@ public void Validate_IdIsEmpty_ShouldHaveValidationError()
     Assert.Equal(nameof(Request.Id), error.PropertyName);
     Assert.Equal(Validator.IdRequired, error.ErrorMessage);
 }
-``` 
+```
 
 **Integration Test**:
+
 ```csharp
 [Fact]
 public async Task GetProduct_ById_ShouldReturnProduct()
@@ -318,6 +313,7 @@ public async Task GetProduct_ById_ShouldReturnProduct()
 - OAuth2 article: https://viblo.asia/p/tim-hieu-doi-chut-ve-oauth2-eW65GvMLlDO
 - OAuth2 RFC: https://datatracker.ietf.org/doc/html/rfc6749#section-1.1
 - Required OIDC claims: https://openid.net/specs/openid-connect-core-1_0.html#IDToken
+- ID Token & ClaimsIdentity (Section 2): https://openid.net/specs/openid-connect-core-1_0.html#IDToken
 
 ### Architecture & Testing
 
