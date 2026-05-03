@@ -1,5 +1,3 @@
-import { ENV_CONFIGS } from "@/lib/config/env";
-
 export const APP_ROUTES = {
   HOME: "/",
   DASHBOARD: "/dashboard",
@@ -8,6 +6,6 @@ export const APP_ROUTES = {
   CUSTOMERS: "/customers",
   CATEGORIES: "/categories",
   PROFILE: "/profile",
-  LOGIN: `${ENV_CONFIGS.bffUrl}/api/auth/login`,
-  REGISTER: `${ENV_CONFIGS.bffUrl}/api/auth/register`,
+  LOGIN: "/login",
+  REGISTER: "/register",
 };
