@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using NashFridayStore.Domain.Entities.Products;
 using NashFridayStore.Infrastructure.Data;
 
-namespace NashFridayStore.API.Features.Products.DeleteProduct;
+namespace NashFridayStore.API.Features.Products.ToggleDeleteProduct;
 
 public sealed class Handler(StoreDbContext dbContext, IValidator<Request> validator)
 {
@@ -17,8 +17,8 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
             throw new Exceptions.ValidationException(validation.Errors);
         }
 
-        // Get product
         Product? product = await dbContext.Products
+            .IgnoreQueryFilters()
             .FirstOrDefaultAsync(x => x.Id == req.Id, cancellationToken: ct);
 
         if (product == null)
@@ -26,9 +26,15 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
             throw new Exceptions.ProductNotFoundException(req.Id);
         }
 
-        // Perform soft delete
-        product.IsDeleted = true;
-        product.DeletedAtUtc = DateTime.UtcNow;
+        if (product.IsDeleted)
+        {
+            product.IsDeleted = false;
+        }
+        else
+        {
+            product.IsDeleted = true;
+            product.DeletedAtUtc = DateTime.UtcNow;
+        }
 
         dbContext.Products.Update(product);
         await dbContext.SaveChangesAsync(ct);

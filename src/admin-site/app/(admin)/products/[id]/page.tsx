@@ -6,6 +6,7 @@ import { DeleteButton, EditButton } from "@/features/shared/components/Buttons/D
 import { APP_ROUTES } from "@/lib/api/routes";
 import { useGetProductByIdQuery } from "@/features/products/product.api";
 import { useParams } from "next/navigation";
+import ProductStatusBadge from "@/features/products/components/ProductStatusBadge";
 
 export default function ProductViewPage() {
   const params = useParams<{ id: string }>();
@@ -35,8 +36,6 @@ export default function ProductViewPage() {
     );
   }
 
-  const isInstock = product.status === "InStock";
-
   return (
     <div className="flex flex-col gap-6 p-4 max-w-6xl mx-auto w-full">
       {/* Header */}
@@ -64,7 +63,7 @@ export default function ProductViewPage() {
 
           <div className="flex items-center gap-4">
             <span className="text-4xl font-black text-primary">${product.priceUsd.toFixed(2)}</span>
-            <div className={`badge badge-lg font-medium ${isInstock ? "badge-success text-success-content" : "badge-ghost"}`}>{product.status}</div>
+            <ProductStatusBadge status={product.status} size="lg" />
           </div>
 
           <div className="flex items-center gap-2 text-lg">
@@ -93,7 +92,8 @@ export default function ProductViewPage() {
           <div className="grow">
             <h3 className="font-semibold text-lg">Description</h3>
             <p className="text-base-content/80 leading-relaxed text-justify">
-              {product.description || "No detailed description has been provided for this product yet. When added, it will appear here to help customers understand the item better."}
+              {product.description ||
+                "No detailed description has been provided for this product yet. When added, it will appear here to help customers understand the item better."}
             </p>
           </div>
 

@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace NashFridayStore.API.Features.Products.DeleteProduct;
+namespace NashFridayStore.API.Features.Products.ToggleDeleteProduct;
 
 public sealed class Validator : AbstractValidator<Request>
 {

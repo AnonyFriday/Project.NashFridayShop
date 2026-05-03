@@ -2,7 +2,7 @@ using FluentValidation.Results;
 using NashFridayStore.API.Commons.Exceptions;
 using static NashFridayStore.Domain.Commons.AppCts;
 
-namespace NashFridayStore.API.Features.Products.DeleteProduct;
+namespace NashFridayStore.API.Features.Products.ToggleDeleteProduct;
 
 public static class Exceptions
 {

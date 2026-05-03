@@ -1,24 +1,48 @@
 "use client";
 
 import { useState } from "react";
-import { useGetProductsQuery } from "@/features/products/product.api";
+import { useGetProductsQuery, useDeleteProductMutation } from "@/features/products/product.api";
 import DataTable, { ColumnDef } from "@/features/shared/components/DataTable";
 import Pagination from "@/features/shared/components/Pagination";
 import { ActionGroupInDataTable, ViewButton, EditButton, DeleteButton } from "@/features/shared/components/Buttons/DataTableButtons";
-import { GetProducts, ProductStatus } from "@/features/products/product.types";
+import { GetProducts } from "@/features/products/product.types";
 import Image from "next/image";
+import ProductStatusBadge from "@/features/products/components/ProductStatusBadge";
+import ArchiveStatusBadge from "@/features/shared/components/ArchiveStatusBadge";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { enqueueToast, ToastType } from "@/features/shared/toast.slice";
 
 export default function ProductsPage() {
+  const dispatch = useAppDispatch();
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
 
   const { data, isLoading, error } = useGetProductsQuery({
     pageIndex,
     pageSize,
+    includeDeleted: true, // Show deleted products so we can toggle them back
   });
 
-  const handleDelete = (id: string) => {
-    console.log("Delete product", id);
+  const [toggleDelete] = useDeleteProductMutation();
+
+  const handleDelete = async (id: string, isDeleted: boolean) => {
+    try {
+      await toggleDelete(id).unwrap();
+      dispatch(
+        enqueueToast({
+          message: `Product ${isDeleted ? "restored" : "archived"} successfully.`,
+          type: ToastType.Success,
+        }),
+      );
+    } catch (err) {
+      console.error(err);
+      dispatch(
+        enqueueToast({
+          message: "Failed to update product archived status.",
+          type: ToastType.Error,
+        }),
+      );
+    }
   };
 
   const columns: ColumnDef<GetProducts.Item>[] = [
@@ -45,7 +69,9 @@ export default function ProductsPage() {
     {
       key: "quantity",
       header: "Stock",
-      render: (product) => <span className={`font-bold ${product.quantity && product.quantity > 0 ? "text-success" : "text-error"}`}>{product.quantity ?? 0}</span>,
+      render: (product) => (
+        <span className={`font-bold ${product.quantity && product.quantity > 0 ? "text-success" : "text-error"}`}>{product.quantity ?? 0}</span>
+      ),
     },
     {
       key: "priceUsd",
@@ -55,9 +81,12 @@ export default function ProductsPage() {
     {
       key: "status",
       header: "Status",
-      render: (product) => {
-        return <div className={ProductStatus.toBadgeClassName(product.status)}>{product.status.toUpperCase()}</div>;
-      },
+      render: (product) => <ProductStatusBadge status={product.status} size="sm" />,
+    },
+    {
+      key: "isDeleted",
+      header: "Archived",
+      render: (product) => <ArchiveStatusBadge isDeleted={product.isDeleted} size="sm" />,
     },
     {
       key: "averageStars",
@@ -76,7 +105,7 @@ export default function ProductsPage() {
         <ActionGroupInDataTable>
           <ViewButton href={`/products/${product.id}`} />
           <EditButton href={`/products/${product.id}/edit`} />
-          <DeleteButton onClick={() => handleDelete(product.id)} />
+          <DeleteButton onClick={() => handleDelete(product.id, product.isDeleted)} />
         </ActionGroupInDataTable>
       ),
     },

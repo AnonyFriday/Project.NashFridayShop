@@ -12,11 +12,11 @@ export namespace ProductStatus {
     export function toBadgeClassName(status: ProductStatus): string {
         switch (status) {
             case ProductStatus.InStock:
-                return "badge badge-success text-white py-4 px-4"
+                return "badge badge-success text-white"
             case ProductStatus.OutOfStock:
-                return "badge badge-error text-white py-4 px-4"
+                return "badge badge-error text-white"
             case ProductStatus.Discontinued:
-                return "badge badge-warning text-white py-4 px-4"
+                return "badge badge-warning text-white"
             default:
                 return "badge badge-ghost"
         }
@@ -43,7 +43,8 @@ export namespace GetProducts {
         priceUsd: number
         status: ProductStatus
         averageStars: number
-        quantity?: number
+        quantity: number
+        isDeleted: boolean
     }
 
     export interface Response extends PaginationResponse<Item> { }

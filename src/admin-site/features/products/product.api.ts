@@ -24,6 +24,12 @@ export const productApiSlice = baseApiSlice.injectEndpoints({
                 body,
             }),
         }),
+        deleteProduct: builder.mutation<void, string>({
+            query: (id) => ({
+                url: `products/${id}`,
+                method: 'PATCH',
+            }),
+        }),
     }),
     overrideExisting: false,
 });
@@ -33,5 +39,6 @@ export const {
     useLazyGetProductsQuery,
     useGetProductByIdQuery,
     useLazyGetProductByIdQuery,
-    useUpdateProductMutation
+    useUpdateProductMutation,
+    useDeleteProductMutation
 } = productApiSlice;

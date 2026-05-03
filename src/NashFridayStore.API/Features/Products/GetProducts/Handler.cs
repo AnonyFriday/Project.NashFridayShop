@@ -40,7 +40,7 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
             .AsNoTracking()
             .Include(p => p.ProductRatings)
             .Where(x =>
-                x.Status == req.Status &&
+                (!req.Status.HasValue || x.Status == req.Status.Value) &&
                 (!req.CategoryId.HasValue || x.CategoryId == req.CategoryId.Value) &&
                 (string.IsNullOrWhiteSpace(req.SearchName) || x.Name.Contains(req.SearchName)) &&
                 (!req.MinPrice.HasValue || x.PriceUsd >= req.MinPrice.Value) &&
@@ -60,7 +60,8 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
                 x.PriceUsd,
                 x.Status,
                 x.ProductRatings.Any() ? x.ProductRatings.Average(x => (decimal)x.Stars) % AppCts.Api.MaxStars : 0,
-                x.Quantity)
+                x.Quantity,
+                x.IsDeleted)
             )
             .ToListAsync(ct);
 

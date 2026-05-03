@@ -1,14 +1,14 @@
 using FluentValidation.Results;
 using FluentValidation.TestHelper;
-using NashFridayStore.API.Features.Products.DeleteProduct;
+using NashFridayStore.API.Features.Products.ToggleDeleteProduct;
 
 namespace NashFridayStore.UnitTests.Features.Products;
 
-public class DeleteProductValidatorTests
+public class ToggleDeleteProductValidatorTests
 {
     private readonly Validator _validator;
 
-    public DeleteProductValidatorTests()
+    public ToggleDeleteProductValidatorTests()
     {
         _validator = new Validator();
     }
