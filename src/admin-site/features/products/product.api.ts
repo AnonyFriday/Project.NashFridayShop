@@ -8,14 +8,14 @@ export const productApiSlice = baseApiSlice.injectEndpoints({
                 url: "products",
                 params,
             }),
-
+            keepUnusedDataFor: 0,
         }),
         getProductById: builder.query<GetProductById.Response, GetProductById.Request>({
             query: ({ id, includeDeleted = false }) => ({
                 url: `products/${id}`,
                 params: { IncludeDeleted: includeDeleted },
             }),
-
+            keepUnusedDataFor: 0
         }),
         updateProduct: builder.mutation<UpdateProduct.Response, UpdateProduct.Request>({
             query: ({ id, body }) => ({

@@ -24,14 +24,17 @@ export default function EditProductPage() {
     isAll: true,
   });
 
-  const [, { isLoading: isUpdating }] = useUpdateProductMutation();
+  const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
 
   const onCancel = () => {
     router.back();
   };
 
   const onSubmit = async (data: ProductFormData) => {
-    console.log(data);
+    await updateProduct({
+      id: params.id,
+      body: data,
+    }).unwrap();
   };
 
   if (isFetching) {

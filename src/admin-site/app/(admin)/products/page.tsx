@@ -45,11 +45,7 @@ export default function ProductsPage() {
     {
       key: "quantity",
       header: "Stock",
-      render: (product) => (
-        <span className={`font-bold ${product.quantity && product.quantity > 0 ? "text-success" : "text-error"}`}>
-          {product.quantity ?? 0}
-        </span>
-      ),
+      render: (product) => <span className={`font-bold ${product.quantity && product.quantity > 0 ? "text-success" : "text-error"}`}>{product.quantity ?? 0}</span>,
     },
     {
       key: "priceUsd",
