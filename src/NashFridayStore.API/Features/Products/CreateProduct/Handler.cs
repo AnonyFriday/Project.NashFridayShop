@@ -8,8 +8,15 @@ namespace NashFridayStore.API.Features.Products.CreateProduct;
 
 public sealed class Handler(StoreDbContext dbContext, IValidator<Request> validator)
 {
-    public async Task<Response> HandleAsync(Request req, CancellationToken ct)
+    public async Task<Response> HandleAsync(Request orgReq, CancellationToken ct)
     {
+        // Clean request
+        Request req = orgReq with
+        {
+            Name = orgReq.Name.Trim(),
+            Description = orgReq.Description.Trim(),
+        };
+
         // Handle Validation
         ValidationResult validation = await validator.ValidateAsync(req, ct);
         if (!validation.IsValid)

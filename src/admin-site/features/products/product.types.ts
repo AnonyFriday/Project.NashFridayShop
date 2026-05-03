@@ -57,7 +57,7 @@ export namespace GetProductById {
     }
 
     export type Response = {
-        description?: string;
+        description: string;
         categoryId: string;
         categoryName?: string;
         id: string
@@ -77,13 +77,38 @@ export namespace UpdateProduct {
         body: {
             categoryId: string;
             name: string;
-            description?: string;
+            description: string;
             priceUsd: number;
             imageUrl: string;
             quantity: number;
             status: ProductStatus;
         }
     }
+
+    export interface Response {
+        id: string;
+        categoryId: string;
+        name: string;
+        description: string;
+        priceUsd: number;
+        imageUrl: string;
+        quantity: number;
+        status: ProductStatus;
+        updatedAtUtc: string;
+    }
+}
+
+export namespace CreateProduct {
+    export interface Request {
+        categoryId: string;
+        name: string;
+        description: string;
+        priceUsd: number;
+        imageUrl: string;
+        quantity: number;
+        status: ProductStatus;
+    }
+
     export interface Response {
         id: string;
         categoryId: string;
