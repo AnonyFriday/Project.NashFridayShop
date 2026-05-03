@@ -22,13 +22,13 @@ export type ProductFormData = z.infer<typeof productSchema>;
 interface ProductFormProps {
   initialProduct?: ProductFormData;
   categoriesData: GetCategories.Item[];
-  isLoading?: boolean;
+  isLoadingProduct?: boolean;
   isLoadingCategories?: boolean;
   onSubmit: (data: ProductFormData) => void;
   onCancel: () => void;
 }
 
-export default function ProductForm({ initialProduct, categoriesData, onSubmit, onCancel, isLoading, isLoadingCategories }: ProductFormProps) {
+export default function ProductForm({ initialProduct, categoriesData, onSubmit, onCancel, isLoadingProduct, isLoadingCategories }: ProductFormProps) {
   const {
     register,
     handleSubmit,
@@ -51,7 +51,10 @@ export default function ProductForm({ initialProduct, categoriesData, onSubmit, 
         {/* Category */}
         <div className="form-control w-full">
           <label className="label font-semibold">Category</label>
-          <select {...register("categoryId")} className={`select select-bordered w-full ${errors.categoryId ? "select-error" : ""}`} disabled={isLoadingCategories}>
+          <select
+            {...register("categoryId")}
+            className={`select select-bordered w-full ${errors.categoryId ? "select-error" : ""}`}
+            disabled={isLoadingCategories}>
             <option value="" disabled>
               Select a category
             </option>
@@ -67,14 +70,23 @@ export default function ProductForm({ initialProduct, categoriesData, onSubmit, 
         {/* Price */}
         <div className="form-control w-full">
           <label className="label font-semibold">Price (USD)</label>
-          <input type="number" step="0.01" {...register("priceUsd", { valueAsNumber: true })} className={`input input-bordered w-full ${errors.priceUsd ? "input-error" : ""}`} />
+          <input
+            type="number"
+            step="0.01"
+            {...register("priceUsd", { valueAsNumber: true })}
+            className={`input input-bordered w-full ${errors.priceUsd ? "input-error" : ""}`}
+          />
           {errors.priceUsd && <span className="label-text-alt text-error mt-1">{errors.priceUsd.message}</span>}
         </div>
 
         {/* Quantity */}
         <div className="form-control w-full">
           <label className="label font-semibold">Quantity</label>
-          <input type="number" {...register("quantity", { valueAsNumber: true })} className={`input input-bordered w-full ${errors.quantity ? "input-error" : ""}`} />
+          <input
+            type="number"
+            {...register("quantity", { valueAsNumber: true })}
+            className={`input input-bordered w-full ${errors.quantity ? "input-error" : ""}`}
+          />
           {errors.quantity && <span className="label-text-alt text-error mt-1">{errors.quantity.message}</span>}
         </div>
 
@@ -109,7 +121,7 @@ export default function ProductForm({ initialProduct, categoriesData, onSubmit, 
       </div>
 
       <div className="flex gap-4 mt-4">
-        <SubmitButton title="Save Changes" isLoading={isLoading} />
+        <SubmitButton title="Save Changes" isLoading={isLoadingProduct} />
         <CancelButton title="Cancel" onClick={onCancel} />
       </div>
     </form>

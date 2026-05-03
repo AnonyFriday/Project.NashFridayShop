@@ -7,9 +7,11 @@ namespace NashFridayStore.API.Features.Products.GetProduct;
 public sealed class Endpoint(Handler handler) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> Get([FromRoute] Guid id, CancellationToken ct)
+    public async Task<IActionResult> Get(
+        [FromRoute] Guid id,
+        [FromQuery] bool IncludeDeleted, CancellationToken ct)
     {
-        var request = new Request(id);
+        var request = new Request(id, IncludeDeleted);
         Response response = await handler.HandleAsync(request, ct);
         return Ok(response);
     }

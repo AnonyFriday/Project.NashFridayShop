@@ -9,25 +9,20 @@ import { useGetCategoriesQuery } from "@/features/categories/category.api";
 import { useParams } from "next/navigation";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { ToastType, enqueueToast } from "@/features/shared/toast.slice";
+import LoadingSpinner from "@/features/shared/components/LoadingSpinner";
 
 export default function EditProductPage() {
   const dispatch = useAppDispatch();
   const params = useParams<{ id: string }>();
   const router = useRouter();
 
-  const {
-    data: product,
-    isLoading: isFetching,
-    error,
-  } = useGetProductByIdQuery({
-    id: params.id,
-  });
+  const { data: product, isLoading: isLoadingProduct, error } = useGetProductByIdQuery({ id: params.id, includeDeleted: true });
 
   const { data: categoriesData, isLoading: isLoadingCategories } = useGetCategoriesQuery({
     isAll: true,
   });
 
-  const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
+  const [updateProduct, { isLoading: isUpdatingProduct }] = useUpdateProductMutation();
 
   const onCancel = () => {
     router.back();
@@ -38,21 +33,21 @@ export default function EditProductPage() {
       const result = await updateProduct({
         id: params.id,
         body: data,
+        includeDeleted: true,
       }).unwrap();
 
       dispatch(enqueueToast({ message: `Product "${result.name}" updated successfully.`, type: ToastType.Success }));
+      if (!isUpdatingProduct) {
+        router.push(`${APP_ROUTES.PRODUCTS}/${params.id}`);
+      }
     } catch (err) {
       console.error(err);
       dispatch(enqueueToast({ message: "Product updated failed.", type: ToastType.Error }));
     }
   };
 
-  if (isFetching) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-      </div>
-    );
+  if (isLoadingProduct) {
+    return <LoadingSpinner />;
   }
 
   if (error || !product) {
@@ -65,10 +60,10 @@ export default function EditProductPage() {
 
   return (
     <div className="flex flex-col gap-6 p-4 max-w-4xl mx-auto w-full">
-      <GoBackButton href={`${APP_ROUTES.PRODUCTS}/${params.id}`} title="Edit Product" />
+      <GoBackButton href={`${APP_ROUTES.PRODUCTS}`} title="Edit Product" />
       <ProductForm
         initialProduct={product}
-        isLoading={isUpdating}
+        isLoadingProduct={isUpdatingProduct || isLoadingProduct}
         isLoadingCategories={isLoadingCategories}
         categoriesData={categoriesData?.items ?? []}
         onSubmit={onSubmit}

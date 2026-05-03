@@ -9,21 +9,15 @@ public sealed class Endpoint(Handler handler) : ControllerBase
     [HttpPut]
     public async Task<IActionResult> Put(
         [FromRoute] Guid id,
+        [FromQuery] bool includeDeleted,
         [FromBody] RequestBody body,
         CancellationToken ct
     )
     {
         var request = new Request(
             id,
-            new RequestBody(
-                body.CategoryId,
-                body.Name,
-                body.Description,
-                body.PriceUsd,
-                body.ImageUrl,
-                body.Quantity,
-                body.Status
-            ));
+            body,
+            includeDeleted);
 
         Response response = await handler.HandleAsync(request, ct);
         return Ok(response);
