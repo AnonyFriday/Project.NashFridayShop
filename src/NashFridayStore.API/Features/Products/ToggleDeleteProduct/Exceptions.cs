@@ -12,17 +12,5 @@ public static class Exceptions
         ProblemDetailsTypes.NotFound,
         "Product Not Found",
         $"Product with ID '{id}' was not found"
-    )
-    {
-        public Guid ProductId { get; } = id;
-    }
-
-    public sealed class ProductAlreadyDeletedException(Guid id) : AppException(
-        ProblemDetailsTypes.BadRequest,
-        "Product Already Deleted",
-        $"Product with ID '{id}' was already deleted"
-    )
-    {
-        public Guid ProductId { get; } = id;
-    }
+    );
 }
