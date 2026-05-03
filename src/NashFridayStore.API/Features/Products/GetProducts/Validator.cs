@@ -44,6 +44,7 @@ public sealed class Validator : AbstractValidator<Request>
 
         RuleFor(x => x.Status)
             .IsInEnum()
-            .WithMessage(InvalidProductStatus);
+            .WithMessage(InvalidProductStatus)
+            .When(x => x.Status.HasValue);
     }
 }
