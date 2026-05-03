@@ -259,8 +259,9 @@ export default function ProductsPage() {
         {data?.totalPages !== undefined && (
           <Pagination
             pageIndex={pageIndex}
-            totalPages={data.totalPages}
             pageSize={pageSize}
+            totalPages={data.totalPages}
+            totalItems={data.totalItems}
             onPageIndexChange={(newPage) => setPageIndex(newPage)}
             onPageSizeChange={(newSize) => {
               setPageSize(newSize);

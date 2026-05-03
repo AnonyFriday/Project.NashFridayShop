@@ -1,5 +1,5 @@
 import { baseApiSlice } from "@/lib/api/base.api";
-import { GetCategories } from "./category.types";
+import { GetCategories, GetCategoryById, CreateCategory, UpdateCategory } from "./category.types";
 
 export const categoryApiSlice = baseApiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -8,6 +8,36 @@ export const categoryApiSlice = baseApiSlice.injectEndpoints({
                 url: "categories",
                 params
             }),
+            providesTags: ['Category'],
+        }),
+        getCategoryById: builder.query<GetCategoryById.Response, string>({
+            query: (id) => ({
+                url: `categories/${id}`,
+            }),
+            providesTags: ['Category'],
+        }),
+        createCategory: builder.mutation<CreateCategory.Response, CreateCategory.Request>({
+            query: (body) => ({
+                url: "categories",
+                method: 'POST',
+                body,
+            }),
+            invalidatesTags: ['Category'],
+        }),
+        updateCategory: builder.mutation<UpdateCategory.Response, UpdateCategory.Request>({
+            query: ({ id, body }) => ({
+                url: `categories/${id}`,
+                method: 'PUT',
+                body,
+            }),
+            invalidatesTags: ['Category'],
+        }),
+        deleteCategory: builder.mutation<void, string>({
+            query: (id) => ({
+                url: `categories/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['Category'],
         }),
     }),
 });
@@ -15,4 +45,8 @@ export const categoryApiSlice = baseApiSlice.injectEndpoints({
 export const {
     useGetCategoriesQuery,
     useLazyGetCategoriesQuery,
+    useGetCategoryByIdQuery,
+    useCreateCategoryMutation,
+    useUpdateCategoryMutation,
+    useDeleteCategoryMutation,
 } = categoryApiSlice;
