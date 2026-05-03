@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace NashFridayStore.IdentityServer.Features.Customers.GetCustomers;
 
 [ApiController]
-[Route("identity/customers")]
+[Route("api/customers")]
 public sealed class Endpoint(Handler handler) : ControllerBase
 {
     [HttpGet]

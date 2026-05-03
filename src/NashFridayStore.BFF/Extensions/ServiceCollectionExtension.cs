@@ -106,6 +106,15 @@ public static class ServiceCollectionExtension
             .LoadFromMemory(
                 routes: [
                     new RouteConfig() {
+                        RouteId = "identity-route",
+                        ClusterId = "identity-cluster",
+                        Match = new RouteMatch() {
+                            Methods = ["GET", "POST", "PUT", "DELETE", "PATCH"],
+                            Path = "/api/customers/{**catch-all}"
+                        }
+                    },
+
+                    new RouteConfig() {
                         RouteId = "api-route",
                         ClusterId = "api-cluster",
                         Match = new RouteMatch() {
@@ -113,15 +122,6 @@ public static class ServiceCollectionExtension
                             Path = "/api/{**catch-all}" // catch all request with /api/products, /api/categories,..
                         }
                     },
-
-                    new RouteConfig() {
-                        RouteId = "identity-route",
-                        ClusterId = "identity-cluster",
-                        Match = new RouteMatch() {
-                            Methods = ["GET", "POST", "PUT", "DELETE", "PATCH"],
-                            Path = "/identity/{**catch-all}"
-                        }
-                    }
                 ],
                 clusters: [
                     new ClusterConfig() {
