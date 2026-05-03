@@ -14,6 +14,7 @@ import ArchiveStatusBadge from "@/features/shared/components/ArchiveStatusBadge"
 import SearchInput from "@/features/shared/components/SearchInput";
 import SelectInput, { SelectInputOptions } from "@/features/shared/components/SelectInput";
 import ToggleInput from "@/features/shared/components/ToggleInput";
+import NumberInput from "@/features/shared/components/NumberInput";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { enqueueToast, ToastType } from "@/features/shared/toast.slice";
 
@@ -49,6 +50,8 @@ export default function ProductsPage() {
   const { data, isLoading, error } = useGetProductsQuery({
     pageIndex,
     pageSize,
+    minPrice: filters.minPrice,
+    maxPrice: filters.maxPrice,
     searchName: filters.searchName || undefined,
     categoryId: filters.categoryId || undefined,
     status: (filters.status as ProductStatus) || undefined,
@@ -56,14 +59,22 @@ export default function ProductsPage() {
   });
 
   const handleFilterChange = (newFilters: GetProducts.Request) => {
+    // Ensure minPrice <= maxPrice do not pass
+    const validFilters = { ...newFilters };
+    if (validFilters.minPrice !== undefined && validFilters.maxPrice !== undefined && validFilters.minPrice > validFilters.maxPrice) {
+      return;
+    }
+
     // Only reset page and update state accept the pageSize and pageIndex
     if (
-      newFilters.searchName !== filters.searchName ||
-      newFilters.categoryId !== filters.categoryId ||
-      newFilters.status !== filters.status ||
-      newFilters.includeDeleted !== filters.includeDeleted
+      validFilters.searchName !== filters.searchName ||
+      validFilters.categoryId !== filters.categoryId ||
+      validFilters.status !== filters.status ||
+      validFilters.includeDeleted !== filters.includeDeleted ||
+      validFilters.minPrice !== filters.minPrice ||
+      validFilters.maxPrice !== filters.maxPrice
     ) {
-      setFilters(newFilters);
+      setFilters(validFilters);
       setPageIndex(0);
     }
   };
@@ -201,6 +212,22 @@ export default function ProductsPage() {
             options={statusOptions}
             onChange={(val) => handleFilterChange({ ...filters, status: (val as ProductStatus) || undefined })}
             className="sm:w-48"
+          />
+          <NumberInput
+            label="Min Price $"
+            placeholder="Min..."
+            prefix="$"
+            initialValue={filters.minPrice}
+            onNumberChange={(val) => handleFilterChange({ ...filters, minPrice: val })}
+            className="sm:w-32"
+          />
+          <NumberInput
+            label="Max Price $"
+            placeholder="Max..."
+            prefix="$"
+            initialValue={filters.maxPrice}
+            onNumberChange={(val) => handleFilterChange({ ...filters, maxPrice: val })}
+            className="sm:w-32"
           />
 
           {/* Archive Toggle and Reset */}
