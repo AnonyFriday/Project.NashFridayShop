@@ -100,6 +100,7 @@ public static class ServiceCollectionExtension
     {
         SiteUrlsOption? siteUrls = configuration.GetSection(SiteUrlsOption.SiteUrls).Get<SiteUrlsOption>();
         string apiServerUrl = siteUrls!.ApiServer.Url;
+        string identityServerUrl = siteUrls.IdentityServer.Authority;
 
         services.AddReverseProxy()
             .LoadFromMemory(
@@ -111,6 +112,15 @@ public static class ServiceCollectionExtension
                             Methods = ["GET", "POST", "PUT", "DELETE", "PATCH"],
                             Path = "/api/{**catch-all}" // catch all request with /api/products, /api/categories,..
                         }
+                    },
+
+                    new RouteConfig() {
+                        RouteId = "identity-route",
+                        ClusterId = "identity-cluster",
+                        Match = new RouteMatch() {
+                            Methods = ["GET", "POST", "PUT", "DELETE", "PATCH"],
+                            Path = "/identity/{**catch-all}"
+                        }
                     }
                 ],
                 clusters: [
@@ -121,6 +131,18 @@ public static class ServiceCollectionExtension
                                 "api-destination",
                                 new DestinationConfig() {
                                     Address = apiServerUrl,
+                                }
+                            }
+                        }
+                    },
+
+                    new ClusterConfig() {
+                        ClusterId = "identity-cluster",
+                        Destinations = new Dictionary<string, DestinationConfig>() {
+                            {
+                                "identity-destination",
+                                new DestinationConfig() {
+                                    Address = identityServerUrl,
                                 }
                             }
                         }
