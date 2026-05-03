@@ -33,6 +33,7 @@ export default function EditProductPage() {
       const result = await updateProduct({
         id: params.id,
         body: data,
+        includeDeleted: true,
       }).unwrap();
 
       dispatch(enqueueToast({ message: `Product "${result.name}" updated successfully.`, type: ToastType.Success }));

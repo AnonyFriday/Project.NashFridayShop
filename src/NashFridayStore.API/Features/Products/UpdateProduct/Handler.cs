@@ -37,8 +37,14 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
             throw new Exceptions.CategoryNotFoundException(req.RequestBody.CategoryId);
         }
 
-        // Get product
-        Product? product = await dbContext.Products
+        // Get product 
+        IQueryable<Product> query = dbContext.Products.AsQueryable();
+        if (req.IncludeDeleted)
+        {
+            query = query.IgnoreQueryFilters();
+        }
+
+        Product? product = await query
             .FirstOrDefaultAsync(x => x.Id == req.ProductId, cancellationToken: ct);
 
         if (product == null)

@@ -18,9 +18,10 @@ export const productApiSlice = baseApiSlice.injectEndpoints({
             keepUnusedDataFor: 0
         }),
         updateProduct: builder.mutation<UpdateProduct.Response, UpdateProduct.Request>({
-            query: ({ id, body }) => ({
+            query: ({ id, body, includeDeleted = false }) => ({
                 url: `products/${id}`,
                 method: 'PUT',
+                params: { includeDeleted },
                 body,
             }),
         }),

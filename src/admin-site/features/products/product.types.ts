@@ -73,6 +73,7 @@ export namespace GetProductById {
 export namespace UpdateProduct {
     export interface Request {
         id: string;
+        includeDeleted?: boolean;
         body: {
             categoryId: string;
             name: string;

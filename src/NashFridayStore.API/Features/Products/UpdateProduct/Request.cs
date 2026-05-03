@@ -13,4 +13,5 @@ public sealed record RequestBody(
 
 public sealed record Request(
     Guid ProductId,
-    RequestBody RequestBody);
+    RequestBody RequestBody,
+    bool IncludeDeleted = false);
