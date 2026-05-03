@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Reflection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -54,6 +53,7 @@ public static class ServiceCollectionExtension
                 opt.SaveTokens = true;
                 opt.UsePkce = true;
                 opt.RequireHttpsMetadata = false; // disable for development only
+                opt.MapInboundClaims = false; // fixed claim been renamed into the legacy name (xml schema)
 
                 // BFF requires claims based on supported scope from identity server
                 opt.Scope.Add(OpenIdConnectScope.OpenId);
