@@ -76,9 +76,14 @@ export default function CategoryViewPage() {
         <div className="divider my-1"></div>
 
         {/* Action Buttons */}
-        <div className="mt-4 flex gap-3">
-          <EditButton href={`${APP_ROUTES.CATEGORIES}/${category.id}/edit`} title="Edit Category" className="btn btn-primary flex-1" />
-          <DeleteButton onClick={handleDelete} title="Delete Category" className="btn btn-outline btn-error px-8" />
+        <div className="mt-4 flex flex-col gap-3">
+          <div className="flex gap-3">
+            <EditButton href={`${APP_ROUTES.CATEGORIES}/${category.id}/edit`} title="Edit Category" className="btn btn-primary flex-1" />
+            <div className="tooltip tooltip-bottom" data-tip="Feature under development">
+              <DeleteButton onClick={() => {}} title="Delete Category" className="btn btn-outline btn-error px-8 opacity-50 cursor-not-allowed" />
+            </div>
+          </div>
+          <p className="text-xs text-error/60 italic text-center">Note: Delete functionality is currently under development.</p>
         </div>
       </div>
     </div>

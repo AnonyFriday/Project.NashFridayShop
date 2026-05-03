@@ -68,7 +68,9 @@ export default function CategoriesPage() {
         <ActionGroupInDataTable>
           <ViewButton href={`${APP_ROUTES.CATEGORIES}/${category.id}`} />
           <EditButton href={`${APP_ROUTES.CATEGORIES}/${category.id}/edit`} />
-          <DeleteButton onClick={() => handleDelete(category.id)} />
+          <div className="tooltip" data-tip="Under development">
+            <DeleteButton onClick={() => {}} className="opacity-50 cursor-not-allowed" />
+          </div>
         </ActionGroupInDataTable>
       ),
     },
