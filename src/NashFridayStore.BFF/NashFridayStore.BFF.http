@@ -1,6 +1,0 @@
-@NashFridayStore.BFF_HostAddress = http://localhost:5179
-
-GET {{NashFridayStore.BFF_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

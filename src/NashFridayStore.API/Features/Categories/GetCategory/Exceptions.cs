@@ -12,8 +12,5 @@ public static class Exceptions
         ProblemDetailsTypes.NotFound,
         "Category Not Found",
         $"Category with ID '{id}' was not found"
-    )
-    {
-        public Guid CategoryId { get; } = id;
-    }
+    );
 }

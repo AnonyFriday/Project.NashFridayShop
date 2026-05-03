@@ -12,8 +12,5 @@ public static class Exceptions
         ProblemDetailsTypes.NotFound,
         "Product Not Found",
         $"Product with ID '{id}' was not found"
-    )
-    {
-        public Guid ProductId { get; } = id;
-    }
+    );
 }

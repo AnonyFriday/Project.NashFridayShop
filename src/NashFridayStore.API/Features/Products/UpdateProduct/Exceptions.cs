@@ -12,17 +12,11 @@ public static class Exceptions
         ProblemDetailsTypes.NotFound,
         "Product Not Found",
         $"Product with ID '{id}' was not found"
-    )
-    {
-        public Guid ProductId { get; } = id;
-    }
+    );
 
     public sealed class CategoryNotFoundException(Guid categoryId) : AppException(
         ProblemDetailsTypes.NotFound,
         "Category Not Found",
         $"Category with ID '{categoryId}' was not found"
-    )
-    {
-        public Guid CategoryId { get; } = categoryId;
-    }
+    );
 }
