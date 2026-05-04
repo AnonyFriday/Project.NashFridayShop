@@ -8,13 +8,14 @@ import { enqueueToast, ToastType } from "@/features/shared/toast.slice";
 
 interface ProductImageUploadProps {
   productId: string;
+  initialImageUrl?: string;
   onSuccess: () => void;
   onSkip: () => void;
 }
 
-export const ProductImageUpload = ({ productId, onSuccess, onSkip }: ProductImageUploadProps) => {
+export const ProductImageUpload = ({ productId, initialImageUrl, onSuccess, onSkip }: ProductImageUploadProps) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(initialImageUrl || null);
   const [updateImage, { isLoading }] = useUpdateProductImageMutation();
   const dispatch = useAppDispatch();
 
