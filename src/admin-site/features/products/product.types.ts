@@ -79,7 +79,6 @@ export namespace UpdateProduct {
             name: string;
             description: string;
             priceUsd: number;
-            imageUrl: string;
             quantity: number;
             status: ProductStatus;
         }
@@ -104,7 +103,6 @@ export namespace CreateProduct {
         name: string;
         description: string;
         priceUsd: number;
-        imageUrl: string;
         quantity: number;
         status: ProductStatus;
     }
