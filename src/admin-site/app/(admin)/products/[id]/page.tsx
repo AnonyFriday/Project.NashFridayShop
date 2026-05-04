@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import GoBackButton from "@/features/shared/components/Buttons/GoBackButton";
-import { DeleteButton, EditButton } from "@/features/shared/components/Buttons/DataTableButtons";
+import { EditButton } from "@/features/shared/components/Buttons/DataTableButtons";
 import { APP_ROUTES } from "@/lib/api/routes";
 import { useGetProductByIdQuery } from "@/features/products/product.api";
 import { useParams } from "next/navigation";
@@ -97,9 +97,8 @@ export default function ProductViewPage() {
           <div className="divider my-1"></div>
 
           {/* Action Buttons */}
-          <div className="mt-8 flex gap-3 border-t border-base-200">
-            <EditButton href={`${APP_ROUTES.PRODUCTS}/${product.id}/edit`} title="Edit Product" className="btn btn-primary flex-1" />
-            <DeleteButton title="Delete" className="btn btn-outline btn-error px-8"></DeleteButton>{" "}
+          <div className="mt-8 flex gap-3 border-t border-base-200 pt-4">
+            <EditButton href={`${APP_ROUTES.PRODUCTS}/${product.id}/edit`} title="Edit Product" className="btn btn-primary w-full" />
           </div>
         </div>
       </div>
