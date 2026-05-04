@@ -7,7 +7,6 @@ public sealed record RequestBody(
     string Name,
     string Description,
     decimal PriceUsd,
-    string ImageUrl,
     int Quantity,
     ProductStatus Status);
 

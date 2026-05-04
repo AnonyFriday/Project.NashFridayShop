@@ -7,6 +7,5 @@ public sealed record Request(
     string Name,
     string Description,
     decimal PriceUsd,
-    string ImageUrl,
     int Quantity,
     ProductStatus Status = ProductStatus.InStock);
