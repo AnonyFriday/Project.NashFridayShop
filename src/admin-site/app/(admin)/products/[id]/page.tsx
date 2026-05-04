@@ -40,7 +40,7 @@ export default function ProductViewPage() {
 
       {/* Content Area */}
       <div className="grid grid-cols-1 md:grid-cols-[1fr_1.5fr] gap-8 bg-base-100 p-8 rounded-box shadow-sm border border-base-200">
-        {/* Left Side: Image */}
+        {/* Left Side: Image, if dont have athen default image */}
         <div className="flex flex-col">
           <div className="bg-base-200 rounded-box p-4 aspect-square relative overflow-hidden flex items-center justify-center">
             {product.imageUrl ? (

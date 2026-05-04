@@ -119,3 +119,17 @@ export namespace CreateProduct {
         createdAtUtc: string;
     }
 }
+
+export namespace UpdateProductImage {
+    export interface Request {
+        productId: string;
+        imageFile: File;
+        includeDeleted?: boolean;
+    }
+
+    export interface Response {
+        productId: string;
+        imageUrl: string;
+        updatedAtUtc: string;
+    }
+}
