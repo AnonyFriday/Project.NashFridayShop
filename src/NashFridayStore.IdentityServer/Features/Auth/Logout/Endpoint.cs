@@ -9,7 +9,7 @@ namespace NashFridayStore.IdentityServer.Features.Auth.Logout;
 [Route("/connect/logout")]
 public class Endpoint : ControllerBase
 {
-    [HttpPost]
+    [HttpPost, HttpGet]
     public async Task<IActionResult> LogoutAsync()
     {
         // Delete cookie LoginSession
