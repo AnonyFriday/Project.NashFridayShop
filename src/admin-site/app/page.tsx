@@ -1,12 +1,38 @@
 "use client";
 
-import { APP_ROUTES } from "@/lib/api/routes";
+import { useGetUserInfoQuery, useLoginRedirectMutation } from "@/features/auth/auth.api";
 import Logo from "@/features/shared/components/Logo";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { useEffect } from "react";
+import { setUser } from "@/features/auth/auth.slice";
+import LoadingSpinner from "@/features/shared/components/LoadingSpinner";
 
 export default function Home() {
+  const [loginRedirect] = useLoginRedirectMutation();
+
+  const { data: user, isLoading, isSuccess, isError } = useGetUserInfoQuery();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (isSuccess && user) {
+      dispatch(setUser(user));
+    }
+    if (isError) {
+      dispatch(setUser(null));
+    }
+  }, [user, isSuccess, isError, dispatch]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner></LoadingSpinner>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-cover bg-center bg-no-repeat">
-      <div className="absolute inset-0 bg-black/80 backdrop-blur-[2px]"></div>
+      <div className="absolute inset-0 bg-amber-50/10 backdrop-blur-[2px]"></div>
 
       <div className="relative z-10 bg-base-100/80 backdrop-blur-xl p-10 rounded-3xl shadow-2xl flex flex-col items-center max-w-md w-full border border-white/10">
         <div className="transform hover:scale-105 transition-transform duration-300">
@@ -20,8 +46,8 @@ export default function Home() {
 
         <div className="flex flex-col gap-6 w-full">
           <div className="space-y-4">
-            <a
-              href={APP_ROUTES.LOGIN}
+            <button
+              onClick={() => loginRedirect()}
               className="btn btn-primary btn-lg w-full normal-case text-lg shadow-lg hover:shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 gap-3">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
@@ -32,7 +58,7 @@ export default function Home() {
                 />
               </svg>
               Login with NashFriday
-            </a>
+            </button>
           </div>
 
           <div className="divider text-xs text-base-content/30">SECURE SESSION</div>

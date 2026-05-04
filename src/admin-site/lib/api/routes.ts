@@ -9,4 +9,5 @@ export const APP_ROUTES = {
   CATEGORIES: "/categories",
   PROFILE: "/profile",
   LOGIN: `${ENV_CONFIGS.bffAuthUrl}/login`,
+  LOGOUT: `${ENV_CONFIGS.bffAuthUrl}/logout`,
 };
