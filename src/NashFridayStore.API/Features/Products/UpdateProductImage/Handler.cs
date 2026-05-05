@@ -1,12 +1,15 @@
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using NashFridayStore.Domain.Entities.Products;
+using NashFridayStore.Infrastructure.AppOptions;
 using NashFridayStore.Infrastructure.Data;
+using NashFridayStore.Infrastructure.Interfaces;
 
 namespace NashFridayStore.API.Features.Products.UpdateProductImage;
 
-public sealed class Handler(StoreDbContext dbContext, IValidator<Request> validator)
+public sealed class Handler(StoreDbContext dbContext, IValidator<Request> validator,  IStorageService storage, IOptions<FirebaseOptions> firebaseOptions)
 {
     public async Task<Response> HandleAsync(Request req, CancellationToken ct)
     {
@@ -47,7 +50,10 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
             throw new Exceptions.UnsupportedImageExtensionException(fileExtension);
         }
 
-        string imageUrl = $"https://placeholder-firebase-url.com/{req.ImageFile.FileName}";
+        // Upload file to storage
+        string imageFolder = firebaseOptions.Value.ProductImagesFolder;
+        string imageName = req.ImageFile.FileName;
+        string imageUrl = await storage.UploadFileAsync(req.ImageFile.OpenReadStream(), imageName, imageFolder, req.ImageFile.ContentType, ct);
 
         // Update product image
         product.ImageUrl = imageUrl;
