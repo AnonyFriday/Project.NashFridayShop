@@ -7,7 +7,7 @@ using NashFridayStore.IdentityServer.Domain;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
 
-namespace NashFridayStore.IdentityServer.Features.Auth.Authorize;
+namespace NashFridayStore.IdentityServer.Features.Connect.Authorize;
 
 [ApiController]
 [Route("/connect/authorize")]

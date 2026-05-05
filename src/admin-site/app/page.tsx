@@ -1,34 +1,10 @@
 "use client";
 
-import { useGetUserInfoQuery, useLoginRedirectMutation } from "@/features/auth/auth.api";
+import { useLoginRedirectMutation } from "@/features/auth/auth.api";
 import Logo from "@/features/shared/components/Logo";
-import { useAppDispatch } from "@/lib/redux/hooks";
-import { useEffect } from "react";
-import { setUser } from "@/features/auth/auth.slice";
-import LoadingSpinner from "@/features/shared/components/LoadingSpinner";
 
 export default function Home() {
   const [loginRedirect] = useLoginRedirectMutation();
-
-  const { data: user, isLoading, isSuccess, isError } = useGetUserInfoQuery();
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (isSuccess && user) {
-      dispatch(setUser(user));
-    }
-    if (isError) {
-      dispatch(setUser(null));
-    }
-  }, [user, isSuccess, isError, dispatch]);
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <LoadingSpinner></LoadingSpinner>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-cover bg-center bg-no-repeat">

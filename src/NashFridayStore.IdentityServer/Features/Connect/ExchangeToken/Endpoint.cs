@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
 
-namespace NashFridayStore.IdentityServer.Features.Auth.ExchangeToken;
+namespace NashFridayStore.IdentityServer.Features.Connect.ExchangeToken;
 
 [ApiController]
 [Route("/connect/token")]
