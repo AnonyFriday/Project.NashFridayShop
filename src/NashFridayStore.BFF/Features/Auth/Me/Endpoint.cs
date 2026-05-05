@@ -1,13 +1,12 @@
-using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using OpenIddict.Abstractions;
-using System.Security.Claims;
 
-namespace NashFridayStore.BFF.Features.Auth.UserInfo;
+namespace NashFridayStore.BFF.Features.Auth.Me;
 
 [ApiController]
 [Route("api/auth/me")]
-[Authorize]
+
 public class Endpoint : ControllerBase
 {
     [HttpGet]

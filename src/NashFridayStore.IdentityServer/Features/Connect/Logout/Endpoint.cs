@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OpenIddict.Server.AspNetCore;
 
-namespace NashFridayStore.IdentityServer.Features.Auth.Logout;
+namespace NashFridayStore.IdentityServer.Features.Connect.Logout;
 
 [ApiController]
 [Route("/connect/logout")]
