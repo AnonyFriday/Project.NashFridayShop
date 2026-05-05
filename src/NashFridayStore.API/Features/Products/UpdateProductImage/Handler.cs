@@ -9,7 +9,7 @@ using NashFridayStore.Infrastructure.Interfaces;
 
 namespace NashFridayStore.API.Features.Products.UpdateProductImage;
 
-public sealed class Handler(StoreDbContext dbContext, IValidator<Request> validator,  IStorageService storage, IOptions<FirebaseOptions> firebaseOptions)
+public sealed class Handler(StoreDbContext dbContext, IValidator<Request> validator, IStorageService storage, IOptions<FirebaseOptions> firebaseOptions)
 {
     public async Task<Response> HandleAsync(Request req, CancellationToken ct)
     {
@@ -52,7 +52,7 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
 
         // Upload file to storage
         string imageFolder = firebaseOptions.Value.ProductImagesFolder;
-        string imageName = req.ImageFile.FileName;
+        string imageName = string.Concat(req.ProductId, "/", req.ImageFile.FileName);
         string imageUrl = await storage.UploadFileAsync(req.ImageFile.OpenReadStream(), imageName, imageFolder, req.ImageFile.ContentType, ct);
 
         // Update product image
