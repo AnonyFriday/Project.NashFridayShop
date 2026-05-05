@@ -48,7 +48,6 @@ public class CreateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
             "New Product",
             "Description",
             99.99m,
-            "https://image.url",
             10);
 
         // Act
@@ -80,7 +79,6 @@ public class CreateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
             string.Empty,
             "Description",
             99.99m,
-            "https://image.url",
             10);
 
         // Act
@@ -106,7 +104,6 @@ public class CreateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
             "Product Name",
             "Description",
             0,
-            "https://image.url",
             10);
 
         // Act
@@ -132,7 +129,6 @@ public class CreateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
             "Product Name",
             "Description",
             99.99m,
-            "https://image.url",
             -1);
 
         // Act
@@ -160,7 +156,6 @@ public class CreateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
             "Laptop",
             "High-performance laptop",
             1299.99m,
-            "https://image.url",
             5,
             ProductStatus.InStock);
 
@@ -192,8 +187,8 @@ public class CreateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
         _dbContext.Categories.Add(category);
         await _dbContext.SaveChangesAsync(ct);
 
-        var request1 = new Request(category.Id, "Product 1", "Description 1", 10.99m, "https://image.url", 5);
-        var request2 = new Request(category.Id, "Product 2", "Description 2", 20.99m, "https://image.url", 10);
+        var request1 = new Request(category.Id, "Product 1", "Description 1", 10.99m, 5);
+        var request2 = new Request(category.Id, "Product 2", "Description 2", 20.99m, 10);
 
         // Act
         HttpResponseMessage response1 = await _client.PostAsJsonAsync("/api/products", request1, ct);
@@ -231,7 +226,6 @@ public class CreateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
             "Product",
             "Description",
             99.99m,
-            "https://image.url",
             5);
 
         // Act
