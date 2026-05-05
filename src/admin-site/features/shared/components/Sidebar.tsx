@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { setSidebarOpen } from "@/features/shared/drawer.slice";
+import ProfileCard from "@/features/auth/components/ProfileCard";
 
 import { APP_ROUTES } from "@/lib/api/routes";
 
@@ -35,13 +36,17 @@ export default function Sidebar() {
               className={`
                 px-3 py-2 rounded-lg transition
                 ${isActive ? "bg-primary text-primary-content font-semibold" : "hover:bg-base-300"}
-              `}
-            >
+              `}>
               {item.label}
             </Link>
           );
         })}
       </nav>
+
+      {/* Profile Card at the bottom */}
+      <div className="mt-auto pt-6">
+        <ProfileCard />
+      </div>
     </div>
   );
 }
