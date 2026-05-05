@@ -38,5 +38,11 @@ public static class AppCts
 
         public static readonly ProblemType Forbidden =
             new(403, "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.3");
+
+        public static readonly ProblemType UnsupportedMediaType =
+            new(415, "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.13");
+
+        public static readonly ProblemType FileTooLarge =
+            new(413, "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.11");
     }
 }

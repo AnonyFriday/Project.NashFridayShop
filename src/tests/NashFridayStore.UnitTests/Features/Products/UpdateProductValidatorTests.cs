@@ -27,7 +27,6 @@ public class UpdateProductValidatorTests
                 "Product Name",
                 "Description",
                 10.5m,
-                "https://image.url",
                 5,
                 ProductStatus.InStock));
 
@@ -53,7 +52,6 @@ public class UpdateProductValidatorTests
             "Product Name",
             "Description",
             10.5m,
-            "https://image.url",
             5,
             ProductStatus.InStock));
 
@@ -78,7 +76,6 @@ public class UpdateProductValidatorTests
                 "Product Name",
                 "Description",
                 10.5m,
-                "https://image.url",
                 5,
                 ProductStatus.InStock));
 
@@ -105,7 +102,6 @@ public class UpdateProductValidatorTests
                 string.Empty,
                 "Description",
                 10.5m,
-                "https://image.url",
                 5,
                 ProductStatus.InStock));
 
@@ -131,7 +127,6 @@ public class UpdateProductValidatorTests
                 longName,
                 "Description",
                 10.5m,
-                "https://image.url",
                 5,
                 ProductStatus.InStock));
 
@@ -158,7 +153,6 @@ public class UpdateProductValidatorTests
                 "Product Name",
                 string.Empty,
                 10.5m,
-                "https://image.url",
                 5,
                 ProductStatus.InStock));
 
@@ -184,7 +178,6 @@ public class UpdateProductValidatorTests
                 "Product Name",
                 longDescription,
                 10.5m,
-                "https://image.url",
                 5,
                 ProductStatus.InStock));
 
@@ -209,7 +202,6 @@ public class UpdateProductValidatorTests
                 "Product Name",
                 "Description",
                 0,
-                "https://image.url",
                 5,
                 ProductStatus.InStock));
 
@@ -232,7 +224,6 @@ public class UpdateProductValidatorTests
                 "Product Name",
                 "Description",
                 99.99m,
-                "https://image.url",
                 5,
                 ProductStatus.InStock));
 
@@ -257,7 +248,6 @@ public class UpdateProductValidatorTests
                 "Valid Product Name",
                 "Valid Description",
                 99.99m,
-                "https://image.url",
                 10,
                 ProductStatus.InStock));
 

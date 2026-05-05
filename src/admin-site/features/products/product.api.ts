@@ -1,5 +1,5 @@
 import { baseApiSlice } from "@/lib/api/base.api";
-import { GetProducts, GetProductById, UpdateProduct, CreateProduct } from "./product.types";
+import { GetProducts, GetProductById, UpdateProduct, CreateProduct, UpdateProductImage } from "./product.types";
 
 export const productApiSlice = baseApiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -36,6 +36,19 @@ export const productApiSlice = baseApiSlice.injectEndpoints({
             }),
             invalidatesTags: ['Product'],
         }),
+        updateProductImage: builder.mutation<UpdateProductImage.Response, UpdateProductImage.Request>({
+            query: ({ productId, imageFile, includeDeleted = false }) => {
+                const formData = new FormData();
+                formData.append('imageFile', imageFile);
+                return {
+                    url: `products/${productId}/image`,
+                    method: 'PATCH',
+                    params: { includeDeleted },
+                    body: formData,
+                };
+            },
+            invalidatesTags: ['Product'],
+        }),
         deleteProduct: builder.mutation<void, string>({
             query: (id) => ({
                 url: `products/${id}`,
@@ -54,5 +67,6 @@ export const {
     useLazyGetProductByIdQuery,
     useCreateProductMutation,
     useUpdateProductMutation,
+    useUpdateProductImageMutation,
     useDeleteProductMutation
 } = productApiSlice;

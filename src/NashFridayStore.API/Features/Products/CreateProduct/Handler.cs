@@ -42,7 +42,7 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
             Name = req.Name,
             Description = req.Description,
             PriceUsd = req.PriceUsd,
-            ImageUrl = req.ImageUrl,
+            ImageUrl = string.Empty,
             Quantity = req.Quantity,
             Status = req.Status,
             CreatedAtUtc = DateTime.UtcNow,

@@ -11,7 +11,6 @@ public sealed class Validator : AbstractValidator<Request>
     public const string DescriptionRequired = "Product description is required.";
     public const string DescriptionMaxLength = "Product description must not exceed 300 characters.";
     public const string PriceGreaterThanZero = "Price must be greater than 0.";
-    public const string ImageUrlRequired = "Image URL is required.";
     public const string QuantityGreaterThanOrEqualZero = "Quantity must be greater than or equal to 0.";
     public const string InvalidProductStatus = "Invalid product status.";
 
@@ -44,10 +43,6 @@ public sealed class Validator : AbstractValidator<Request>
         RuleFor(x => x.RequestBody.PriceUsd)
             .GreaterThan(0)
             .WithMessage(PriceGreaterThanZero);
-
-        RuleFor(x => x.RequestBody.ImageUrl)
-            .NotEmpty()
-            .WithMessage(ImageUrlRequired);
 
         RuleFor(x => x.RequestBody.Quantity)
             .GreaterThanOrEqualTo(0)

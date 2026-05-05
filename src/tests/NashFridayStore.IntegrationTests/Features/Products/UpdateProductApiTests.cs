@@ -52,7 +52,6 @@ public class UpdateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
             "Updated Name",
             "Updated Description",
             199.99m,
-            "https://image.url",
             20,
             ProductStatus.InStock);
 
@@ -90,7 +89,6 @@ public class UpdateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
             "Updated Name",
             "Updated Description",
             199.99m,
-            "https://image.url",
             20,
             ProductStatus.InStock);
 
@@ -124,7 +122,6 @@ public class UpdateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
             string.Empty,
             "Updated Description",
             199.99m,
-            "https://image.url",
             20,
             ProductStatus.InStock);
 
@@ -156,7 +153,6 @@ public class UpdateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
             "Updated Name",
             "Updated Description",
             0,
-            "https://image.url",
             20,
             ProductStatus.InStock);
 
@@ -191,7 +187,6 @@ public class UpdateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
             "Updated Name",
             "Updated Description",
             199.99m,
-            "https://updated-image.url",
             20,
             ProductStatus.OutOfStock);
 
@@ -235,7 +230,6 @@ public class UpdateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
             "Updated Name",
             "Updated Description",
             99.99m,
-            "https://image.url",
             5,
             ProductStatus.InStock);
 
@@ -272,7 +266,6 @@ public class UpdateProductApiTests : IClassFixture<CustomWebApplicationFactory>,
             "Updated Name",
             "Updated Description",
             99.99m,
-            "https://image.url",
             5,
             ProductStatus.InStock);
 

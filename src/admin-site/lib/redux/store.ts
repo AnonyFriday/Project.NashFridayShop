@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { baseApiSlice } from "../api/base.api";
 import { drawerSlice } from "@/features/shared/drawer.slice";
 import { toastSlice } from "@/features/shared/toast.slice";
+import { authSlice } from "@/features/auth/auth.slice";
 
 export const makeStore = () => {
   return configureStore({
@@ -9,6 +10,7 @@ export const makeStore = () => {
       [baseApiSlice.reducerPath]: baseApiSlice.reducer,
       drawerSlice: drawerSlice.reducer,
       toastSlice: toastSlice.reducer,
+      authSlice: authSlice.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(baseApiSlice.middleware),

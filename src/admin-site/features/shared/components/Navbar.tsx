@@ -1,5 +1,5 @@
 import Link from "next/link";
-import AuthComponent from "@/features/shared/components/NavbarProfile";
+import NavBarProfileComponent from "@/features/shared/components/NavbarProfile";
 import Logo from "@/features/shared/components/Logo";
 import { APP_ROUTES } from "@/lib/api/routes";
 
@@ -15,7 +15,7 @@ export default function Navbar() {
 
       {/* RIGHT - PROFILE */}
       <div className="flex-none gap-4 pr-2">
-        <AuthComponent />
+        <NavBarProfileComponent />
       </div>
     </div>
   );

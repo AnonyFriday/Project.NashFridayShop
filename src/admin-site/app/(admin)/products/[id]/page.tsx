@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import GoBackButton from "@/features/shared/components/Buttons/GoBackButton";
-import { DeleteButton, EditButton } from "@/features/shared/components/Buttons/DataTableButtons";
+import { EditButton } from "@/features/shared/components/Buttons/DataTableButtons";
 import { APP_ROUTES } from "@/lib/api/routes";
 import { useGetProductByIdQuery } from "@/features/products/product.api";
 import { useParams } from "next/navigation";
@@ -40,7 +40,7 @@ export default function ProductViewPage() {
 
       {/* Content Area */}
       <div className="grid grid-cols-1 md:grid-cols-[1fr_1.5fr] gap-8 bg-base-100 p-8 rounded-box shadow-sm border border-base-200">
-        {/* Left Side: Image */}
+        {/* Left Side: Image, if dont have athen default image */}
         <div className="flex flex-col">
           <div className="bg-base-200 rounded-box p-4 aspect-square relative overflow-hidden flex items-center justify-center">
             {product.imageUrl ? (
@@ -97,9 +97,8 @@ export default function ProductViewPage() {
           <div className="divider my-1"></div>
 
           {/* Action Buttons */}
-          <div className="mt-8 flex gap-3 border-t border-base-200">
-            <EditButton href={`${APP_ROUTES.PRODUCTS}/${product.id}/edit`} title="Edit Product" className="btn btn-primary flex-1" />
-            <DeleteButton title="Delete" className="btn btn-outline btn-error px-8"></DeleteButton>{" "}
+          <div className="mt-8 flex gap-3 border-t border-base-200 pt-4">
+            <EditButton href={`${APP_ROUTES.PRODUCTS}/${product.id}/edit`} title="Edit Product" className="btn btn-primary w-full" />
           </div>
         </div>
       </div>

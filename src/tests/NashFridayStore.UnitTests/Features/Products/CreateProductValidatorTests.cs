@@ -25,7 +25,6 @@ public class CreateProductValidatorTests
             "Product Name",
             "Description",
             10.5m,
-            "https://image.url",
             5);
 
         // Act
@@ -48,7 +47,6 @@ public class CreateProductValidatorTests
             "Product Name",
             "Description",
             10.5m,
-            "https://image.url",
             5);
 
         // Act
@@ -70,7 +68,6 @@ public class CreateProductValidatorTests
             string.Empty,
             "Description",
             10.5m,
-            "https://image.url",
             5);
 
         // Act
@@ -93,7 +90,6 @@ public class CreateProductValidatorTests
             longName,
             "Description",
             10.5m,
-            "https://image.url",
             5);
 
         // Act
@@ -114,8 +110,7 @@ public class CreateProductValidatorTests
             Guid.NewGuid(),
             "Valid Product Name",
             "Description",
-            10.5m,
-            "https://image.url", 5);
+            10.5m, 5);
 
         // Act
         TestValidationResult<Request> result = _validator.TestValidate(request);
@@ -135,8 +130,7 @@ public class CreateProductValidatorTests
             Guid.NewGuid(),
             "Product Name",
             string.Empty,
-            10.5m,
-            "https://image.url", 5);
+            10.5m, 5);
 
         // Act
         TestValidationResult<Request> result = _validator.TestValidate(request);
@@ -158,7 +152,6 @@ public class CreateProductValidatorTests
             "Product Name",
             longDescription,
             10.5m,
-            "https://image.url",
             5);
 
         // Act
@@ -182,7 +175,6 @@ public class CreateProductValidatorTests
             "Product Name",
             "Description",
             0,
-            "https://image.url",
             5);
 
         // Act
@@ -204,7 +196,6 @@ public class CreateProductValidatorTests
             "Product Name",
             "Description",
             -10.5m,
-            "https://image.url",
             5);
 
         // Act
@@ -224,7 +215,6 @@ public class CreateProductValidatorTests
             "Product Name",
             "Description",
             99.99m,
-            "https://image.url",
             5);
 
         // Act
@@ -235,29 +225,7 @@ public class CreateProductValidatorTests
     }
     #endregion
 
-    #region ImageUrl Tests
-    [Fact]
-    [Trait("UT", "ImageUrl")]
-    public void Validate_ImageUrlIsEmpty_ShouldHaveValidationError()
-    {
-        // Arrange
-        var request = new Request(
-            Guid.NewGuid(),
-            "Product Name",
-            "Description",
-            10.5m,
-            string.Empty,
-            5);
 
-        // Act
-        TestValidationResult<Request> result = _validator.TestValidate(request);
-
-        // Assert
-        Assert.False(result.IsValid);
-        ValidationFailure error = Assert.Single(result.Errors);
-        Assert.Equal(Validator.ImageUrlRequired, error.ErrorMessage);
-    }
-    #endregion
 
     #region Quantity Tests
     [Fact]
@@ -270,7 +238,6 @@ public class CreateProductValidatorTests
             "Product Name",
             "Description",
             10.5m,
-            "https://image.url",
             -1);
 
         // Act
@@ -292,7 +259,6 @@ public class CreateProductValidatorTests
             "Product Name",
             "Description",
             10.5m,
-            "https://image.url",
             0);
 
         // Act
@@ -314,7 +280,6 @@ public class CreateProductValidatorTests
             "Product Name",
             "Description",
             10.5m,
-            "https://image.url",
             5,
             ProductStatus.InStock);
 
@@ -337,7 +302,6 @@ public class CreateProductValidatorTests
             "Valid Product Name",
             "Valid Description",
             99.99m,
-            "https://image.url",
             10,
             ProductStatus.InStock);
 

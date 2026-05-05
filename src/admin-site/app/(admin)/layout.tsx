@@ -1,3 +1,5 @@
+"use client";
+
 import Sidebar from "@/features/shared/components/Sidebar";
 import Navbar from "@/features/shared/components/Navbar";
 import FloatingDrawerButton from "@/features/shared/components/Buttons/FloatingDrawerButton";

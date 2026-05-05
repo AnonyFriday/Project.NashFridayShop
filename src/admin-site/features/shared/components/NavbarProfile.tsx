@@ -1,11 +1,29 @@
+"use client";
+
 import Link from "next/link";
 import { APP_ROUTES } from "@/lib/api/routes";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { useLogoutRedirectMutation } from "@/features/auth/auth.api";
+import { logout } from "@/features/auth/auth.slice";
 
-export default function AuthComponent() {
+export default function NavbarProfile() {
+  const user = useAppSelector((state) => state.authSlice.user);
+  const [logoutRedirectMutation] = useLogoutRedirectMutation();
+  const dispatch = useAppDispatch();
+
+  const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    dispatch(logout()); // remove user
+    logoutRedirectMutation(); // post LOGOUT to BFF
+  };
+
   return (
     <>
       <div className="flex items-center gap-3">
-        <p className="bg-primary text-primary-content px-3 py-1 rounded-full text-sm font-semibold">Admin</p>
+        <div className="flex flex-col items-end">
+          <p className="bg-primary text-primary-content px-3 py-1 rounded-full text-xs font-semibold">{user?.roles?.[0] || "Admin"}</p>
+          {user && <span className="text-[10px] text-base-content/50 mt-0.5">{user.email}</span>}
+        </div>
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar border border-base-300">
             <div className="w-9 rounded-full bg-base-300 flex items-center justify-center">
@@ -15,8 +33,7 @@ export default function AuthComponent() {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="w-6 h-6 text-base-content/70"
-              >
+                className="w-6 h-6 text-base-content/70">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -25,15 +42,14 @@ export default function AuthComponent() {
               </svg>
             </div>
           </div>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow border border-base-200"
-          >
+          <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow border border-base-200">
             <li>
               <Link href={APP_ROUTES.PROFILE}>Profile</Link>
             </li>
             <li>
-              <button className="text-error">Logout</button>
+              <button onClick={handleLogout} className="text-error w-full text-left">
+                Logout
+              </button>
             </li>
           </ul>
         </div>

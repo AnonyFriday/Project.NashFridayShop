@@ -11,7 +11,6 @@ export const productSchema = z.object({
   name: z.coerce.string().min(1, "Product name is required.").max(255, "Product name must not exceed 255 characters."),
   description: z.string().min(1, "Product description is required.").max(1000, "Product description must not exceed 1000 characters."),
   priceUsd: z.number({ message: "Price must be a number." }).gt(0, "Price must be greater than 0."),
-  imageUrl: z.string().url("Must be a valid URL.").min(1, "Image URL is required."),
   quantity: z.number({ message: "Quantity must be a number." }).int().min(0, "Quantity must be greater than or equal to 0."),
   status: z.enum([ProductStatus.InStock, ProductStatus.OutOfStock, ProductStatus.Discontinued]),
   categoryId: z.string().uuid("Invalid Category ID.").min(1, "Category Id is required."),
@@ -103,13 +102,6 @@ export default function ProductForm({ initialProduct, categoriesData, onSubmit, 
               ))}
           </select>
           {errors.status && <span className="label-text-alt text-error mt-1">{errors.status.message}</span>}
-        </div>
-
-        {/* Image URL */}
-        <div className="form-control w-full">
-          <label className="label font-semibold">Image URL</label>
-          <input type="text" {...register("imageUrl")} className={`input input-bordered w-full ${errors.imageUrl ? "input-error" : ""}`} />
-          {errors.imageUrl && <span className="label-text-alt text-error mt-1">{errors.imageUrl.message}</span>}
         </div>
       </div>
 

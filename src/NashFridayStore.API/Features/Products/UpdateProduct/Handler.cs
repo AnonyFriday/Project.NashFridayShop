@@ -57,7 +57,6 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
         product.Name = req.RequestBody.Name;
         product.Description = req.RequestBody.Description;
         product.PriceUsd = req.RequestBody.PriceUsd;
-        product.ImageUrl = req.RequestBody.ImageUrl;
         product.Quantity = req.RequestBody.Quantity;
         product.Status = req.RequestBody.Status;
         product.UpdatedAtUtc = DateTime.UtcNow;

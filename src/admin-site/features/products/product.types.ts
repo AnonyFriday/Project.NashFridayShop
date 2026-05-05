@@ -79,7 +79,6 @@ export namespace UpdateProduct {
             name: string;
             description: string;
             priceUsd: number;
-            imageUrl: string;
             quantity: number;
             status: ProductStatus;
         }
@@ -104,7 +103,6 @@ export namespace CreateProduct {
         name: string;
         description: string;
         priceUsd: number;
-        imageUrl: string;
         quantity: number;
         status: ProductStatus;
     }
@@ -119,5 +117,19 @@ export namespace CreateProduct {
         quantity: number;
         status: ProductStatus;
         createdAtUtc: string;
+    }
+}
+
+export namespace UpdateProductImage {
+    export interface Request {
+        productId: string;
+        imageFile: File;
+        includeDeleted?: boolean;
+    }
+
+    export interface Response {
+        productId: string;
+        imageUrl: string;
+        updatedAtUtc: string;
     }
 }
