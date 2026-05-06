@@ -1,4 +1,4 @@
-@model List<CategoryDto>
+@model CategoryNavigationVM
 
 <style>
     @@keyframes marquee {
@@ -25,13 +25,13 @@
 
 <div class="bg-base-100 py-2 shadow-sm overflow-hidden whitespace-nowrap relative w-full no-scrollbar">
     <div class="animate-marquee hover:cursor-pointer">
-        @if (Model != null && Model.Any())
+        @if (Model.Categories.Any())
         {
             <!-- Render the list twice to create a seamless infinite loop -->
             @for (int i = 0; i < 2; i++)
             {
                 <ul class="flex px-4 font-bold text-[11px] uppercase tracking-[0.25em] gap-8 md:gap-16 shrink-0 items-center border-r border-transparent">
-                    @foreach (var category in Model)
+                    @foreach (var category in Model.Categories)
                     {
                         <li>
                             <a href="/Categories?id=@category.Id" class="hover:text-primary transition-colors text-base-content whitespace-nowrap">
