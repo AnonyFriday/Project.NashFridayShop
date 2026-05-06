@@ -25,15 +25,15 @@ public static class GetProducts
         string ImageUrl, 
         decimal PriceUsd, 
         ProductStatus Status, 
-        decimal AverageStars, 
-        int Quantity,
-        bool isNew);
+        decimal AverageStars,
+        bool IsNew,
+        int Quantity);
 
     public record Response(List<ProductItem> Items, int TotalItems, int TotalPages, int PageIndex);
     
     public record Request(
-        Guid? CategoryId,
         string? SearchName,
+        Guid? CategoryId,
         decimal? MinPrice,
         decimal? MaxPrice,
         ProductStatus? Status = null,
@@ -51,6 +51,7 @@ public static class GetTopRatedProducts
         decimal PriceUsd, 
         ProductStatus Status, 
         decimal AverageStars, 
+        bool IsNew,
         int Quantity);
 
     public record Response(List<ProductItem> Items);

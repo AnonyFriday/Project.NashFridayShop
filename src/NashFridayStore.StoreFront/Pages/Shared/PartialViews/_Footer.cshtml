@@ -1,24 +1,12 @@
-<footer class="footer footer-center p-16 bg-neutral text-neutral-content mt-20">
+<footer class="footer footer-vertical px-8 py-16 bg-neutral text-neutral-content whitespace-nowrap line-height-60">
     <div class="max-w-md">
-        <h2 class="text-2xl font-black italic tracking-tighter mb-4 uppercase text-neutral-content">NashFriday Souvenirs<span class="text-primary not-italic">.</span></h2>
+        <img src="~/images/nashfridayshop_logo.svg" alt="Logo" class="mb-4 min-w-1/6 max-w-1/5">
+
         <p class="font-medium text-lg leading-relaxed opacity-70 italic text-neutral-content">
             "Curating memories from around the world, delivered with love to your doorstep."
         </p>
-    </div>
-    <nav class="grid grid-flow-col gap-10 font-bold text-[10px] uppercase tracking-[0.3em] mt-10 opacity-60 text-neutral-content">
-        <a asp-page="/Contact" class="link link-hover" >Contact</a>
-    </nav> 
-    <aside class="mt-16">
+
         <p class="text-[9px] uppercase tracking-[0.4em] opacity-30 font-bold text-neutral-content">© @DateTime.Now.Year - Made with ❤️ by NashFriday</p>
-    </aside>
+    </div>
 </footer>
 
-<style>
-    .footer {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        white-space: nowrap;
-        line-height: 60px;
-    }
-</style>

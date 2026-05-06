@@ -1,18 +1,15 @@
-<header class="sticky top-0 z-50 bg-base-100 shadow-sm">
+<header class="sticky top-0 z-50 bg-base-100 shadow-sm px-8">
     <!-- Top Row: Logo, Search, Icons -->
-    <div class="navbar px-4 md:px-12 py-4 border-b border-base-200">
-        <!-- Left: Logo (2/10) -->
+    <div class="navbar px-4 md:px-12 border-b border-base-200">
         <div class="navbar-start w-full min-w-[100px]">
             <a asp-page="/Index" class="hover:opacity-80 transition-opacity">
-                <!-- Simplified sizing: just use height (h-12 on mobile, h-20 on desktop) -->
-                <img src="~/images/nashfridayshop_logo.svg" alt="NashFriday Store" class="h-12 w-auto max-w-full" />
+                <img src="~/images/nashfridayshop_logo.svg" alt="NashFriday Store" class="h-10 w-auto max-w-full" />
             </a>
         </div>
 
         <!-- Center: Search Bar -->
         <div class="navbar-center hidden md:flex px-2">
             <div class="join shadow-sm">
-                <!-- Uses min/max widths instead of percentage grid math -->
                 <input type="search" placeholder="Search for gifts..." class="input input-bordered join-item w-full min-w-[100px] lg:min-w-[450px] max-w-[600px] bg-base-100 border-base-300 focus:outline-none focus:border-primary" />
                 <button class="btn btn-primary join-item px-6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-primary-content">

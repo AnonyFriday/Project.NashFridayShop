@@ -11,7 +11,7 @@ public class ProductApiClient : IProductApiClient
 
     public async Task<GetProducts.Response?> GetProductsAsync(GetProducts.Request request)
     {
-        List<string> queryParams = new List<string>();
+        var queryParams = new List<string>();
         if (request.CategoryId.HasValue) 
         {
             queryParams.Add($"categoryId={request.CategoryId.Value}");
