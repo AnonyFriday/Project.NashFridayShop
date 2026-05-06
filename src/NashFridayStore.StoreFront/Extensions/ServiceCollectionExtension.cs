@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Primitives;
 using NashFridayStore.StoreFront.AppOptions;
 using NashFridayStore.StoreFront.Services;
 using NashFridayStore.StoreFront.Services.Categories;
@@ -11,7 +10,7 @@ public static class ServiceCollectionExtension
 {
     public static void AddStoreFrontServices(this IServiceCollection services, IConfiguration configuration)
     {
-        // Add Razor Pages
+        // Razor Page
         services.AddRazorPages();
 
         // Add HttpContextAccessor for HttpContext

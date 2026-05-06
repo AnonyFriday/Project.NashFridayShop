@@ -1,15 +1,15 @@
-<header class="sticky top-0 z-50 bg-base-100 shadow-sm px-8">
+<header class="sticky top-0 z-50 bg-base-100 shadow-sm">
     <!-- Top Row: Logo, Search, Icons -->
-    <div class="navbar px-4 md:px-12 border-b border-base-200">
-        <div class="navbar-start w-full min-w-25">
+    <div class="navbar border-b border-base-200">
+        <div class="navbar-start w-full min-w-25 p-4">
             <a asp-page="/Index" class="hover:opacity-80 transition-opacity">
                 <img src="~/images/nashfridayshop_logo.svg" alt="NashFriday Store" class="h-10 w-auto max-w-full" />
             </a>
         </div>
 
         <!-- Center: Search Bar -->
-        <div class="navbar-center hidden md:flex px-2 relative z-50">
-            <vc:search-bar></vc:search-bar>
+        <div class="navbar-center hidden md:flex px-4 relative z-50">
+            <vc:product-search-bar></vc:product-search-bar>
         </div>
     
         <!-- Right: Icons & Auth -->
