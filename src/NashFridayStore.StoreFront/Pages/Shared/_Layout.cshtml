@@ -13,7 +13,6 @@
     <link href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist-sans/style.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist-mono/style.css" rel="stylesheet">
 
-    <!-- THE NUCLEAR OVERRIDE -->
     <style type="text/css">
         :root, [data-theme="cmyk"] {
             /* We use !important to make sure we win the fight against the linked CSS */
@@ -77,61 +76,14 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body class="min-h-screen flex flex-col">
-    <header class="sticky top-0 z-50">
-        <div class="navbar glass-nav px-4 md:px-12 py-4">
-            <div class="navbar-start">
-                <a asp-page="/Index" class="hover:opacity-80 transition-opacity">
-                    <img src="~/images/nashfridayshop_logo.svg" alt="NashFriday Store" class="h-10 md:h-12 w-auto" />
-                </a>
-            </div>
+    
+    <partial name="PartialViews/_Navbar" />
 
-            <div class="navbar-center hidden lg:flex">
-                <ul class="menu menu-horizontal px-1 font-bold text-[11px] uppercase tracking-[0.2em] gap-6">
-                    <li><a asp-page="/Index" class="hover:text-primary transition-colors text-base-content">Home</a></li>
-                    <li><a asp-page="/Collections" class="hover:text-primary transition-colors text-base-content">Collections</a></li>
-                    <li><a asp-page="/Story" class="hover:text-primary transition-colors text-base-content">Our Story</a></li>
-                </ul>
-            </div>
-            
-            <div class="navbar-end gap-6">
-                <div class="dropdown dropdown-end">
-                    <div tabIndex="0" role="button" class="btn btn-ghost btn-circle">
-                        <div class="indicator">
-                            <span class="text-[10px] font-black tracking-tighter uppercase">Cart</span>
-                            <span class="badge badge-sm indicator-item badge-primary font-bold border-none text-primary-content">0</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="h-6 w-[1px] bg-base-content/10"></div>
-
-                <a asp-page="/Auth/Login" class="btn btn-primary btn-sm rounded-full px-8 font-black uppercase text-[10px] tracking-widest shadow-xl shadow-primary/10 hover:scale-105 transition-all text-primary-content">
-                    Login
-                </a>
-            </div>
-        </div>
-    </header>
-
-    <main role="main" class="grow">
+    <main role="main" class="grow text-base-content">
         @RenderBody()
     </main>
 
-    <footer class="footer footer-center p-16 bg-neutral text-neutral-content mt-20">
-        <div class="max-w-md">
-            <h2 class="text-2xl font-black italic tracking-tighter mb-4 uppercase text-neutral-content">NashFriday Souvenirs<span class="text-primary not-italic">.</span></h2>
-            <p class="font-medium text-lg leading-relaxed opacity-70 italic text-neutral-content">
-                "Curating memories from around the world, delivered with love to your doorstep."
-            </p>
-        </div>
-        <nav class="grid grid-flow-col gap-10 font-bold text-[10px] uppercase tracking-[0.3em] mt-10 opacity-60 text-neutral-content">
-            <a class="link link-hover" asp-page="/Shipping">Shipping</a>
-            <a class="link link-hover" asp-page="/Returns">Returns</a>
-            <a class="link link-hover" asp-page="/Contact">Contact</a>
-        </nav> 
-        <aside class="mt-16">
-            <p class="text-[9px] uppercase tracking-[0.4em] opacity-30 font-bold text-neutral-content">© @DateTime.Now.Year NashTech Global - Souvenir Division</p>
-        </aside>
-    </footer>
+    <partial name="PartialViews/_Footer" />
 
     <script src="~/js/site.js" asp-append-version="true"></script>
 
