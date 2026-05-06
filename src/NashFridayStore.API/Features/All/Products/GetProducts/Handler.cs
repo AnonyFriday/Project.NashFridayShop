@@ -69,15 +69,26 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
         IEnumerable<ProductItem> items = await query
             .Skip(req.PageIndex * req.PageSize)
             .Take(req.PageSize)
+            .LeftJoin(
+                dbContext.Categories,
+                p => p.CategoryId,
+                c => c.Id,
+                (p, c) => new
+                {
+                    Product = p,
+                    CategoryName = c != null ? c.Name : "Others"
+                }
+            )
             .Select(x => new ProductItem(
-                x.Id,
-                x.Name,
-                x.ImageUrl,
-                x.PriceUsd,
-                x.Status,
-                (x.ProductRatings.Any() ? x.ProductRatings.Average(r => (decimal)r.Stars) : 0).NormalizeRating(),
-                x.Quantity,
-                (DateTime.UtcNow - x.CreatedAtUtc).TotalDays <= 7
+                x.Product.Id,
+                x.Product.Name,
+                x.CategoryName,
+                x.Product.ImageUrl,
+                x.Product.PriceUsd,
+                x.Product.Status,
+                (x.Product.ProductRatings.Any() ? x.Product.ProductRatings.Average(r => (decimal)r.Stars) : 0).NormalizeRating(),
+                x.Product.Quantity,
+                (DateTime.UtcNow - x.Product.CreatedAtUtc).TotalDays <= 7
             ))
             .ToListAsync(ct);
 
