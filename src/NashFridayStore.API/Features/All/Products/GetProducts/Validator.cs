@@ -9,6 +9,7 @@ public sealed class Validator : AbstractValidator<Request>
     public const string PageIndexGreaterThanOrEqualZero = "Page must be greater than or equal to 0.";
     public const string PageSizeBetweenRange = "Page Size must be between 1 and 100.";
     public const string InvalidProductStatus = "Invalid product status.";
+    public const string InvalidSortBy = "Invalid Sort By option";
     public const string MinPriceGreaterThanOrEqualZero = "Min Price must be greater than or equal to 0.";
     public const string MaxPriceGreaterThanOrEqualZero = "Max Price must be greater than or equal to 0.";
 
@@ -41,6 +42,10 @@ public sealed class Validator : AbstractValidator<Request>
         RuleFor(x => x.PageSize)
             .InclusiveBetween(1, 100)
             .WithMessage(PageSizeBetweenRange);
+
+        RuleFor(x => x.SortBy)
+            .IsInEnum().WithMessage(InvalidSortBy)
+            .When(x => x.SortBy.HasValue);
 
         RuleFor(x => x.Status)
             .IsInEnum()

@@ -1,6 +1,8 @@
+using System.Collections.Immutable;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
+using NashFridayStore.API.Extensions;
 using NashFridayStore.Domain.Commons;
 using NashFridayStore.Domain.Entities.Products;
 using NashFridayStore.Infrastructure.Data;
@@ -30,12 +32,6 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
 
         // Implementing logic
         IQueryable<Product> query = dbContext.Products;
-
-        if (req.IncludeDeleted)
-        {
-            query = query.IgnoreQueryFilters();
-        }
-
         query = query
             .AsNoTracking()
             .Include(p => p.ProductRatings)
@@ -49,26 +45,38 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
 
         int totalItems = await query.CountAsync(ct);
 
-        List<ProductItem> items = await query
-            .OrderByDescending(x => x.CreatedAtUtc)
+        query = query
             .Skip(req.PageIndex * req.PageSize)
-            .Take(req.PageSize)
+            .Take(req.PageSize);
+
+        IEnumerable<ProductItem> items = await query
             .Select(x => new ProductItem(
                 x.Id,
                 x.Name,
                 x.ImageUrl,
                 x.PriceUsd,
                 x.Status,
-                x.ProductRatings.Any() ? x.ProductRatings.Average(x => (decimal)x.Stars) % AppCts.Api.MaxStars : 0,
+                (x.ProductRatings.Any() ? x.ProductRatings.Average(x => (decimal)x.Stars) % AppCts.Api.MaxStars : 0).NormalizeRating(),
                 x.Quantity,
-                x.IsDeleted)
-            )
-            .ToListAsync(ct);
+                DateTime.Compare(x.CreatedAtUtc, DateTime.UtcNow) < 7)
+            ).ToListAsync(ct);
+
+        // Sorting
+        items = req.SortBy switch
+        {
+            SortBy.NameDesc => items.OrderByDescending(x => x.Name),
+            SortBy.PriceDesc => items.OrderByDescending(x => x.PriceUsd),
+            SortBy.RatingDesc => items.OrderByDescending(x => x.AverageStars),
+            SortBy.NameAsc => items.OrderBy(x => x.Name),
+            SortBy.PriceAsc => items.OrderBy(x => x.PriceUsd),
+            SortBy.RatingAsc => items.OrderBy(x => x.AverageStars),
+            _ => items.OrderBy(x => x.isNew),
+        };
 
         int totalPages = (int)Math.Ceiling(totalItems / (double)req.PageSize);
 
         return new Response(
-            items,
+            items.ToImmutableArray(),
             totalItems,
             totalPages,
             req.PageIndex);
