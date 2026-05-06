@@ -22,31 +22,21 @@ public class StoreDbContextSeeder(StoreDbContext dbContext, ILogger<StoreDbConte
         }
 
         #region Categories
-        Category localCrafts = new CategoryBuilder()
-           .WithName("Local Crafts")
-           .WithDescription("Handmade traditional crafts")
-           .Build();
-
-        Category clothing = new CategoryBuilder()
-            .WithName("Clothing & Accessories")
-            .WithDescription("Souvenir clothing and wearable items")
-            .Build();
-
-        Category food = new CategoryBuilder()
-            .WithName("Food & Snacks")
-            .WithDescription("Local specialties and snacks")
-            .Build();
-
-        Category decor = new CategoryBuilder()
-            .WithName("Decor & Gifts")
-            .WithDescription("Decorative souvenirs and gift items")
-            .Build();
-
+        Category localCrafts = new CategoryBuilder().WithName("Local Crafts").WithDescription("Handmade traditional crafts").Build();
+        Category clothing = new CategoryBuilder().WithName("Clothing & Accessories").WithDescription("Souvenir clothing and wearable items").Build();
+        Category food = new CategoryBuilder().WithName("Food & Snacks").WithDescription("Local specialties and snacks").Build();
+        Category decor = new CategoryBuilder().WithName("Decor & Gifts").WithDescription("Decorative souvenirs and gift items").Build();
+        Category electronics = new CategoryBuilder().WithName("Electronics").WithDescription("Modern gadgets and electronic accessories").Build();
+        Category homeLiving = new CategoryBuilder().WithName("Home & Living").WithDescription("Home essentials and lifestyle products").Build();
+        Category beauty = new CategoryBuilder().WithName("Beauty & Personal Care").WithDescription("Beauty and self-care products").Build();
         var categories = new List<Category>{
             localCrafts,
             clothing,
             food,
-            decor
+            decor,
+            electronics,
+            homeLiving,
+            beauty
         };
         #endregion
 
@@ -57,71 +47,43 @@ public class StoreDbContextSeeder(StoreDbContext dbContext, ILogger<StoreDbConte
             new ProductBuilder().WithCategoryId(clothing.Id).WithName("Vietnam Souvenir T-Shirt").WithPrice(20).Build(),
             new ProductBuilder().WithCategoryId(food.Id).WithName("Dried Mango Snack").WithPrice(8).Build(),
             new ProductBuilder().WithCategoryId(decor.Id).WithName("Miniature Cyclo Model").WithPrice(25).Build(),
-            new ProductBuilder().WithCategoryId(decor.Id).WithName("Lotus Flower Painting").WithPrice(45).Build()
+            new ProductBuilder().WithCategoryId(decor.Id).WithName("Lotus Flower Painting").WithPrice(45).Build(),
+            new ProductBuilder().WithCategoryId(electronics.Id).WithName("Wireless Bluetooth Earbuds").WithPrice(59).WithQuantity(120).Build(),
+            new ProductBuilder().WithCategoryId(electronics.Id).WithName("Portable Power Bank 20000mAh").WithPrice(35).WithQuantity(80).Build(),
+            new ProductBuilder().WithCategoryId(electronics.Id).WithName("RGB Mechanical Keyboard").WithPrice(89).WithQuantity(40).Build(),
+            new ProductBuilder().WithCategoryId(homeLiving.Id).WithName("Minimalist Desk Lamp").WithPrice(42).WithQuantity(30).Build(),
+            new ProductBuilder().WithCategoryId(homeLiving.Id).WithName("Ceramic Coffee Mug Set").WithPrice(18).WithQuantity(65).Build(),
+            new ProductBuilder().WithCategoryId(homeLiving.Id).WithName("Wooden Wall Clock").WithPrice(55).WithQuantity(20).Build(),
+            new ProductBuilder().WithCategoryId(beauty.Id).WithName("Organic Face Cleanser").WithPrice(22).WithQuantity(90).Build(),
+            new ProductBuilder().WithCategoryId(beauty.Id).WithName("Vitamin C Serum").WithPrice(30).WithQuantity(75).Build(),
+            new ProductBuilder().WithCategoryId(beauty.Id).WithName("Hydrating Body Lotion").WithPrice(16).WithQuantity(110).Build(),
+            new ProductBuilder().WithCategoryId(clothing.Id).WithName("Classic Denim Jacket").WithPrice(70).WithQuantity(25).Build()
         };
         #endregion
 
         #region ProductRatings
         var productRatings = new List<ProductRating>
         {
-            // Bamboo Basket
-            new ProductRatingBuilder()
-                .WithProductId(products[0].Id)
-                .WithStars(9)
-                .WithComment("Very well crafted, feels authentic!")
-                .Build(),
-
-            new ProductRatingBuilder()
-                .WithProductId(products[0].Id)
-                .WithStars(8)
-                .WithComment("Nice quality but a bit small.")
-                .Build(),
-
-            // T-Shirt
-            new ProductRatingBuilder()
-                .WithProductId(products[1].Id)
-                .WithStars(7)
-                .WithComment("Comfortable and fits well.")
-                .Build(),
-
-            new ProductRatingBuilder()
-                .WithProductId(products[1].Id)
-                .WithStars(6)
-                .WithComment("Design is okay, expected better print.")
-                .Build(),
-
-            // Dried Mango
-            new ProductRatingBuilder()
-                .WithProductId(products[2].Id)
-                .WithStars(10)
-                .WithComment("Absolutely delicious! Must try.")
-                .Build(),
-
-            new ProductRatingBuilder()
-                .WithProductId(products[2].Id)
-                .WithStars(9)
-                .WithComment("Sweet and chewy, loved it.")
-                .Build(),
-
-            // Cyclo Model
-            new ProductRatingBuilder()
-                .WithProductId(products[3].Id)
-                .WithStars(8)
-                .WithComment("Great souvenir piece.")
-                .Build(),
-
-            // Lotus Painting
-            new ProductRatingBuilder()
-                .WithProductId(products[4].Id)
-                .WithStars(9)
-                .WithComment("Beautiful artwork, worth the price.")
-                .Build(),
-
-            new ProductRatingBuilder()
-                .WithProductId(products[4].Id)
-                .WithStars(7)
-                .WithComment("Looks good but packaging could improve.")
-                .Build()
+            new ProductRatingBuilder().WithProductId(products[0].Id).WithStars(9).WithComment("Very well crafted, feels authentic!").Build(),
+            new ProductRatingBuilder().WithProductId(products[0].Id).WithStars(8).WithComment("Nice quality but a bit small.").Build(),
+            new ProductRatingBuilder().WithProductId(products[1].Id).WithStars(7).WithComment("Comfortable and fits well.").Build(),
+            new ProductRatingBuilder().WithProductId(products[1].Id).WithStars(6).WithComment("Design is okay, expected better print.").Build(),
+            new ProductRatingBuilder().WithProductId(products[2].Id).WithStars(10).WithComment("Absolutely delicious! Must try.").Build(),
+            new ProductRatingBuilder().WithProductId(products[2].Id).WithStars(9).WithComment("Sweet and chewy, loved it.").Build(),
+            new ProductRatingBuilder().WithProductId(products[3].Id).WithStars(8).WithComment("Great souvenir piece.").Build(),
+            new ProductRatingBuilder().WithProductId(products[4].Id).WithStars(9).WithComment("Beautiful artwork, worth the price.").Build(),
+            new ProductRatingBuilder().WithProductId(products[4].Id).WithStars(7).WithComment("Looks good but packaging could improve.").Build(),
+            new ProductRatingBuilder().WithProductId(products[5].Id).WithStars(9).WithComment("Sound quality is amazing.").Build(),
+            new ProductRatingBuilder().WithProductId(products[5].Id).WithStars(8).WithComment("Battery lasts long enough.").Build(),
+            new ProductRatingBuilder().WithProductId(products[6].Id).WithStars(7).WithComment("Charges devices quickly.").Build(),
+            new ProductRatingBuilder().WithProductId(products[7].Id).WithStars(10).WithComment("Excellent typing experience.").Build(),
+            new ProductRatingBuilder().WithProductId(products[8].Id).WithStars(8).WithComment("Looks modern and elegant.").Build(),
+            new ProductRatingBuilder().WithProductId(products[9].Id).WithStars(7).WithComment("Good quality ceramic.").Build(),
+            new ProductRatingBuilder().WithProductId(products[10].Id).WithStars(9).WithComment("Beautiful design for living room.").Build(),
+            new ProductRatingBuilder().WithProductId(products[11].Id).WithStars(8).WithComment("Feels gentle on skin.").Build(),
+            new ProductRatingBuilder().WithProductId(products[12].Id).WithStars(9).WithComment("Skin became brighter after 2 weeks.").Build(),
+            new ProductRatingBuilder().WithProductId(products[13].Id).WithStars(7).WithComment("Very moisturizing.").Build(),
+            new ProductRatingBuilder().WithProductId(products[14].Id).WithStars(9).WithComment("Fits perfectly and stylish.").Build()
         };
         #endregion
 
