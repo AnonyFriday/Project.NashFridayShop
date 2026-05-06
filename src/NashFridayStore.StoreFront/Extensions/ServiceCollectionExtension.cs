@@ -3,6 +3,7 @@ using Microsoft.Extensions.Primitives;
 using NashFridayStore.StoreFront.AppOptions;
 using NashFridayStore.StoreFront.Services;
 using NashFridayStore.StoreFront.Services.Categories;
+using NashFridayStore.StoreFront.Services.Products;
 
 namespace NashFridayStore.StoreFront.Extensions;
 
@@ -41,5 +42,6 @@ public static class ServiceCollectionExtension
 
         // Register domain http client api
         services.AddScoped<ICategoryApiClient, CategoryApiClient>();
+        services.AddScoped<IProductApiClient, ProductApiClient>();
     }
 }
