@@ -20,17 +20,19 @@ public enum SortBy
 public static class GetProducts
 {
     public record ProductItem(
-        Guid Id, 
-        string Name, 
-        string ImageUrl, 
-        decimal PriceUsd, 
-        ProductStatus Status, 
+        Guid Id,
+        string Name,
+        string ImageUrl,
+        string Description,
+        string CategoryName,
+        decimal PriceUsd,
+        ProductStatus Status,
         decimal AverageStars,
         bool IsNew,
         int Quantity);
 
     public record Response(List<ProductItem> Items, int TotalItems, int TotalPages, int PageIndex);
-    
+
     public record Request(
         string? SearchName,
         Guid? CategoryId,
@@ -45,12 +47,12 @@ public static class GetProducts
 public static class GetTopRatedProducts
 {
     public record ProductItem(
-        Guid Id, 
-        string Name, 
-        string ImageUrl, 
-        decimal PriceUsd, 
-        ProductStatus Status, 
-        decimal AverageStars, 
+        Guid Id,
+        string Name,
+        string ImageUrl,
+        decimal PriceUsd,
+        ProductStatus Status,
+        decimal AverageStars,
         bool IsNew,
         int Quantity);
 
