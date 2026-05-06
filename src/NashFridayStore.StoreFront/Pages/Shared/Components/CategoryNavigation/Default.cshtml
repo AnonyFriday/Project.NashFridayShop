@@ -1,4 +1,4 @@
-@model CategoryNavigationVM
+@model CategoryNavigationResponseVM
 
 <style>
     @@keyframes marquee {
@@ -8,6 +8,7 @@
     .animate-marquee {
         animation: marquee 30s linear infinite;
         display: flex;
+        flex-direction: row;
         width: max-content;
     }
     .animate-marquee:hover {
@@ -27,7 +28,7 @@
     <div class="animate-marquee hover:cursor-pointer">
         @if (Model.Categories.Any())
         {
-            <!-- Render the list twice to create a seamless infinite loop -->
+            <!-- Render the list twice to create a looping -->
             @for (int i = 0; i < 2; i++)
             {
                 <ul class="flex px-4 font-bold text-[11px] uppercase tracking-[0.25em] gap-8 md:gap-16 shrink-0 items-center border-r border-transparent">
