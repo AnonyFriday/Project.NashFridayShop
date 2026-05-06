@@ -1,6 +1,8 @@
+using System.Collections.Immutable;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
+using NashFridayStore.API.Extensions;
 using NashFridayStore.Domain.Commons;
 using NashFridayStore.Domain.Entities.Products;
 using NashFridayStore.Infrastructure.Data;
@@ -15,42 +17,56 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
         Request req = orgReq with
         {
             PageIndex = orgReq.PageIndex <= 0 ? AppCts.Api.PageIndex : orgReq.PageIndex,
-            PageSize = orgReq.PageSize < 0 ? AppCts.Api.PageSize : orgReq.PageSize,
-            SearchName = string.IsNullOrWhiteSpace(orgReq.SearchName) ? null : orgReq.SearchName.Trim(),
+            PageSize = orgReq.PageSize <= 0 ? AppCts.Api.PageSize : orgReq.PageSize,
+            SearchName = string.IsNullOrWhiteSpace(orgReq.SearchName)
+                ? null
+                : orgReq.SearchName.Trim(),
             MinPrice = orgReq.MinPrice is < 0 ? null : orgReq.MinPrice,
             MaxPrice = orgReq.MaxPrice is < 0 ? null : orgReq.MaxPrice
         };
 
-        // Handle Validation
+        // Validation
         ValidationResult validation = await validator.ValidateAsync(req, ct);
+
         if (!validation.IsValid)
         {
             throw new Exceptions.ValidationException(validation.Errors);
         }
 
-        // Implementing logic
-        IQueryable<Product> query = dbContext.Products;
-
-        if (req.IncludeDeleted)
-        {
-            query = query.IgnoreQueryFilters();
-        }
-
-        query = query
+        // Implement Logic
+        IQueryable<Product> query = dbContext.Products
             .AsNoTracking()
-            .Include(p => p.ProductRatings)
+            .Include(x => x.ProductRatings)
             .Where(x =>
                 (!req.Status.HasValue || x.Status == req.Status.Value) &&
                 (!req.CategoryId.HasValue || x.CategoryId == req.CategoryId.Value) &&
-                (string.IsNullOrWhiteSpace(req.SearchName) || x.Name.Contains(req.SearchName)) &&
+                (string.IsNullOrWhiteSpace(req.SearchName) ||
+                 x.Name.Contains(req.SearchName)) &&
                 (!req.MinPrice.HasValue || x.PriceUsd >= req.MinPrice.Value) &&
                 (!req.MaxPrice.HasValue || x.PriceUsd <= req.MaxPrice.Value)
             );
 
+        // Total Items
         int totalItems = await query.CountAsync(ct);
 
-        List<ProductItem> items = await query
-            .OrderByDescending(x => x.CreatedAtUtc)
+        // Sorting
+        query = req.SortBy switch
+        {
+            SortBy.NameAsc => query.OrderBy(x => x.Name),
+            SortBy.NameDesc => query.OrderByDescending(x => x.Name),
+            SortBy.PriceAsc => query.OrderBy(x => x.PriceUsd),
+            SortBy.PriceDesc => query.OrderByDescending(x => x.PriceUsd),
+            SortBy.RatingAsc => query.OrderBy(x => x.ProductRatings.Any()
+                        ? x.ProductRatings.Average(r => r.Stars)
+                        : 0),
+            SortBy.RatingDesc => query.OrderByDescending(x => x.ProductRatings.Any()
+                        ? x.ProductRatings.Average(r => r.Stars)
+                        : 0),
+            _ => query.OrderByDescending(x => x.CreatedAtUtc)
+        };
+
+        // Pagination
+        IEnumerable<ProductItem> items = await query
             .Skip(req.PageIndex * req.PageSize)
             .Take(req.PageSize)
             .Select(x => new ProductItem(
@@ -59,16 +75,18 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
                 x.ImageUrl,
                 x.PriceUsd,
                 x.Status,
-                x.ProductRatings.Any() ? x.ProductRatings.Average(x => (decimal)x.Stars) % AppCts.Api.MaxStars : 0,
+                (x.ProductRatings.Any() ? x.ProductRatings.Average(r => (decimal)r.Stars) : 0).NormalizeRating(),
                 x.Quantity,
-                x.IsDeleted)
-            )
+                (DateTime.UtcNow - x.CreatedAtUtc).TotalDays <= 7
+            ))
             .ToListAsync(ct);
 
-        int totalPages = (int)Math.Ceiling(totalItems / (double)req.PageSize);
+        // Total Pages
+        int totalPages = (int)Math.Ceiling(
+            totalItems / (double)req.PageSize);
 
         return new Response(
-            items,
+            items.ToImmutableArray(),
             totalItems,
             totalPages,
             req.PageIndex);

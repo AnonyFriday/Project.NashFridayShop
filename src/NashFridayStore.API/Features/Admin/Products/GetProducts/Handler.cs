@@ -1,6 +1,7 @@
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
+using NashFridayStore.API.Extensions;
 using NashFridayStore.Domain.Commons;
 using NashFridayStore.Domain.Entities.Products;
 using NashFridayStore.Infrastructure.Data;
@@ -59,7 +60,7 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
                 x.ImageUrl,
                 x.PriceUsd,
                 x.Status,
-                x.ProductRatings.Any() ? x.ProductRatings.Average(x => (decimal)x.Stars) % AppCts.Api.MaxStars : 0,
+                (x.ProductRatings.Any() ? x.ProductRatings.Average(x => (decimal)x.Stars) % AppCts.Api.MaxStars : 0).NormalizeRating(),
                 x.Quantity,
                 x.IsDeleted)
             )

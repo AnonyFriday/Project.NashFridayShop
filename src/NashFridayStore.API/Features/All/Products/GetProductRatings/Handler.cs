@@ -29,11 +29,6 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
         // Check if product exists
         IQueryable<Product> queryProduct = dbContext.Products.AsQueryable();
 
-        if (req.IncludeDeleted)
-        {
-            queryProduct = queryProduct.IgnoreQueryFilters();
-        }
-
         bool productExists = await queryProduct
             .AsNoTracking()
             .AnyAsync(x => x.Id == req.ProductId, ct);
@@ -45,11 +40,6 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
 
         // Get ratings
         IQueryable<ProductRating> queryRating = dbContext.ProductRatings.AsQueryable();
-
-        if (req.IncludeDeleted)
-        {
-            queryRating = queryRating.IgnoreQueryFilters();
-        }
 
         queryRating = queryRating
             .AsNoTracking()
