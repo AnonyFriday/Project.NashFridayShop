@@ -1,11 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using NashFridayStore.StoreFront.Pages.Shared.PartialViews.SectionHeader;
 using NashFridayStore.StoreFront.Services.Products;
 
 namespace NashFridayStore.StoreFront.Pages;
 
-public class IndexModel(IProductApiClient productApiClient) : PageModel
+public class IndexModel(IProductApiClient productApiClient) : BasePageModel
 {
     private const int _topRatedCount = 10;
 

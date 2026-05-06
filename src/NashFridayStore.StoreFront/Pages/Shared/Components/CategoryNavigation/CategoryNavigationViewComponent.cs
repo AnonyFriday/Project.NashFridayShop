@@ -5,7 +5,6 @@ namespace NashFridayStore.StoreFront.Pages.Shared.Components.CategoryNavigation;
 
 public class CategoryNavigationViewComponent(ICategoryApiClient categoryApiClient) : ViewComponent
 {
-    [BindProperty(SupportsGet = true)]
     public CategoryNavigationVM CategoryNavigationVM { get; set; } = new();
 
     public async Task<IViewComponentResult> InvokeAsync()

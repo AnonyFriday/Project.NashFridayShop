@@ -1,7 +1,12 @@
-@model ProductSearchBarVM
+@model ProductSearchBarResponseVM
 
 <div class="join shadow-sm relative group w-full">
-    <input type="search" placeholder="@Model.Placeholder"
+    <input type="search" placeholder="@Model.Placeholder" asp-for="@Model.SearchName"
+           hx-get="?handler=ProductSearchBar"
+           hx-target="#search-results-list"
+           hx-select="#search-results-list"
+           hx-trigger="input changed delay:500ms, search"
+           hx-swap="outerHTML"
            class="input input-bordered join-item w-full min-w-25 lg:min-w-112.5 max-w-150 bg-base-100 border-base-300 focus:outline-none focus:border-primary peer" />
     <button class="btn btn-primary join-item px-6">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -12,7 +17,7 @@
     </button>
     
     @* Drop down will appear product here *@
-    <div
+    <div id="search-results-list"
         class="absolute top-full left-0 mt-2 w-full bg-base-100 rounded-box shadow-xl border border-base-200 p-2 hidden peer-focus:block hover:block z-50">
         <ul class="menu menu-sm bg-base-100 w-full rounded-box">
             @if (Model.Products.Any())
