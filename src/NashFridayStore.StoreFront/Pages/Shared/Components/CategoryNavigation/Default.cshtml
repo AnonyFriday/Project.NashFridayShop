@@ -35,7 +35,7 @@
                     @foreach (var category in Model.Categories)
                     {
                         <li>
-                            <a href="/Categories?id=@category.Id" class="hover:text-primary transition-colors text-base-content whitespace-nowrap">
+                            <a asp-page="/Products/Index" asp-route-CategoryId="@category.Id" class="hover:text-primary transition-colors text-base-content whitespace-nowrap">
                                 @category.Name
                             </a>
                         </li>

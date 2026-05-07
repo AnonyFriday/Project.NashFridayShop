@@ -32,7 +32,7 @@
                 var product = Model.TopProducts[i];
                 var gridClass = bentoClasses[i];
 
-                <a href="/Products?id=@product.Id"
+                <a asp-page="/Products/Details/Index" asp-route-Id="@product.Id"
                        class="group relative overflow-hidden rounded-2xl bg-base-300 @gridClass shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 block h-full min-h-62.5">
                    
                     <!-- Image Background -->
