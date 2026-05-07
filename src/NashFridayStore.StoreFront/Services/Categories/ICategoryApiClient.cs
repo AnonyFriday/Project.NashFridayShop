@@ -2,5 +2,5 @@ namespace NashFridayStore.StoreFront.Services.Categories;
 
 public interface ICategoryApiClient
 {
-    Task<GetAllCategoriesResponse?> GetAllCategoriesAsync();
+    Task<GetCategories.Response> GetCategoriesAsync(GetCategories.Request request);
 }

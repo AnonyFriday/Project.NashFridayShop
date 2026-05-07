@@ -1,5 +1,9 @@
 namespace NashFridayStore.StoreFront.Services.Categories;
 
-public record CategoryDto(Guid Id, string Name, string Description);
+public static class GetCategories
+{
+    public record CategoryItem(Guid Id, string Name, string Description);
 
-public record GetAllCategoriesResponse(List<CategoryDto> Items);
+    public record Request(string? SearchName = null, int? PageIndex = 0, int? PageSize = 10, bool? IsAll = true);
+    public record Response(List<CategoryItem> Items, int TotalItems, int TotalPages, int PageIndex);
+}

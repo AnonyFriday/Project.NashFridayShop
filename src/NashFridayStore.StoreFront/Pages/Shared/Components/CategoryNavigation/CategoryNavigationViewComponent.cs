@@ -11,7 +11,7 @@ public class CategoryNavigationViewComponent(ICategoryApiClient categoryApiClien
     {
         try
         {
-            GetAllCategoriesResponse? response = await categoryApiClient.GetAllCategoriesAsync();
+            GetCategories.Response? response = await categoryApiClient.GetCategoriesAsync(new GetCategories.Request(IsAll: true));
             CategoryNavigationResponseVM = new CategoryNavigationResponseVM
             {
                 Categories = response?.Items?
