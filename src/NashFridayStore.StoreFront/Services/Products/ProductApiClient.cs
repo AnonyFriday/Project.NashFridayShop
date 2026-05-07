@@ -12,41 +12,41 @@ public class ProductApiClient : IProductApiClient
     public async Task<GetProducts.Response?> GetProductsAsync(GetProducts.Request request)
     {
         var queryParams = new List<string>();
-        if (request.CategoryId.HasValue) 
+        if (request.CategoryId.HasValue)
         {
             queryParams.Add($"categoryId={request.CategoryId.Value}");
         }
-        if (!string.IsNullOrWhiteSpace(request.SearchName)) 
+        if (!string.IsNullOrWhiteSpace(request.SearchName))
         {
             queryParams.Add($"searchName={request.SearchName}");
         }
-        if (request.MinPrice.HasValue) 
+        if (request.MinPrice.HasValue)
         {
             queryParams.Add($"minPrice={request.MinPrice.Value}");
         }
-        if (request.MaxPrice.HasValue) 
+        if (request.MaxPrice.HasValue)
         {
             queryParams.Add($"maxPrice={request.MaxPrice.Value}");
         }
-        if (request.Status.HasValue) 
+        if (request.Status.HasValue)
         {
             queryParams.Add($"status={request.Status.Value}");
         }
-        if (request.SortBy.HasValue) 
+        if (request.SortBy.HasValue)
         {
             queryParams.Add($"sortBy={request.SortBy.Value}");
         }
         queryParams.Add($"pageIndex={request.PageIndex}");
         queryParams.Add($"pageSize={request.PageSize}");
 
-        string queryString = string.Join("&", queryParams);
-        return await _apiClient.GetAsync<GetProducts.Response>($"api/all/products?{queryString}");
+        string queryString = queryParams.Any() ? "?" + string.Join("&", queryParams) : "";
+        return await _apiClient.GetAsync<GetProducts.Response>($"api/all/products{queryString}");
     }
 
     public async Task<GetTopRatedProducts.Response?> GetTopRatedProductsAsync(GetTopRatedProducts.Request request)
     {
         GetTopRatedProducts.Response? response = await _apiClient.GetAsync<GetTopRatedProducts.Response>($"api/all/products?pageSize={request.Count}&sortBy=RatingDesc");
-        
+
         if (response?.Items == null || !response.Items.Any())
         {
             return new GetTopRatedProducts.Response(new List<GetTopRatedProducts.ProductItem>());
