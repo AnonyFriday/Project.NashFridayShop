@@ -20,18 +20,26 @@ public class IndexModel(
     public Guid? CategoryId { get; set; }
     public string? SearchName { get; set; }
     public SortBy? SortBy { get; set; }
+    public decimal? MinPrice { get; set; }
+    public decimal? MaxPrice { get; set; }
     public int PageIndex { get; set; } = 0;
     public int PageSize { get; set; } = 8;
 
     public async Task OnGetAsync()
     {
+        // Cleaning Requests
+        if (MinPrice > MaxPrice)
+        {
+            (MinPrice, MaxPrice) = (null, null);
+        }
+
         CategoryResponse = await categoryApiClient.GetCategoriesAsync(new GetCategories.Request(IsAll: true));
 
         var request = new GetProducts.Request(
             SearchName: string.IsNullOrWhiteSpace(SearchName) ? null : SearchName,
             CategoryId: CategoryId,
-            MinPrice: null,
-            MaxPrice: null,
+            MinPrice: MinPrice,
+            MaxPrice: MaxPrice,
             SortBy: SortBy,
             PageIndex: PageIndex,
             PageSize: PageSize

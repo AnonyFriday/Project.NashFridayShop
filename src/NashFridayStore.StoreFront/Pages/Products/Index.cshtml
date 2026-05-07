@@ -20,7 +20,7 @@
                         asp-for="SearchName"
                         placeholder="Search products..." 
                         hx-get="/Products/Index"
-                        hx-vals='{"CategoryId": "@Model.CategoryId", "SortBy": "@Model.SortBy", "PageSize": "@Model.PageSize", "PageIndex": 0}'
+                        hx-vals='{"CategoryId": "@Model.CategoryId", "SortBy": "@Model.SortBy", "PageSize": "@Model.PageSize", "MinPrice": "@Model.MinPrice", "MaxPrice": "@Model.MaxPrice", "PageIndex": 0}'
                         hx-trigger="input changed delay:500ms, search" 
                         hx-target="#id-products-page" 
                         hx-select="#id-products-page" 
@@ -41,7 +41,7 @@
                 <select class="select select-bordered w-full" 
                         asp-for="CategoryId"
                         hx-get="/Products/Index" 
-                        hx-vals='{"SearchName": "@Model.SearchName", "SortBy": "@Model.SortBy", "PageSize": "@Model.PageSize", "PageIndex": 0}'
+                        hx-vals='{"SearchName": "@Model.SearchName", "SortBy": "@Model.SortBy", "PageSize": "@Model.PageSize", "MinPrice": "@Model.MinPrice", "MaxPrice": "@Model.MaxPrice", "PageIndex": 0}'
                         hx-trigger="change" 
                         hx-target="#id-products-page"
                         hx-select="#id-products-page" 
@@ -58,13 +58,54 @@
                 </select>
             </div>
 
+            @* Price Range Filter - Using FORM to avoid trigger each first. must only be trigger when finishing typing both min and max *@
+            @* Case 1: min finish typing, max in typing then no trigger happens for min *@
+            @* Case 2: max finish typing, min in typing then no trigger happens for max, will trigger as long as min finish typing *@
+            <div>
+                <h3 class="text-lg font-bold mb-4 uppercase tracking-widest text-base-content/50">Price Range (USD)</h3>
+                <div class="flex items-center gap-2">
+                    <form
+                        hx-get="/Products/Index"
+                        hx-trigger="input changed delay:1s"
+                        hx-vals='{"SearchName": "@Model.SearchName", "SortBy": "@Model.SortBy", "PageSize": "@Model.PageSize", "CategoryId": "@Model.CategoryId", "PageIndex": 0}'
+                        hx-target="#id-products-page"
+                        hx-select="#id-products-page"
+                        hx-swap="outerHTML show:no-scroll"
+                        hx-push-url="true">
+                        
+                        @* Not using Tag helper here to avoid invariant issues *@
+                        <div class="flex items-center gap-2">
+                            <input 
+                                name="MinPrice"
+                                value="@Model.MinPrice"
+                                type="number"
+                                min="0"
+                                step="0.01"
+                                placeholder="Min"
+                                class="input input-bordered input-sm" />
+                        
+                            <span>-</span>
+
+                            <input 
+                                name="MaxPrice"
+                                value="@Model.MaxPrice"
+                                type="number"
+                                min="0"
+                                step="0.01"
+                                placeholder="Max"
+                                class="input input-bordered input-sm" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             @* Sort Filter *@
             <div>
                 <h3 class="text-lg font-bold mb-4 uppercase tracking-widest text-base-content/50">Sort By</h3>
                 <select class="select select-bordered w-full" 
                         asp-for="SortBy"
                         hx-get="/Products/Index" 
-                        hx-vals='{"CategoryId": "@Model.CategoryId", "SearchName": "@Model.SearchName", "PageSize": "@Model.PageSize", "PageIndex": 0}'
+                        hx-vals='{"CategoryId": "@Model.CategoryId", "SearchName": "@Model.SearchName", "PageSize": "@Model.PageSize", "MinPrice": "@Model.MinPrice", "MaxPrice": "@Model.MaxPrice", "PageIndex": 0}'
                         hx-trigger="change" 
                         hx-target="#id-products-page"
                         hx-select="#id-products-page" 
@@ -109,7 +150,7 @@
                             <select class="select select-bordered select-xs md:select-sm font-bold" 
                                     asp-for="@Model.PageSize"
                                     hx-get="/Products/Index" 
-                                    hx-vals='{"CategoryId": "@Model.CategoryId", "SearchName": "@Model.SearchName", "SortBy": "@Model.SortBy", "PageIndex": 0}'
+                                    hx-vals='{"CategoryId": "@Model.CategoryId", "SearchName": "@Model.SearchName", "SortBy": "@Model.SortBy", "MinPrice": "@Model.MinPrice", "MaxPrice": "@Model.MaxPrice", "PageIndex": 0}'
                                     hx-trigger="change" 
                                     hx-target="#id-products-page" 
                                     hx-select="#id-products-page" 
