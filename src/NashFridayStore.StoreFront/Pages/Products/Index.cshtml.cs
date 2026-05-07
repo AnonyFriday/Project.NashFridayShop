@@ -20,6 +20,8 @@ public class IndexModel(
     public Guid? CategoryId { get; set; }
     public string? SearchName { get; set; }
     public SortBy? SortBy { get; set; }
+    public int PageIndex { get; set; } = 0;
+    public int PageSize { get; set; } = 8;
 
     public async Task OnGetAsync()
     {
@@ -31,8 +33,8 @@ public class IndexModel(
             MinPrice: null,
             MaxPrice: null,
             SortBy: SortBy,
-            PageIndex: 0,
-            PageSize: 10
+            PageIndex: PageIndex,
+            PageSize: PageSize
         );
 
         ProductResponse = await productApiClient.GetProductsAsync(request);
