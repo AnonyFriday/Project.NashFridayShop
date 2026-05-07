@@ -1,8 +1,8 @@
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Primitives;
 using NashFridayStore.StoreFront.AppOptions;
 using NashFridayStore.StoreFront.Services;
 using NashFridayStore.StoreFront.Services.Categories;
+using NashFridayStore.StoreFront.Services.Products;
 
 namespace NashFridayStore.StoreFront.Extensions;
 
@@ -10,7 +10,7 @@ public static class ServiceCollectionExtension
 {
     public static void AddStoreFrontServices(this IServiceCollection services, IConfiguration configuration)
     {
-        // Add Razor Pages
+        // Razor Page
         services.AddRazorPages();
 
         // Add HttpContextAccessor for HttpContext
@@ -41,5 +41,6 @@ public static class ServiceCollectionExtension
 
         // Register domain http client api
         services.AddScoped<ICategoryApiClient, CategoryApiClient>();
+        services.AddScoped<IProductApiClient, ProductApiClient>();
     }
 }

@@ -3,25 +3,27 @@ using NashFridayStore.StoreFront.Services.Categories;
 
 namespace NashFridayStore.StoreFront.Pages.Shared.Components.CategoryNavigation;
 
-public class CategoryNavigationViewComponent : ViewComponent
+public class CategoryNavigationViewComponent(ICategoryApiClient categoryApiClient) : ViewComponent
 {
-    private readonly ICategoryApiClient _categoryApiClient;
-
-    public CategoryNavigationViewComponent(ICategoryApiClient categoryApiClient)
-    {
-        _categoryApiClient = categoryApiClient;
-    }
+    public CategoryNavigationResponseVM CategoryNavigationResponseVM { get; set; } = new();
 
     public async Task<IViewComponentResult> InvokeAsync()
     {
         try
         {
-            GetAllCategoriesResponse? response = await _categoryApiClient.GetAllCategoriesAsync();
-            return View(response?.Items ?? new List<CategoryDto>());
+            GetCategories.Response? response = await categoryApiClient.GetCategoriesAsync(new GetCategories.Request(IsAll: true));
+            CategoryNavigationResponseVM = new CategoryNavigationResponseVM
+            {
+                Categories = response?.Items?
+                    .Select(c => new CategoryNavigationResponseVM.Category(c.Id.ToString(), c.Name))
+                    .ToList() ?? []
+            };
         }
         catch
         {
-            return View(new List<CategoryDto>());
+            CategoryNavigationResponseVM = new CategoryNavigationResponseVM { Categories = [] };
         }
+
+        return View(CategoryNavigationResponseVM);
     }
 }
