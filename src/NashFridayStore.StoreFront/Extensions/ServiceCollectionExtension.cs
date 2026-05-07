@@ -2,6 +2,7 @@ using Microsoft.Extensions.Options;
 using NashFridayStore.StoreFront.AppOptions;
 using NashFridayStore.StoreFront.Services;
 using NashFridayStore.StoreFront.Services.Categories;
+using NashFridayStore.StoreFront.Services.Identity;
 using NashFridayStore.StoreFront.Services.Products;
 
 namespace NashFridayStore.StoreFront.Extensions;
@@ -22,25 +23,19 @@ public static class ServiceCollectionExtension
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
+        // Add CookieForwardingHandler
+        services.AddTransient<CookieForwardingHandler>();
+
         // Add NashFridayApiClient for HttpClient
         services.AddHttpClient<BaseApiClient>((sp, client) =>
-#pragma warning disable S125 // Sections of code should not be commented out
-
         {
             ApiUrlOptions options = sp.GetRequiredService<IOptions<ApiUrlOptions>>().Value;
-            client.BaseAddress = new Uri(options.BaseApiAddress);
-
-            // HttpContext? httpContext = sp.GetRequiredService<IHttpContextAccessor>().HttpContext;
-            // if (httpContext != null && httpContext.Request.Headers.TryGetValue("Cookie", out StringValues cookies))
-            // {
-            //     client.DefaultRequestHeaders.Add("Cookie", cookies.ToString());
-            // }
-        }
-#pragma warning restore S125 // Sections of code should not be commented out
-);
+            client.BaseAddress = new Uri(options.BaseApiUrl);
+        }).AddHttpMessageHandler<CookieForwardingHandler>();
 
         // Register domain http client api
         services.AddScoped<ICategoryApiClient, CategoryApiClient>();
         services.AddScoped<IProductApiClient, ProductApiClient>();
+        services.AddScoped<IIdentityApiClient, IdentityApiClient>();
     }
 }
