@@ -8,30 +8,41 @@
     <div id="id-products-page" class="flex flex-col md:flex-row gap-8">
         
         @* Sidebar Filters *@
-        <aside class="w-full md:w-64 space-y-8">
+        <aside class="w-full md:w-72 h-fit space-y-8 p-4 bg-base-200 rounded-lg shadow-sm border border-base-200">
 
             @* Search Bar *@
-            <div>
-                <h3 class="text-lg font-bold mb-4 uppercase tracking-widest text-base-content/50">Search</h3>
-                <div class="relative group">
-                    
-                    <input 
-                        id="id-sidebar-search" 
-                        asp-for="SearchName"
-                        placeholder="Search products..." 
+            <div class="flex items-start justify-between mb-4">
+                <h3 class="text-lg font-bold uppercase tracking-widest text-base-content/50">Search</h3>
+                <button class="btn btn-ghost btn-xs btn-circle text-base-content/30 hover:text-primary transition-colors tooltip tooltip-left"
+                        data-tip="Clear All Filters"
                         hx-get="/Products/Index"
-                        hx-vals='{"CategoryId": "@Model.CategoryId", "SortBy": "@Model.SortBy", "PageSize": "@Model.PageSize", "PageIndex": 0}'
-                        hx-trigger="input changed delay:500ms, search" 
-                        hx-target="#id-products-page" 
-                        hx-select="#id-products-page" 
-                        hx-swap="outerHTML show:no-scroll" 
-                        hx-push-url="true"
-                        class="input input-bordered w-full focus:outline-none focus:border-primary pr-10" />
-                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-base-content/30">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                        </svg>
-                    </div>
+                        hx-target="#id-products-page"   
+                        hx-select="#id-products-page"
+                        hx-swap="outerHTML show:no-scroll"
+                        hx-push-url="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                    </svg>
+                </button>
+            </div>
+            <div class="relative group">
+                
+                <input 
+                    id="id-sidebar-search" 
+                    asp-for="SearchName"
+                    placeholder="Search products..." 
+                    hx-get="/Products/Index"
+                    hx-vals='{"CategoryId": "@Model.CategoryId", "SortBy": "@Model.SortBy", "PageSize": "@Model.PageSize", "MinPrice": "@Model.MinPrice", "MaxPrice": "@Model.MaxPrice", "PageIndex": 0}'
+                    hx-trigger="input changed delay:500ms, search" 
+                    hx-target="#id-products-page" 
+                    hx-select="#id-products-page" 
+                    hx-swap="outerHTML show:no-scroll" 
+                    hx-push-url="true"
+                    class="input input-bordered w-full focus:outline-none focus:border-primary pr-10" />
+                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-base-content/30">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                    </svg>
                 </div>
             </div>
 
@@ -41,7 +52,7 @@
                 <select class="select select-bordered w-full" 
                         asp-for="CategoryId"
                         hx-get="/Products/Index" 
-                        hx-vals='{"SearchName": "@Model.SearchName", "SortBy": "@Model.SortBy", "PageSize": "@Model.PageSize", "PageIndex": 0}'
+                        hx-vals='{"SearchName": "@Model.SearchName", "SortBy": "@Model.SortBy", "PageSize": "@Model.PageSize", "MinPrice": "@Model.MinPrice", "MaxPrice": "@Model.MaxPrice", "PageIndex": 0}'
                         hx-trigger="change" 
                         hx-target="#id-products-page"
                         hx-select="#id-products-page" 
@@ -58,13 +69,54 @@
                 </select>
             </div>
 
+            @* Price Range Filter - Using FORM to avoid trigger each first. must only be trigger when finishing typing both min and max *@
+            @* Case 1: min finish typing, max in typing then no trigger happens for min *@
+            @* Case 2: max finish typing, min in typing then no trigger happens for max, will trigger as long as min finish typing *@
+            <div>
+                <h3 class="text-lg font-bold mb-4 uppercase tracking-widest text-base-content/50">Price Range (USD)</h3>
+                <div class="flex items-center gap-2">
+                    <form
+                        hx-get="/Products/Index"
+                        hx-trigger="input changed delay:1s"
+                        hx-vals='{"SearchName": "@Model.SearchName", "SortBy": "@Model.SortBy", "PageSize": "@Model.PageSize", "CategoryId": "@Model.CategoryId", "PageIndex": 0}'
+                        hx-target="#id-products-page"
+                        hx-select="#id-products-page"
+                        hx-swap="outerHTML show:no-scroll"
+                        hx-push-url="true">
+                        
+                        @* Not using Tag helper here to avoid invariant issues *@
+                        <div class="flex items-center gap-2">
+                            <input 
+                                name="MinPrice"
+                                value="@Model.MinPrice"
+                                type="number"
+                                min="0"
+                                step="0.01"
+                                placeholder="Min"
+                                class="input input-bordered input-sm" />
+                        
+                            <span>-</span>
+
+                            <input 
+                                name="MaxPrice"
+                                value="@Model.MaxPrice"
+                                type="number"
+                                min="0"
+                                step="0.01"
+                                placeholder="Max"
+                                class="input input-bordered input-sm" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             @* Sort Filter *@
             <div>
                 <h3 class="text-lg font-bold mb-4 uppercase tracking-widest text-base-content/50">Sort By</h3>
                 <select class="select select-bordered w-full" 
                         asp-for="SortBy"
                         hx-get="/Products/Index" 
-                        hx-vals='{"CategoryId": "@Model.CategoryId", "SearchName": "@Model.SearchName", "PageSize": "@Model.PageSize", "PageIndex": 0}'
+                        hx-vals='{"CategoryId": "@Model.CategoryId", "SearchName": "@Model.SearchName", "PageSize": "@Model.PageSize", "MinPrice": "@Model.MinPrice", "MaxPrice": "@Model.MaxPrice", "PageIndex": 0}'
                         hx-trigger="change" 
                         hx-target="#id-products-page"
                         hx-select="#id-products-page" 
@@ -84,7 +136,7 @@
         <!-- Product Grid Area -->
         <main class="flex-1">
             <!-- Header Info -->
-            <div class="flex flex-col sm:flex-row justify-between items-center mb-8 bg-base-200 p-4 rounded-xl border border-base-300 gap-4">
+            <div class="flex flex-col sm:flex-row justify-between items-center mb-8 bg-base-200 p-4 rounded-xl border border-base-200 gap-4 shadow-sm">
                 <div class="flex items-center gap-2">
                     <h2 class="text-xl font-bold">
                         @if (!string.IsNullOrEmpty(Model.SearchName))
@@ -109,7 +161,7 @@
                             <select class="select select-bordered select-xs md:select-sm font-bold" 
                                     asp-for="@Model.PageSize"
                                     hx-get="/Products/Index" 
-                                    hx-vals='{"CategoryId": "@Model.CategoryId", "SearchName": "@Model.SearchName", "SortBy": "@Model.SortBy", "PageIndex": 0}'
+                                    hx-vals='{"CategoryId": "@Model.CategoryId", "SearchName": "@Model.SearchName", "SortBy": "@Model.SortBy", "MinPrice": "@Model.MinPrice", "MaxPrice": "@Model.MaxPrice", "PageIndex": 0}'
                                     hx-trigger="change" 
                                     hx-target="#id-products-page" 
                                     hx-select="#id-products-page" 
