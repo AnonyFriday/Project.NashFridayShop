@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using System.Reflection;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -111,7 +112,13 @@ public static class ServiceCollectionExtension
                 context.AddRequestTransform(async contextTransform =>
                 {
                     string? accessToken = await contextTransform.HttpContext.GetTokenAsync("access_token");
-                    Console.WriteLine("Access Token: {0}", accessToken);
+                    if (!string.IsNullOrWhiteSpace(accessToken))
+                    {
+                        // attach bearer token to subsequent request
+                        contextTransform.ProxyRequest.Headers.Authorization = new AuthenticationHeaderValue(
+                            "Bearer", accessToken
+                        );
+                    }
                 });
             })
             .LoadFromMemory(
