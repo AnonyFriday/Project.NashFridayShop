@@ -41,7 +41,7 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
                 x.Product.PriceUsd,
                 x.Product.Quantity,
                 x.Product.Status,
-                (x.Product.ProductRatings.Any() ? x.Product.ProductRatings.Average(r => (decimal)r.Stars) % AppCts.Api.MaxStars : 0).NormalizeRating()))
+                (x.Product.ProductRatings.Any() ? x.Product.ProductRatings.Average(r => (decimal)r.Stars) : 0).NormalizeRating()))
             .FirstOrDefaultAsync(ct);
 
         if (product is null)

@@ -60,3 +60,37 @@ public static class GetTopRatedProducts
 
     public record Request(int Count = 10);
 }
+
+public static class GetProduct
+{
+    public record Response(
+        Guid Id,
+        Guid CategoryId,
+        string CategoryName,
+        string Name,
+        string Description,
+        string ImageUrl,
+        decimal PriceUsd,
+        int Quantity,
+        ProductStatus Status,
+        decimal AverageStars);
+
+    public record Request(Guid Id);
+}
+
+public static class GetProductRatings
+{
+    public record RatingItem(int Stars, string? Comment, DateTime CreatedAtUtc);
+
+    public record Response(
+        List<RatingItem> Items,
+        int TotalItems,
+        int TotalPages,
+        int PageIndex,
+        decimal Average);
+
+    public record Request(
+        Guid ProductId,
+        int PageIndex = 0,
+        int PageSize = 10);
+}

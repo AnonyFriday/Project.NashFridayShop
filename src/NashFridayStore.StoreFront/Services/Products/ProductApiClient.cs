@@ -54,4 +54,14 @@ public class ProductApiClient : IProductApiClient
 
         return response;
     }
+
+    public async Task<GetProduct.Response?> GetProductByIdAsync(GetProduct.Request request)
+    {
+        return await _apiClient.GetAsync<GetProduct.Response>($"api/all/products/{request.Id}");
+    }
+
+    public async Task<GetProductRatings.Response?> GetProductRatingsAsync(GetProductRatings.Request request)
+    {
+        return await _apiClient.GetAsync<GetProductRatings.Response>($"api/all/products/{request.ProductId}/ratings?pageIndex={request.PageIndex}&pageSize={request.PageSize}");
+    }
 }

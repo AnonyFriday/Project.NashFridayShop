@@ -29,7 +29,7 @@ public sealed class ProductRatingConfiguration : IEntityTypeConfiguration<Produc
         {
             t.HasCheckConstraint(
                 "ck_product_ratings_stars",
-                "[Stars] >= 1 AND [Stars] <= 10");
+                "[Stars] >= 1 AND [Stars] <= 5");
         });
 
         builder.ConfigureAuditable();

@@ -60,7 +60,7 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
                 x.ImageUrl,
                 x.PriceUsd,
                 x.Status,
-                (x.ProductRatings.Any() ? x.ProductRatings.Average(x => (decimal)x.Stars) % AppCts.Api.MaxStars : 0).NormalizeRating(),
+                (x.ProductRatings.Any() ? x.ProductRatings.Average(x => (decimal)x.Stars) : 0).NormalizeRating(),
                 x.Quantity,
                 x.IsDeleted)
             )
