@@ -18,10 +18,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseRouting();
-app.UseMiddleware<SetLoggedInUserMiddleware>();
 
-app.UseAuthentication();
-app.UseAuthorization();
+app.UseMiddleware<SetLoggedInUserMiddleware>();
 
 app.MapStaticAssets();
 app.MapRazorPages()

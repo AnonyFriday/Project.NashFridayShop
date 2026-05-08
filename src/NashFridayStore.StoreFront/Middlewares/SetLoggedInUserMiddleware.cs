@@ -10,10 +10,9 @@ public sealed class SetLoggedInUserMiddleware(RequestDelegate next)
     {
         GetUserInfo.Response userInfo = await accountApiClient.GetUserInfoAsync();
 
-        // Will notify unauthenticated user later
         if (!userInfo.IsAuthenticated)
         {
-            context.Response.Redirect("/");
+            await next(context);
             return;
         }
 
