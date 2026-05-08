@@ -51,7 +51,7 @@ public class PostProductRatingValidatorTests
     [Theory]
     [Trait("UT", "Stars")]
     [InlineData(0)]
-    [InlineData(11)]
+    [InlineData(6)]
     public void Validate_StarsOutOfRange_ShouldHaveValidationError(int stars)
     {
         // Arrange
@@ -72,7 +72,6 @@ public class PostProductRatingValidatorTests
     [Trait("UT", "Stars")]
     [InlineData(1)]
     [InlineData(5)]
-    [InlineData(10)]
     public void Validate_StarsInRange_ShouldNotHaveValidationError(int stars)
     {
         // Arrange

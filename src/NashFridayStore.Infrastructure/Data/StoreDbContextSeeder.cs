@@ -64,26 +64,26 @@ public class StoreDbContextSeeder(StoreDbContext dbContext, ILogger<StoreDbConte
         #region ProductRatings
         var productRatings = new List<ProductRating>
         {
-            new ProductRatingBuilder().WithProductId(products[0].Id).WithStars(9).WithComment("Very well crafted, feels authentic!").Build(),
-            new ProductRatingBuilder().WithProductId(products[0].Id).WithStars(8).WithComment("Nice quality but a bit small.").Build(),
-            new ProductRatingBuilder().WithProductId(products[1].Id).WithStars(7).WithComment("Comfortable and fits well.").Build(),
-            new ProductRatingBuilder().WithProductId(products[1].Id).WithStars(6).WithComment("Design is okay, expected better print.").Build(),
-            new ProductRatingBuilder().WithProductId(products[2].Id).WithStars(10).WithComment("Absolutely delicious! Must try.").Build(),
-            new ProductRatingBuilder().WithProductId(products[2].Id).WithStars(9).WithComment("Sweet and chewy, loved it.").Build(),
-            new ProductRatingBuilder().WithProductId(products[3].Id).WithStars(8).WithComment("Great souvenir piece.").Build(),
-            new ProductRatingBuilder().WithProductId(products[4].Id).WithStars(9).WithComment("Beautiful artwork, worth the price.").Build(),
-            new ProductRatingBuilder().WithProductId(products[4].Id).WithStars(7).WithComment("Looks good but packaging could improve.").Build(),
-            new ProductRatingBuilder().WithProductId(products[5].Id).WithStars(9).WithComment("Sound quality is amazing.").Build(),
-            new ProductRatingBuilder().WithProductId(products[5].Id).WithStars(8).WithComment("Battery lasts long enough.").Build(),
-            new ProductRatingBuilder().WithProductId(products[6].Id).WithStars(7).WithComment("Charges devices quickly.").Build(),
-            new ProductRatingBuilder().WithProductId(products[7].Id).WithStars(10).WithComment("Excellent typing experience.").Build(),
-            new ProductRatingBuilder().WithProductId(products[8].Id).WithStars(8).WithComment("Looks modern and elegant.").Build(),
-            new ProductRatingBuilder().WithProductId(products[9].Id).WithStars(7).WithComment("Good quality ceramic.").Build(),
-            new ProductRatingBuilder().WithProductId(products[10].Id).WithStars(9).WithComment("Beautiful design for living room.").Build(),
-            new ProductRatingBuilder().WithProductId(products[11].Id).WithStars(8).WithComment("Feels gentle on skin.").Build(),
-            new ProductRatingBuilder().WithProductId(products[12].Id).WithStars(9).WithComment("Skin became brighter after 2 weeks.").Build(),
-            new ProductRatingBuilder().WithProductId(products[13].Id).WithStars(7).WithComment("Very moisturizing.").Build(),
-            new ProductRatingBuilder().WithProductId(products[14].Id).WithStars(9).WithComment("Fits perfectly and stylish.").Build()
+            new ProductRatingBuilder().WithProductId(products[0].Id).WithStars(5).WithComment("Very well crafted, feels authentic!").Build(),
+            new ProductRatingBuilder().WithProductId(products[0].Id).WithStars(4).WithComment("Nice quality but a bit small.").Build(),
+            new ProductRatingBuilder().WithProductId(products[1].Id).WithStars(4).WithComment("Comfortable and fits well.").Build(),
+            new ProductRatingBuilder().WithProductId(products[1].Id).WithStars(3).WithComment("Design is okay, expected better print.").Build(),
+            new ProductRatingBuilder().WithProductId(products[2].Id).WithStars(5).WithComment("Absolutely delicious! Must try.").Build(),
+            new ProductRatingBuilder().WithProductId(products[2].Id).WithStars(5).WithComment("Sweet and chewy, loved it.").Build(),
+            new ProductRatingBuilder().WithProductId(products[3].Id).WithStars(4).WithComment("Great souvenir piece.").Build(),
+            new ProductRatingBuilder().WithProductId(products[4].Id).WithStars(5).WithComment("Beautiful artwork, worth the price.").Build(),
+            new ProductRatingBuilder().WithProductId(products[4].Id).WithStars(4).WithComment("Looks good but packaging could improve.").Build(),
+            new ProductRatingBuilder().WithProductId(products[5].Id).WithStars(5).WithComment("Sound quality is amazing.").Build(),
+            new ProductRatingBuilder().WithProductId(products[5].Id).WithStars(4).WithComment("Battery lasts long enough.").Build(),
+            new ProductRatingBuilder().WithProductId(products[6].Id).WithStars(4).WithComment("Charges devices quickly.").Build(),
+            new ProductRatingBuilder().WithProductId(products[7].Id).WithStars(5).WithComment("Excellent typing experience.").Build(),
+            new ProductRatingBuilder().WithProductId(products[8].Id).WithStars(4).WithComment("Looks modern and elegant.").Build(),
+            new ProductRatingBuilder().WithProductId(products[9].Id).WithStars(4).WithComment("Good quality ceramic.").Build(),
+            new ProductRatingBuilder().WithProductId(products[10].Id).WithStars(5).WithComment("Beautiful design for living room.").Build(),
+            new ProductRatingBuilder().WithProductId(products[11].Id).WithStars(4).WithComment("Feels gentle on skin.").Build(),
+            new ProductRatingBuilder().WithProductId(products[12].Id).WithStars(5).WithComment("Skin became brighter after 2 weeks.").Build(),
+            new ProductRatingBuilder().WithProductId(products[13].Id).WithStars(4).WithComment("Very moisturizing.").Build(),
+            new ProductRatingBuilder().WithProductId(products[14].Id).WithStars(5).WithComment("Fits perfectly and stylish.").Build()
         };
         #endregion
 
