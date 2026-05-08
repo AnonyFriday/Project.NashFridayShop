@@ -1,4 +1,5 @@
 using System.Reflection;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.Options;
@@ -6,6 +7,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using NashFridayStore.BFF.AppOptions;
 using NashFridayStore.BFF.Commons;
 using Yarp.ReverseProxy.Configuration;
+using Yarp.ReverseProxy.Transforms;
 
 namespace NashFridayStore.BFF.Extensions;
 
@@ -103,6 +105,15 @@ public static class ServiceCollectionExtension
         string identityServerUrl = siteUrls.IdentityServer.Authority;
 
         services.AddReverseProxy()
+            .AddTransforms(context =>
+            {
+                // Decrypt the cookie schema
+                context.AddRequestTransform(async contextTransform =>
+                {
+                    string? accessToken = await contextTransform.HttpContext.GetTokenAsync("access_token");
+                    Console.WriteLine("Access Token: {0}", accessToken);
+                });
+            })
             .LoadFromMemory(
                 routes: [
                     new RouteConfig() {

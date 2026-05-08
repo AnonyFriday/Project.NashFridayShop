@@ -9,7 +9,7 @@ public class CookieForwardingDelegatingHandler(IHttpContextAccessor httpContextA
         {
             foreach (KeyValuePair<string, string> cookie in httpContext.Request.Cookies)
             {
-                Console.WriteLine($"Forwarding cookie {cookie.Key} = {cookie.Value}");
+                request.Headers.Add("Cookie", $"{cookie.Key}={cookie.Value}");
             }
         }
 
