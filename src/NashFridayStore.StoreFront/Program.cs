@@ -1,4 +1,5 @@
 using NashFridayStore.StoreFront.Extensions;
+using NashFridayStore.StoreFront.Middlewares;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseRouting();
+app.UseMiddleware<SetLoggedInUserMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();

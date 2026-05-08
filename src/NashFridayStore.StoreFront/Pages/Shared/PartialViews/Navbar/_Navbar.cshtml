@@ -1,3 +1,4 @@
+@using NashFridayStore.StoreFront.Commons
 @using NashFridayStore.StoreFront.Services.Identity
 @inject IAccountApiClient AccountApiClient
 @inject IHttpContextAccessor HttpContextAccessor
@@ -7,6 +8,10 @@
     var query = HttpContextAccessor.HttpContext?.Request.QueryString.Value;
 
     string returnUrl = $"{path}{query}";
+    
+    bool isAuthenticated = User.Identity != null &&
+                           User.Identity.AuthenticationType == AppCts.Identity.AuthenticationType &&
+                           User.Identity.IsAuthenticated;
 }
 
 <header class="sticky top-0 z-50 bg-base-100 shadow-sm">
@@ -57,9 +62,9 @@
 
             <div class="h-6 w-px bg-base-content/10 hidden sm:block"></div>
 
-            @if (User?.Identity?.IsAuthenticated == true)
+            @* Login/Logout/Register/UserProfile dropdown *@
+            @if (isAuthenticated)
             {
-                <!-- User Profile Dropdown -->
                 <div class="dropdown dropdown-end">
                     <div tabindex="0" role="button"
                          class="btn btn-ghost btn-circle text-base-content/70 hover:text-primary">
@@ -89,7 +94,6 @@
             }
             else
             {
-                <!-- Login & Register -->
                 <div class="flex items-center gap-1">
                     <a href="@AccountApiClient.GetLoginRedirectAddress(returnUrl)"
                        class="btn btn-ghost btn-sm font-black uppercase text-[10px] tracking-widest text-base-content/70 hover:text-primary">Login</a>
