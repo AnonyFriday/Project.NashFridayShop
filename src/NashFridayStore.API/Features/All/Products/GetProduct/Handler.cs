@@ -2,7 +2,6 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using NashFridayStore.API.Extensions;
-using NashFridayStore.Domain.Commons;
 using NashFridayStore.Infrastructure.Data;
 
 namespace NashFridayStore.API.Features.All.Products.GetProduct;
