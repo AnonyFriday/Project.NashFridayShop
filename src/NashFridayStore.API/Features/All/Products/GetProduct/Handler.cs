@@ -1,6 +1,7 @@
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
+using NashFridayStore.API.Extensions;
 using NashFridayStore.Domain.Commons;
 using NashFridayStore.Infrastructure.Data;
 
@@ -20,29 +21,33 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
             .AsNoTracking()
             .Include(p => p.ProductRatings)
             .Where(x => x.Id == req.Id)
+            .LeftJoin(
+                dbContext.Categories,
+                p => p.CategoryId,
+                c => c.Id,
+                (p, c) => new
+                {
+                    Product = p,
+                    CategoryName = c != null ? c.Name : "Others"
+                }
+            )
             .Select(x => new Response(
-                x.Id,
-                x.CategoryId,
-                x.Name,
-                x.Description,
-                x.ImageUrl,
-                x.PriceUsd,
-                x.Quantity,
-                x.Status,
-                x.ProductRatings.Any() ? x.ProductRatings.Average(r => (decimal)r.Stars) % AppCts.Api.MaxStars : 0))
+                x.Product.Id,
+                x.Product.CategoryId,
+                x.CategoryName,
+                x.Product.Name,
+                x.Product.Description,
+                x.Product.ImageUrl,
+                x.Product.PriceUsd,
+                x.Product.Quantity,
+                x.Product.Status,
+                (x.Product.ProductRatings.Any() ? x.Product.ProductRatings.Average(r => (decimal)r.Stars) % AppCts.Api.MaxStars : 0).NormalizeRating()))
             .FirstOrDefaultAsync(ct);
 
         if (product is null)
         {
             throw new Exceptions.ProductNotFoundException(req.Id);
         }
-
-        string? categoryName = await dbContext.Categories
-                    .Where(x => x.Id.Equals(product.CategoryId))
-                    .Select(x => x.Name)
-                    .FirstOrDefaultAsync(ct);
-
-        product.CategoryName = categoryName!;
 
         return product;
     }
