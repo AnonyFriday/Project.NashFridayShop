@@ -1,4 +1,5 @@
 using NashFridayStore.StoreFront.Extensions;
+using NashFridayStore.StoreFront.Middlewares;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -18,8 +19,7 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
-app.UseAuthentication();
-app.UseAuthorization();
+app.UseMiddleware<SetLoggedInUserMiddleware>();
 
 app.MapStaticAssets();
 app.MapRazorPages()

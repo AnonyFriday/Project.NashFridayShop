@@ -22,11 +22,11 @@ public class AccountApiClient(BaseApiClient apiClient, IOptions<ApiUrlOptions> o
 
     public async Task<GetUserInfo.Response> GetUserInfoAsync()
     {
-        GetUserInfo.Response? response = await apiClient.GetAsync<GetUserInfo.Response>("auth/me");
+        GetUserInfo.Response response = await apiClient.GetAsync<GetUserInfo.Response>("api/auth/me");
 
         if (response == null || !response.IsAuthenticated)
         {
-            return new GetUserInfo.Response(false, null!, null!, null!);
+            return new GetUserInfo.Response(null, false, null, null, null);
         }
 
         return response;

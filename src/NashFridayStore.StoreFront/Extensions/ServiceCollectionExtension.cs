@@ -24,7 +24,7 @@ public static class ServiceCollectionExtension
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
-        // Add Delegating Handlers
+        // Add Delegating Handlers for outbound requests
         services.AddTransient<CookieForwardingDelegatingHandler>();
 
         // Add NashFridayApiClient for HttpClient

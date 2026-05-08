@@ -12,15 +12,21 @@ namespace NashFridayStore.BFF.Features.Auth.Logout;
 public class Endpoint(IOptions<SiteUrlsOption> siteUrlsOptions) : ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> LogoutAsync()
+    public async Task<IActionResult> LogoutAsync([FromQuery] string? returnUrl)
     {
+        // Only for setting admin-site page, will pass returnUrl from admin-site later
         string defaultReturnUrl = siteUrlsOptions.Value.AdminUrls.FirstOrDefault() ?? "/";
+
+        if (string.IsNullOrWhiteSpace(returnUrl))
+        {
+            returnUrl = defaultReturnUrl;
+        }
 
         // Clear local cookie and trigger OIDC sign-out redirect to Identity Server
         return SignOut(
-            new AuthenticationProperties { RedirectUri = defaultReturnUrl },
-            CookieAuthenticationDefaults.AuthenticationScheme,
-            OpenIdConnectDefaults.AuthenticationScheme
+            new AuthenticationProperties { RedirectUri = returnUrl },
+            OpenIdConnectDefaults.AuthenticationScheme,
+            CookieAuthenticationDefaults.AuthenticationScheme
         );
     }
 }
