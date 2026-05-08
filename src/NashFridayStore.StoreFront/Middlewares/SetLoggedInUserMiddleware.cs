@@ -8,6 +8,13 @@ public sealed class SetLoggedInUserMiddleware(RequestDelegate next)
 {
     public async Task InvokeAsync(HttpContext context, IAccountApiClient accountApiClient)
     {
+        // if already logged in, pass the authentication
+        if (context.User?.Identity?.IsAuthenticated ?? false)
+        {
+            await next(context);
+            return;
+        }
+
         GetUserInfo.Response userInfo = await accountApiClient.GetUserInfoAsync();
 
         if (!userInfo.IsAuthenticated)
