@@ -13,6 +13,7 @@ public class Endpoint(IOptions<SiteUrlsOption> siteUrlsOptions) : ControllerBase
     [HttpGet]
     public async Task<IActionResult> LoginAsync([FromQuery] string? returnUrl)
     {
+        // Only for setting admin-site page, will pass returnUrl from admin-site later
         string defaultReturnUrl = siteUrlsOptions.Value.AdminUrls.FirstOrDefault() ?? "/";
 
         if (string.IsNullOrWhiteSpace(returnUrl))
