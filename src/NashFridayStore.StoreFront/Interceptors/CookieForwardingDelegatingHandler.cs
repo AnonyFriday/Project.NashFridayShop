@@ -1,7 +1,6 @@
-namespace NashFridayStore.StoreFront.Services;
+namespace NashFridayStore.StoreFront.Interceptors;
 
-public class CookieForwardingHandler(
-    IHttpContextAccessor httpContextAccessor) : DelegatingHandler
+public class CookieForwardingDelegatingHandler(IHttpContextAccessor httpContextAccessor) : DelegatingHandler
 {
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
