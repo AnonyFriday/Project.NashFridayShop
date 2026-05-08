@@ -1,3 +1,14 @@
+@using NashFridayStore.StoreFront.Services.Identity
+@inject IAccountApiClient AccountApiClient
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var path = HttpContextAccessor.HttpContext?.Request.Path.Value;
+    var query = HttpContextAccessor.HttpContext?.Request.QueryString.Value;
+
+    string returnUrl = $"{path}{query}";
+}
+
 <header class="sticky top-0 z-50 bg-base-100 shadow-sm">
     <!-- Top Row: Logo, Search, Icons -->
     <div class="navbar border-b border-base-200">
@@ -68,7 +79,11 @@
                             </a>
                         </li>
                         <li><a href="/Settings" class="py-3 hover:text-primary">Settings</a></li>
-                        <li><a href="/Auth/Logout" class="py-3 text-error hover:text-error/80">Logout</a></li>
+                        <li>
+                            <form action="@AccountApiClient.GetLogoutRedirectAddress(returnUrl)" method="post">
+                                <button type="submit" class="w-full text-left py-3 text-error hover:text-error/80">Logout</button>
+                            </form>
+                        </li>
                     </ul>
                 </div>
             }
@@ -76,9 +91,9 @@
             {
                 <!-- Login & Register -->
                 <div class="flex items-center gap-1">
-                    <a asp-page="/Auth/Login"
+                    <a href="@AccountApiClient.GetLoginRedirectAddress(returnUrl)"
                        class="btn btn-ghost btn-sm font-black uppercase text-[10px] tracking-widest text-base-content/70 hover:text-primary">Login</a>
-                    <a asp-page="/Auth/Register"
+                    <a href="@AccountApiClient.GetRegisterRedirectAddress(returnUrl)"
                        class="btn btn-primary btn-sm rounded-full px-6 font-black uppercase text-[10px] tracking-widest text-primary-content">Register</a>
                 </div>
             }
