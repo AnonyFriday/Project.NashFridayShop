@@ -9,6 +9,9 @@ public sealed record SiteUrlsOption
     [Required]
     public string[] AdminUrls { get; init; } = [];
 
+    [Required]
+    public string[] AllowedReturnUrls { get; init; } = [];
+
     public ApiServerOptions ApiServer { get; init; } = new();
 
     public IdentityServerOptions IdentityServer { get; init; } = new();
