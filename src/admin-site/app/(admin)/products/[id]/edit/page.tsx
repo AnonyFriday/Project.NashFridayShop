@@ -113,7 +113,7 @@ export default function EditProductPage() {
           <ProductForm
             initialProduct={product}
             onSubmit={handleInfoSubmit}
-            onCancel={() => router.push(`${APP_ROUTES.PRODUCTS}/${params.id}`)}
+            onCancel={() => router.back()}
             categoriesData={categoriesData?.items || []}
             isLoadingProduct={isUpdatingProduct}
             isLoadingCategories={isLoadingCategories}
