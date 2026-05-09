@@ -6,6 +6,9 @@ public class ProductRating : IEntityAuditable, IEntitySoftDeletable
 {
     public Guid Id { get; set; }
     public Guid ProductId { get; set; }
+    public Guid CustomerId { get; set; }
+    public string CustomerName { get; set; } = string.Empty;
+    public string? CustomerAvatarUrl { get; set; }
     public int Stars { get; set; }
     public string? Comment { get; set; }
     public DateTime CreatedAtUtc { get; set; }

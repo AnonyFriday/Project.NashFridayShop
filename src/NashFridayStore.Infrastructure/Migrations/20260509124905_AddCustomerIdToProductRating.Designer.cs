@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NashFridayStore.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using NashFridayStore.Infrastructure.Data;
 namespace NashFridayStore.Infrastructure.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    partial class StoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260509124905_AddCustomerIdToProductRating")]
+    partial class AddCustomerIdToProductRating
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,20 +72,9 @@ namespace NashFridayStore.Infrastructure.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("created_at_utc");
 
-                    b.Property<string>("CustomerAvatarUrl")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)")
-                        .HasColumnName("customer_avatar_url");
-
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("customer_id");
-
-                    b.Property<string>("CustomerName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasColumnName("customer_name");
 
                     b.Property<DateTime?>("DeletedAtUtc")
                         .HasColumnType("datetime2")

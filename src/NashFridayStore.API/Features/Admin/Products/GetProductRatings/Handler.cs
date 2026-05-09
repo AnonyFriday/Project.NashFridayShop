@@ -65,6 +65,8 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
             .Select(x => new RatingItem(
                 x.Stars,
                 x.Comment,
+                x.CustomerName,
+                x.CustomerAvatarUrl,
                 x.CreatedAtUtc))
             .ToListAsync(ct);
 

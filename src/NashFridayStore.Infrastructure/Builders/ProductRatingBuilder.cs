@@ -5,6 +5,9 @@ namespace NashFridayStore.Infrastructure.Builders;
 public sealed class ProductRatingBuilder
 {
     private Guid _productId;
+    private Guid _customerId = Guid.NewGuid();
+    private string _customerName = "Anonymous";
+    private string? _customerAvatarUrl;
     private int _stars = 5;
     private string? _comment;
     private DateTime _createdAtUtc = DateTime.UtcNow;
@@ -15,6 +18,24 @@ public sealed class ProductRatingBuilder
     public ProductRatingBuilder WithProductId(Guid productId)
     {
         _productId = productId;
+        return this;
+    }
+
+    public ProductRatingBuilder WithCustomerId(Guid customerId)
+    {
+        _customerId = customerId;
+        return this;
+    }
+
+    public ProductRatingBuilder WithCustomerName(string customerName)
+    {
+        _customerName = customerName;
+        return this;
+    }
+
+    public ProductRatingBuilder WithCustomerAvatarUrl(string? customerAvatarUrl)
+    {
+        _customerAvatarUrl = customerAvatarUrl;
         return this;
     }
 
@@ -57,6 +78,9 @@ public sealed class ProductRatingBuilder
         {
             Id = Guid.NewGuid(),
             ProductId = _productId,
+            CustomerId = _customerId,
+            CustomerName = _customerName,
+            CustomerAvatarUrl = _customerAvatarUrl,
             Stars = _stars,
             Comment = _comment,
             CreatedAtUtc = _createdAtUtc,

@@ -1,6 +1,11 @@
 namespace NashFridayStore.API.Features.All.Products.GetProductRatings;
 
-public sealed record RatingItem(int Stars, string? Comment, DateTime CreatedAtUtc);
+public sealed record RatingItem(
+    int Stars,
+    string? Comment,
+    string CustomerName,
+    string? CustomerAvatarUrl,
+    DateTime CreatedAtUtc);
 
 public sealed record Response(
     IReadOnlyList<RatingItem> Items,

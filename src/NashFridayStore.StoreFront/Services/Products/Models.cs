@@ -80,7 +80,12 @@ public static class GetProduct
 
 public static class GetProductRatings
 {
-    public record RatingItem(int Stars, string? Comment, DateTime CreatedAtUtc);
+    public record RatingItem(
+        int Stars, 
+        string? Comment, 
+        string CustomerName, 
+        string? CustomerAvatarUrl, 
+        DateTime CreatedAtUtc);
 
     public record Response(
         List<RatingItem> Items,
