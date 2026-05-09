@@ -16,10 +16,12 @@
     <PackageVersion Include="OpenIddict.EntityFrameworkCore" Version="7.5.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="10.0.7" />
     <!-- Sonar Analyzer -->
-    <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.24.0.138807" PrivateAssets="all" />
+    <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.25.0.139117" PrivateAssets="all" />
     <!-- Web libs -->
     <PackageVersion Include="Microsoft.Web.LibraryManager.Build" Version="3.0.71" />
     <!-- API -->
+    <PackageVersion Include="NRedisStack" Version="1.3.0" />
+    <PackageVersion Include="StackExchange.Redis" Version="3.0.2-preview" />
     <PackageVersion Include="Yarp.ReverseProxy" Version="2.3.0" />
     <PackageVersion Include="FluentValidation" Version="12.1.1" />
     <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
@@ -28,7 +30,7 @@
     <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.7" />
     <!-- Testing -->
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.0.7" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.5.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.5.1" />
     <PackageVersion Include="xunit.v3" Version="3.2.2" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
     <PackageVersion Include="coverlet.collector" Version="10.0.0" />
