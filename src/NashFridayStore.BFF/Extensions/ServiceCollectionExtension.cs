@@ -37,34 +37,49 @@ public static class ServiceCollectionExtension
             otp.Cookie.HttpOnly = true;
             otp.Cookie.SameSite = SameSiteMode.Lax;
             otp.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            otp.ExpireTimeSpan = TimeSpan.FromMinutes(AppCts.Auth.CookieTimeToLiveInMinutes);
         })
         .AddOpenIdConnect();
 
         // Configure OpenIdConnect with options
         services
             .AddOptions<OpenIdConnectOptions>(OpenIdConnectDefaults.AuthenticationScheme)
-            .Configure<IOptions<SiteUrlsOption>>((opt, siteUrlsOtp) =>
-            {
-                IdentityServerOptions identityServerOpts = siteUrlsOtp.Value.IdentityServer;
+                .Configure<IOptions<SiteUrlsOption>>((opt, siteUrlsOtp) =>
+                {
+                    IdentityServerOptions identityServerOpts = siteUrlsOtp.Value.IdentityServer;
 
-                opt.Authority = identityServerOpts.Authority;
-                opt.ClientId = identityServerOpts.ClientId;
-                opt.ClientSecret = identityServerOpts.ClientSecret;
-                opt.CallbackPath = identityServerOpts.SignInCallbackPath;
-                opt.SignedOutCallbackPath = identityServerOpts.SignOutCallbackPath;
-                opt.ResponseType = OpenIdConnectResponseType.Code;
-                opt.SaveTokens = true;
-                opt.UsePkce = true;
-                opt.RequireHttpsMetadata = false; // disable for development only
-                opt.MapInboundClaims = false; // fixed claim been renamed into the legacy name (xml schema)
+                    opt.Authority = identityServerOpts.Authority;
+                    opt.ClientId = identityServerOpts.ClientId;
+                    opt.ClientSecret = identityServerOpts.ClientSecret;
+                    opt.CallbackPath = identityServerOpts.SignInCallbackPath;
+                    opt.SignedOutCallbackPath = identityServerOpts.SignOutCallbackPath;
+                    opt.ResponseType = OpenIdConnectResponseType.Code;
+                    opt.SaveTokens = true;
+                    opt.UsePkce = true;
+                    opt.RequireHttpsMetadata = false; // disable for development only
+                    opt.MapInboundClaims = false; // fixed claim been renamed into the legacy name (xml schema)
 
-                // BFF requires claims based on supported scope from identity server
-                opt.Scope.Add(OpenIdConnectScope.OpenId);
-                opt.Scope.Add(OpenIdConnectScope.Profile);
-                opt.Scope.Add(OpenIdConnectScope.Email);
-                opt.Scope.Add(OpenIdConnectScope.OfflineAccess);
-                opt.Scope.Add(identityServerOpts.ApiScope);
-            });
+                    // BFF requires claims based on supported scope from identity server
+                    opt.Scope.Add(OpenIdConnectScope.OpenId);
+                    opt.Scope.Add(OpenIdConnectScope.Profile);
+                    opt.Scope.Add(OpenIdConnectScope.Email);
+                    opt.Scope.Add(OpenIdConnectScope.OfflineAccess);
+                    opt.Scope.Add(identityServerOpts.ApiScope);
+
+                    // happens when id_token and access_token granted
+                    opt.Events = new OpenIdConnectEvents
+                    {
+                        OnTokenValidated = context =>
+                        {
+                            if (context.Properties != null)
+                            {
+                                context.Properties.IsPersistent = true;
+                                context.Properties.ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(AppCts.Auth.TokenTimeToLiveInMinutes);
+                            }
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
 
         // Add Authorization
         services.AddAuthorization();
@@ -79,18 +94,18 @@ public static class ServiceCollectionExtension
         SiteUrlsOption SiteUrls = services.BuildServiceProvider().GetRequiredService<IOptions<SiteUrlsOption>>().Value;
 
         services.AddCors(options =>
-        {
-            options.AddPolicy(AppCts.Policy.AdminSite, policy =>
-            {
-                if (SiteUrls.AdminUrls.Length > 0)
                 {
-                    policy.WithOrigins(SiteUrls.AdminUrls)
-                            .AllowAnyMethod()
-                            .AllowAnyHeader()
-                            .AllowCredentials();
-                }
-            });
-        });
+                    options.AddPolicy(AppCts.Policy.AdminSite, policy =>
+                    {
+                        if (SiteUrls.AdminUrls.Length > 0)
+                        {
+                            policy.WithOrigins(SiteUrls.AdminUrls)
+                                    .AllowAnyMethod()
+                                    .AllowAnyHeader()
+                                    .AllowCredentials();
+                        }
+                    });
+                });
 
         // Register Handlers
         RegisterAllFeatureHandlers(services);

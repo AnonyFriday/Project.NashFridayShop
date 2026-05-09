@@ -8,6 +8,16 @@ public sealed class SetLoggedInUserMiddleware(RequestDelegate next)
 {
     public async Task InvokeAsync(HttpContext context, IAccountApiClient accountApiClient)
     {
+        // Logged-in = have those two cookies
+        string? bffCookie = context.Request.Cookies["NashFridayStore.BFF.Session"];
+        string? identityCookie = context.Request.Cookies["NashFridayStore.Identity.LoginSession"];
+
+        if (string.IsNullOrEmpty(bffCookie) || string.IsNullOrEmpty(identityCookie))
+        {
+            await next(context);
+            return;
+        }
+
         // if already logged in, pass the authentication
         if (context.User?.Identity?.IsAuthenticated ?? false)
         {

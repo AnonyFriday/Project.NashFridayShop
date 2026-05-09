@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NashFridayStore.IdentityServer.AppOptions;
+using NashFridayStore.IdentityServer.Commons;
 using NashFridayStore.IdentityServer.Data;
 using NashFridayStore.IdentityServer.Domain;
 using OpenIddict.Abstractions;
@@ -48,6 +49,7 @@ public static class ServiceCollectionExtension
             opt.Cookie.SameSite = SameSiteMode.Lax;
             opt.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             opt.LoginPath = "/Account/Login";
+            opt.ExpireTimeSpan = TimeSpan.FromMinutes(AppCts.Identity.Auth.CookieTimeToLiveInMinutes);
         });
 
         // Add OpenIddict
