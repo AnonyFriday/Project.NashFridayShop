@@ -1,37 +1,43 @@
 @page
 @model NashFridayStore.IdentityServer.Pages.Account.Login
 @{
-    ViewData["Title"] = "Admin Login";
+    Layout = null;
+    ViewData["Title"] = "Sign In";
 }
-
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-    body {
-        background: radial-gradient(circle at top right, #1e293b, #0f172a);
-    }
-    .glass-card {
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - NashFriday Shop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: radial-gradient(circle at top right, #1e293b, #0f172a);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="antialiased font-sans text-slate-900">
 
 <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8 glass-card p-10 rounded-[2.5rem] shadow-2xl">
         
         <div class="text-center">
-            @* SVG Logo from wwwroot *@
             <div class="flex flex-col items-center mb-6">
-                <img src="/images/logo.svg" alt="NashFridayShop Logo" class="h-48 w-auto mb-2 hover:cursor-pointer hover:scale-[1.5] transition-all duration-300" />
-                <div class="mt-1 h-1 w-12 bg-red-600 rounded-full"></div>
+                <img src="/images/nashfridayshop_logo.svg" alt="NashFriday" class="h-24 w-auto mb-2" />
             </div>
             
-            <h2 class="text-2xl font-bold text-slate-800 tracking-tight">
-                Admin Authentication
+            <h2 class="text-2xl font-bold text-slate-800 tracking-tight uppercase">
+                Sign In
             </h2>
             <p class="mt-2 text-sm text-slate-500">
-                Please enter your credentials to access the management system.
+                Please enter your credentials to continue.
             </p>
         </div>
 
@@ -41,67 +47,57 @@
 
             <div class="space-y-5">
                 <div>
-                    <label asp-for="Input.Email" class="block text-xs font-bold text-slate-500 uppercase tracking-wider ml-1 mb-1">Email Address</label>
-                    <div class="relative group">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-red-600 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.206" />
-                            </svg>
-                        </div>
-                        <input asp-for="Input.Email"
-                               class="block w-full pl-11 pr-4 py-4 border-2 border-slate-100 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 focus:ring-0 transition-all bg-white"
-                               placeholder="admin@nashstore.com" />
-                    </div>
+                    <label asp-for="Input.Email" class="block text-xs font-bold text-slate-500 uppercase tracking-wider ml-1 mb-1">Email</label>
+                    <input asp-for="Input.Email"
+                           class="block w-full px-4 py-4 border-2 border-slate-100 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 focus:ring-0 transition-all bg-white"
+                           placeholder="Enter your email" />
                     <span asp-validation-for="Input.Email" class="text-xs text-rose-500 mt-1 ml-1 block font-medium"></span>
                 </div>
 
                 <div>
                     <label asp-for="Input.Password" class="block text-xs font-bold text-slate-500 uppercase tracking-wider ml-1 mb-1">Password</label>
-                    <div class="relative group">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-red-600 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                            </svg>
-                        </div>
-                        <input asp-for="Input.Password" type="password"
-                               class="block w-full pl-11 pr-4 py-4 border-2 border-slate-100 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 focus:ring-0 transition-all bg-white"
-                               placeholder="••••••••" />
-                    </div>
+                    <input asp-for="Input.Password" type="password"
+                           class="block w-full px-4 py-4 border-2 border-slate-100 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 focus:ring-0 transition-all bg-white"
+                           placeholder="••••••••" />
                     <span asp-validation-for="Input.Password" class="text-xs text-rose-500 mt-1 ml-1 block font-medium"></span>
                 </div>
-            </div>
 
-            <div class="flex items-center justify-between px-1">
-                <div class="flex items-center">
+                <div class="flex items-center ml-1">
                     <input asp-for="Input.RememberMe" type="checkbox"
-                           class="h-4 w-4 text-red-600 focus:ring-red-500 border-slate-300 rounded cursor-pointer" />
-                    <label asp-for="Input.RememberMe" class="ml-2 block text-sm text-slate-600 cursor-pointer select-none">Remember me</label>
+                           class="h-4 w-4 text-red-600 focus:ring-red-500 border-slate-300 rounded transition-all cursor-pointer" />
+                    <label asp-for="Input.RememberMe" class="ml-2 block text-sm font-medium text-slate-600 cursor-pointer select-none">
+                        Remember me
+                    </label>
                 </div>
-                <a href="#" class="text-sm font-bold text-red-600 hover:text-red-700 transition-colors">Forgot password?</a>
             </div>
 
-            <div>
+            <div class="flex flex-col gap-3">
                 <button type="submit"
-                        class="w-full py-4 px-4 border border-transparent text-sm font-black rounded-2xl text-white bg-red-600 hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all transform active:scale-[0.98] shadow-xl hover:shadow-red-500/40 uppercase tracking-widest">
+                        class="w-full py-4 px-4 border border-transparent text-sm font-black rounded-2xl text-white bg-red-600 hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all transform active:scale-[0.98] shadow-xl uppercase tracking-widest">
                     Sign In
+                </button>
+                <button type="button" onclick="history.back()"
+                        class="w-full py-4 px-4 bg-white border-2 border-slate-200 text-sm font-black rounded-2xl text-slate-400 hover:bg-slate-50 hover:text-slate-600 transition-all text-center uppercase tracking-widest">
+                    Cancel
                 </button>
             </div>
         </form>
 
         @if (!string.IsNullOrEmpty(Model.ErrorMessage))
         {
-            <div class="mt-6 bg-rose-50 rounded-2xl p-4 border border-rose-100 flex items-center gap-3">
-                <svg class="h-5 w-5 text-rose-500" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                </svg>
-                <p class="text-sm text-rose-700 font-bold">@Model.ErrorMessage</p>
+            <div class="mt-6 p-4 rounded-2xl bg-rose-50 border border-rose-100">
+                <p class="text-sm text-rose-600 text-center font-medium">
+                    @Model.ErrorMessage
+                </p>
             </div>
         }
 
         <div class="mt-10 pt-8 border-t border-slate-100 text-center">
             <p class="text-xs text-slate-400 font-medium">
-                &copy; @DateTime.Now.Year NashFriday Store Admin. All rights reserved.
+                &copy; @DateTime.Now.Year NashFriday. All rights reserved.
             </p>
         </div>
     </div>
 </div>
+</body>
+</html>
