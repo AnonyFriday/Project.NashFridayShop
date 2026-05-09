@@ -12,24 +12,26 @@ export const authApi = baseApiSlice.injectEndpoints({
     }),
 
     // Posting only for login redirect
-    loginRedirect: builder.mutation<void, void>({
+    loginRedirect: builder.mutation<void, string | undefined>({
       query: () => ({
         url: "",
       }),
-      async onQueryStarted() {
-        window.location.href = APP_ROUTES.LOGIN;
+      async onQueryStarted(returnUrl) {
+        const url = returnUrl ? `${APP_ROUTES.LOGIN}?returnUrl=${encodeURIComponent(returnUrl)}` : APP_ROUTES.LOGIN;
+        window.location.href = url;
       },
     }),
 
     // Posting only for logout redirect
-    logoutRedirect: builder.mutation<void, void>({
+    logoutRedirect: builder.mutation<void, string | undefined>({
       query: () => ({
         url: "",
       }),
-      async onQueryStarted() {
+      async onQueryStarted(returnUrl) {
+        const url = returnUrl ? `${APP_ROUTES.LOGOUT}?returnUrl=${encodeURIComponent(returnUrl)}` : APP_ROUTES.LOGOUT;
         const form = document.createElement("form");
         form.method = "POST";
-        form.action = APP_ROUTES.LOGOUT;
+        form.action = url;
         document.body.appendChild(form);
         form.submit();
       },
