@@ -13,20 +13,19 @@ public class Endpoint(IOptions<SiteUrlsOption> siteUrlsOptions) : ControllerBase
     [HttpGet]
     public async Task<IActionResult> LoginAsync([FromQuery] string? returnUrl)
     {
-        // Only for setting admin-site page, will pass returnUrl from admin-site later
-        string defaultReturnUrl = siteUrlsOptions.Value.AdminUrls.FirstOrDefault() ?? "/";
+        // cannot use Url.IsLocalUrl here due to different origin from bff, admin-site, customer-site
+        string[] allowedUrls = siteUrlsOptions.Value.AllowedReturnUrls;
+        string defaultReturnUrl = allowedUrls.FirstOrDefault() ?? "/";
 
-        if (string.IsNullOrWhiteSpace(returnUrl))
+        if (string.IsNullOrWhiteSpace(returnUrl) || !allowedUrls.Any(url => returnUrl.StartsWith(url, StringComparison.OrdinalIgnoreCase)))
         {
             returnUrl = defaultReturnUrl;
         }
 
-        // automatically redirect to the /connect/authorize
         await HttpContext.ChallengeAsync(
             OpenIdConnectDefaults.AuthenticationScheme,
             new AuthenticationProperties
             {
-                // url that user wants to go back after login successfully
                 RedirectUri = returnUrl
             }
         );

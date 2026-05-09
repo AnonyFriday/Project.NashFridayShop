@@ -39,7 +39,9 @@ export default function ProfileCard() {
 
       {/* Middle Section: User Details */}
       <div className="mt-1 space-y-0.5">
-        <h3 className="text-lg font-black tracking-tight text-base-content/90 leading-tight">{user.email.split("@")[0].toUpperCase()}</h3>
+        <h3 className="text-lg font-black tracking-tight text-base-content/90 leading-tight">
+          {(user.email?.split("@")[0] || "User").toUpperCase()}
+        </h3>
         <p className="truncate text-[11px] font-medium text-base-content/40 lowercase tracking-wide">{user.email}</p>
       </div>
 

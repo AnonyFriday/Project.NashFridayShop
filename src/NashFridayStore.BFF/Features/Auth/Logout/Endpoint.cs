@@ -14,10 +14,11 @@ public class Endpoint(IOptions<SiteUrlsOption> siteUrlsOptions) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> LogoutAsync([FromQuery] string? returnUrl)
     {
-        // Only for setting admin-site page, will pass returnUrl from admin-site later
-        string defaultReturnUrl = siteUrlsOptions.Value.AdminUrls.FirstOrDefault() ?? "/";
+        string[] allowedUrls = siteUrlsOptions.Value.AllowedReturnUrls;
+        string defaultReturnUrl = allowedUrls.FirstOrDefault() ?? "/";
 
-        if (string.IsNullOrWhiteSpace(returnUrl))
+        // Validate that the returnUrl is allowed to prevent Open Redirect attacks
+        if (string.IsNullOrWhiteSpace(returnUrl) || !allowedUrls.Any(url => returnUrl.StartsWith(url, StringComparison.OrdinalIgnoreCase)))
         {
             returnUrl = defaultReturnUrl;
         }

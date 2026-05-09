@@ -2,9 +2,15 @@
 
 import { useLoginRedirectMutation } from "@/features/auth/auth.api";
 import Logo from "@/features/shared/components/Logo";
+import { APP_ROUTES } from "@/lib/api/routes";
 
 export default function Home() {
   const [loginRedirect] = useLoginRedirectMutation();
+
+  const handleLogin = () => {
+    const returnDashboardUrl = `${window.location.origin}${APP_ROUTES.DASHBOARD}`;
+    loginRedirect(returnDashboardUrl);
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-cover bg-center bg-no-repeat">
@@ -23,7 +29,7 @@ export default function Home() {
         <div className="flex flex-col gap-6 w-full">
           <div className="space-y-4">
             <button
-              onClick={() => loginRedirect()}
+              onClick={handleLogin}
               className="btn btn-primary btn-lg w-full normal-case text-lg shadow-lg hover:shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 gap-3">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path

@@ -13,8 +13,9 @@ export default function NavbarProfile() {
 
   const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    dispatch(logout()); // remove user
-    logoutRedirectMutation(); // post LOGOUT to BFF
+    dispatch(logout()); // remove user state
+    const returnUrl = `${window.location.origin}`;
+    logoutRedirectMutation(returnUrl);
   };
 
   return (
