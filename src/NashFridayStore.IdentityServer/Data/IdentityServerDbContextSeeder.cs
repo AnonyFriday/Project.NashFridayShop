@@ -44,12 +44,13 @@ public class IdentityServerDbContextSeeder(
         #region Admins
         var admin = new Admin
         {
-            Id = Guid.NewGuid(),
+            Id = Guid.Parse("1e9a4c73-5d28-46bf-8c91-2f7d6a3b0e66"),
             FullName = "Vu Thi Rau",
             Address = "Random Address which you dont know",
             UserName = "admin@nashstore.com",
             Email = "admin@nashstore.com",
             PhoneNumber = "0123456789",
+            AvatarUrl = "https://storage.googleapis.com/nashfridaystore.firebasestorage.app/customers/1e9a4c73-5d28-46bf-8c91-2f7d6a3b0e66/avataaars.png",
             CreatedAtUtc = DateTime.UtcNow,
             IsDeleted = false
         };
@@ -60,36 +61,43 @@ public class IdentityServerDbContextSeeder(
         #endregion
 
         #region Customers
-        var customer1 = new Customer
+        var customerData = new[]
         {
-            Id = Guid.NewGuid(),
-            FullName = "My meme 1",
-            Address = "Random Address which you dont know",
-            UserName = "customer1@nashstore.com",
-            Email = "customer1@nashstore.com",
-            PhoneNumber = "0987654321",
-            CreatedAtUtc = DateTime.UtcNow,
-            IsDeleted = false
+            new { Id = "2c7a9d14-1e5f-4a98-b2e4-3d9f6c0a7e25", Name = "Aria Sterling" },
+            new { Id = "3f8c1b7a-4d95-4e2f-a6c1-7b3d9e5f1aaa", Name = "Julian Vane" },
+            new { Id = "5d7a2c8f-1b93-4ea6-8fd1-9c2e5b7a1eee", Name = "Elena Rossi" },
+            new { Id = "6c3b1a9d-2e84-4f7c-b5a1-9d2e6f3b8c88", Name = "Xavier Thorne" },
+            new { Id = "7b6e3d92-8a11-4f5b-90cd-6e3f1a7b2d44", Name = "Seraphina Moon" },
+            new { Id = "8a1e5d3c-7f42-4b9a-b3d8-6f1c2e7a9ccc", Name = "Silas Vance" },
+            new { Id = "9f1b7f5d-4d83-4c7e-a3b1-8b8f2f7f6a11", Name = "Lyra Belacqua" },
+            new { Id = "a5f2d9c8-7b31-4e6a-93fd-8c1b5e2d7f77", Name = "Cyrus Drake" },
+            new { Id = "b2d7f4a9-6c18-45eb-91fa-0e7c3b2d8bbb", Name = "Nova Skye" },
+            new { Id = "c8d1f6a5-3b7e-4d99-a1c2-5f8e7b6d9a55", Name = "Orion Pax" },
+            new { Id = "d7e5a2c1-9b64-41fa-8e3d-4c7b1a9f0d99", Name = "Isolde Thorne" },
+            new { Id = "e4c9b1d7-2a56-4f8e-95bc-3a7d1f6e0ddd", Name = "Kaelen Voss" },
+            new { Id = "f4d2b8a1-6c93-47ea-9f7c-1a2d5e8b4c30", Name = "Thalia Muse" }
         };
 
-        await userManager.CreateAsync(customer1, "Customer1@123");
-        await userManager.AddToRoleAsync(customer1, AppCts.Identity.Roles.Customer);
-        await dbContext.SaveChangesAsync();
-
-        var customer2 = new Customer
+        int customerIndex = 1;
+        foreach (var data in customerData)
         {
-            Id = Guid.NewGuid(),
-            FullName = "My meme 2",
-            Address = "Random Address which you dont know",
-            UserName = "customer2@nashstore.com",
-            Email = "customer2@nashstore.com",
-            PhoneNumber = "0987654321",
-            CreatedAtUtc = DateTime.UtcNow,
-            IsDeleted = false
-        };
+            var customer = new Customer
+            {
+                Id = Guid.Parse(data.Id),
+                FullName = data.Name,
+                Address = "Random Address " + customerIndex,
+                UserName = $"customer{customerIndex}@nashstore.com",
+                Email = $"customer{customerIndex}@nashstore.com",
+                PhoneNumber = "0987654321",
+                AvatarUrl = $"https://storage.googleapis.com/nashfridaystore.firebasestorage.app/customers/{data.Id}/avataaars.png",
+                CreatedAtUtc = DateTime.UtcNow,
+                IsDeleted = false
+            };
 
-        await userManager.CreateAsync(customer2, "Customer2@123");
-        await userManager.AddToRoleAsync(customer2, AppCts.Identity.Roles.Customer);
+            await userManager.CreateAsync(customer, $"Customer{customerIndex}@123");
+            await userManager.AddToRoleAsync(customer, AppCts.Identity.Roles.Customer);
+            customerIndex++;
+        }
         await dbContext.SaveChangesAsync();
         #endregion
 

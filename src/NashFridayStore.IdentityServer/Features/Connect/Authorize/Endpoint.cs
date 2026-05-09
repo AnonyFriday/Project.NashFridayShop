@@ -85,6 +85,31 @@ public class Endpoint(
 
             identity.AddClaim(
                 new Claim(
+                    OpenIddictConstants.Claims.Name,
+                    user.FullName ?? string.Empty
+                )
+                .SetDestinations(
+                    OpenIddictConstants.Destinations.AccessToken,
+                    OpenIddictConstants.Destinations.IdentityToken
+                )
+            );
+
+            if (!string.IsNullOrEmpty(user.AvatarUrl))
+            {
+                identity.AddClaim(
+                    new Claim(
+                        OpenIddictConstants.Claims.Picture,
+                        user.AvatarUrl
+                    )
+                    .SetDestinations(
+                        OpenIddictConstants.Destinations.AccessToken,
+                        OpenIddictConstants.Destinations.IdentityToken
+                    )
+                );
+            }
+
+            identity.AddClaim(
+                new Claim(
                     OpenIddictConstants.Claims.PhoneNumber,
                     user.PhoneNumber ?? string.Empty
                 )
