@@ -6,7 +6,7 @@ namespace NashFridayStore.API.Features.Customer.Products.PostProductRating;
 public sealed class Validator : AbstractValidator<Request>
 {
     public const string ProductIdIsRequired = "Product Id is required.";
-    public const string StarsInRange = "Stars must be between 1 and 10.";
+    public const string StarsInRange = "Stars must be between 1 and 5.";
     public const string CommentNotExceedLength = "Comment must not exceed 1000 characters.";
 
     public Validator()

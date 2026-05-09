@@ -75,7 +75,7 @@ public class PostProductRatingApiTests : IClassFixture<CustomWebApplicationFacto
         _dbContext.Products.Add(product);
         await _dbContext.SaveChangesAsync(ct);
 
-        var request = new RequestBody("Amazing product!", 9);
+        var request = new RequestBody("Amazing product!", 5);
 
         // Act
         HttpResponseMessage response = await _client.PostAsJsonAsync(
@@ -90,14 +90,14 @@ public class PostProductRatingApiTests : IClassFixture<CustomWebApplicationFacto
 
         Assert.NotNull(result);
         Assert.Equal(product.Id, result!.ProductId);
-        Assert.Equal(9, result.Stars);
+        Assert.Equal(5, result.Stars);
         Assert.Equal("Amazing product!", result.Comment);
 
         ProductRating? ratingInDb = _dbContext.ProductRatings.FirstOrDefault();
 
         Assert.NotNull(ratingInDb);
         Assert.Equal(product.Id, ratingInDb!.ProductId);
-        Assert.Equal(9, ratingInDb.Stars);
+        Assert.Equal(5, ratingInDb.Stars);
     }
     #endregion
 }

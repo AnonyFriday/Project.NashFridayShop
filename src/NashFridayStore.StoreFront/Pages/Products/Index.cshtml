@@ -228,7 +228,7 @@
                             
                                 <!-- Hover Quick View Overlay -->
                                 <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                                    <a asp-page="/Products/Details/Index" asp-route-id="@product.Id"
+                                    <a asp-page="/Products/Details/Index" asp-route-ProductId="@product.Id"
                                        class="btn btn-primary btn-sm px-6">View Details</a>
                                 </div>
                             </figure>
@@ -252,7 +252,7 @@
                                                   clip-rule="evenodd" />
                                         </svg>
                                     }
-                                    <span class="text-xs text-base-content/50 ml-1">(@product.AverageStars)</span>
+                                    <span class="text-xs text-base-content/50 ml-1">(@product.AverageStars.ToString("F1"))</span>
                                 </div>
                             
                                 <div class="flex justify-between items-center mt-4">

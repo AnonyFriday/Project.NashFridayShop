@@ -49,7 +49,7 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
         int totalItems = await queryRating.CountAsync(ct);
 
         List<RatingItem> items = await queryRating
-            .OrderByDescending(x => x.CreatedAtUtc)
+            .OrderByDescending(x => x.CreatedAtUtc).ThenByDescending(x => x.Stars)
             .Skip(req.PageIndex * req.PageSize)
             .Take(req.PageSize)
             .Select(x => new RatingItem(
