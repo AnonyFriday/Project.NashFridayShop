@@ -124,20 +124,38 @@ public static class ServiceCollectionExtension
             .LoadFromMemory(
                 routes: [
                     new RouteConfig() {
-                        RouteId = "identity-route",
+                        RouteId = "admin-identity-route",
                         ClusterId = "identity-cluster",
                         Match = new RouteMatch() {
                             Methods = ["GET", "POST", "PUT", "DELETE", "PATCH"],
-                            Path = "/api/customers/{**catch-all}"
+                            Path = "/api/admin/customers/{**catch-all}"
                         }
                     },
 
                     new RouteConfig() {
-                        RouteId = "api-route",
+                        RouteId = "admin-api-route",
                         ClusterId = "api-cluster",
                         Match = new RouteMatch() {
                             Methods = ["GET", "POST", "PUT", "DELETE", "PATCH"],
-                            Path = "/api/{**catch-all}" // catch all request with /api/products, /api/categories,..
+                            Path = "/api/admin/{**catch-all}" // catch all request with /api/admin/products, /api/admin/categories,..
+                        }
+                    },
+
+                    new RouteConfig() {
+                        RouteId = "customer-api-route",
+                        ClusterId = "api-cluster",
+                        Match = new RouteMatch() {
+                            Methods = ["GET", "POST", "PUT", "PATCH"], // do not allow delete in any cases
+                            Path = "/api/customer/{**catch-all}"
+                        }
+                    },
+
+                    new RouteConfig() {
+                        RouteId = "all-api-route",
+                        ClusterId = "api-cluster",
+                        Match = new RouteMatch() {
+                            Methods = ["GET"],
+                            Path = "/api/all/{**catch-all}" // Only allow views for public api
                         }
                     },
                 ],

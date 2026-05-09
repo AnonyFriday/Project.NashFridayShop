@@ -17,10 +17,6 @@ export default function EditCategoryPage() {
   const { data: category, isLoading: isLoadingCategory, error } = useGetCategoryByIdQuery(params.id);
   const [updateCategory, { isLoading: isUpdatingCategory }] = useUpdateCategoryMutation();
 
-  const onCancel = () => {
-    router.back();
-  };
-
   const onSubmit = async (data: CategoryFormData) => {
     try {
       await updateCategory({
@@ -61,7 +57,7 @@ export default function EditCategoryPage() {
   return (
     <div className="flex flex-col gap-6 p-4 max-w-4xl mx-auto w-full">
       <GoBackButton href={`${APP_ROUTES.CATEGORIES}`} title="Edit Category" />
-      <CategoryForm initialCategory={category} isLoading={isUpdatingCategory || isLoadingCategory} onSubmit={onSubmit} onCancel={onCancel} />
+      <CategoryForm initialCategory={category} isLoading={isUpdatingCategory || isLoadingCategory} onSubmit={onSubmit} onCancel={() => router.back()} />
     </div>
   );
 }
