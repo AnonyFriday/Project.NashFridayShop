@@ -23,8 +23,8 @@ if (app.Environment.IsDevelopment())
     await seeder.SeedOidcDebugger();
 }
 
+app.UseHsts();
 app.UseHttpsRedirection();
-
 app.UseRouting();
 
 app.UseAuthentication();

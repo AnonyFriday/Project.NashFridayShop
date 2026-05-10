@@ -19,6 +19,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+app.UseHsts();
 app.UseHttpsRedirection();
 app.UseCors(AppCts.Policy.AdminSite); // only add cors for admin-site since talking to the browser
 app.UseRouting();

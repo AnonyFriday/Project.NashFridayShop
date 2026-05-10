@@ -28,6 +28,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        // Use test environment to skip seeding fake data from Development environment
         builder.UseEnvironment(AppCts.Environment.Testing);
 
         builder.ConfigureServices(services =>
@@ -58,14 +59,26 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             });
 
             // Register DbContext using Sqlite
-            services.AddDbContext<StoreDbContext>((service, options) =>
+            services.AddDbContext<StoreDbContext>((service, opt) =>
             {
                 DbConnection connection = service.GetRequiredService<DbConnection>();
-                options.UseSqlite(connection);
+                opt.UseSqlite(connection);
 
                 // Ignore migrations pending warning for SQLite in-memory testing, as we will ensure the database is created before each test
-                options.ConfigureWarnings(x => x.Ignore(RelationalEventId.PendingModelChangesWarning));
+                opt.ConfigureWarnings(x => x.Ignore(RelationalEventId.PendingModelChangesWarning));
             });
+
+            // Mock Authentication
+            // - Override a JWT Bearer schema, i create a fake access_token for the handler to current bypass the authorization
+            services.AddAuthentication(opt
+             =>
+            {
+                opt.DefaultAuthenticateScheme = "IntegrationTestScheme";
+                opt.DefaultChallengeScheme = "IntegrationTestScheme";
+                opt.DefaultScheme = "IntegrationTestScheme";
+            })
+            .AddScheme<Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions, TestAuthHandler>(
+                "IntegrationTestScheme", opt => { });
         });
     }
 }
