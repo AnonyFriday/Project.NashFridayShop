@@ -65,7 +65,11 @@ public class IndexModel(
             Price: product.PriceUsd
         ));
 
-        TempData["SuccessMessage"] = $"{product.Name} added to cart!";
+        if (Request.Headers.ContainsKey("HX-Request"))
+        {
+            return RedirectToPage();
+        }
+
         return RedirectToPage();
     }
 }

@@ -71,15 +71,13 @@
 
                 <!-- Actions -->
                 <div class="mt-auto p-8 bg-base-200 rounded-3xl border border-base-200 shadow-inner">
-                    @if (TempData["SuccessMessage"] != null)
-                    {
-                        <div class="alert alert-success shadow-lg mb-6 rounded-2xl border-none bg-success/20 text-success font-bold">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                            <span>@TempData["SuccessMessage"]</span>
-                        </div>
-                    }
-
-                    <form method="post" asp-page-handler="AddToCart" class="flex flex-col sm:flex-row gap-4 items-center">
+                    <form 
+                        method="post"
+                        hx-post="?handler=AddToCart" 
+                        hx-swap="none"
+                        class="flex flex-col sm:flex-row gap-4 items-center">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="productId" value="@Model.ProductId" />
                         <div class="form-control">
                             <label class="label">
                                 <span class="label-text font-black uppercase text-[10px] tracking-widest text-base-content/50">Quantity</span>

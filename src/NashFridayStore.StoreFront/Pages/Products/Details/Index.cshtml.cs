@@ -62,7 +62,11 @@ public class IndexModel(
             return await OnGetAsync();
         }
 
-        TempData["SuccessMessage"] = $"{product.Name} added to cart!";
+        if (Request.Headers.ContainsKey("HX-Request"))
+        {
+            return RedirectToPage();
+        }
+
         return RedirectToPage(new { ProductId });
     }
 }
