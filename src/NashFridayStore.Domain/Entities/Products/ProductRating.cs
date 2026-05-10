@@ -1,6 +1,6 @@
 using NashFridayStore.Domain.Commons;
 
-namespace NashFridayStore.Domain.Entities;
+namespace NashFridayStore.Domain.Entities.Products;
 
 public class ProductRating : IEntityAuditable, IEntitySoftDeletable
 {
