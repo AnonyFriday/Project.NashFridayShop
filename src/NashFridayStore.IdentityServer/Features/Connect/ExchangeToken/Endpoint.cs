@@ -2,11 +2,13 @@ using System.Security.Claims;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
 
 namespace NashFridayStore.IdentityServer.Features.Connect.ExchangeToken;
 
+[AllowAnonymous]
 [ApiController]
 [Route("/connect/token")]
 public class Endpoint : ControllerBase

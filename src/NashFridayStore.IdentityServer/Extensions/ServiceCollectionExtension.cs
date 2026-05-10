@@ -1,4 +1,5 @@
 using System.Reflection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,30 @@ public static class ServiceCollectionExtension
         services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<IdentityServerDbContext>()
                 .AddDefaultTokenProviders();
+
+        // Add JwtBearer Token Handler for Admin API endpoints
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, _ => { });
+
+        services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme)
+            .Configure<IOptions<SiteUrlsOption>>((opt, siteUrlsOtp) =>
+            {
+                SiteUrlsOption settings = siteUrlsOtp.Value;
+
+                opt.Authority = settings.IdentityServerUrl;
+                opt.Audience = settings.Bff.ApiServerAudience;
+
+                opt.RequireHttpsMetadata = false;
+                opt.MapInboundClaims = false;
+
+                opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateAudience = true,
+                    NameClaimType = "name",
+                    RoleClaimType = "role"
+                };
+            });
+        services.AddAuthorization();
 
         // Configure Cookies for Authentication
         services.ConfigureApplicationCookie(opt =>

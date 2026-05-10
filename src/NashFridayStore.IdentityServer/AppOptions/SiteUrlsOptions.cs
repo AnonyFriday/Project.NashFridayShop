@@ -6,6 +6,8 @@ public sealed record SiteUrlsOption
 {
     public const string SiteUrls = "SiteUrls";
 
+    public string IdentityServerUrl { get; init; } = string.Empty;
+
     public BffOptions Bff { get; init; } = new();
 
     public OidcDebuggerOptions OidcDebugger { get; init; } = new();

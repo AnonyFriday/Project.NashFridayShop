@@ -1,6 +1,7 @@
 using System.Net;
 using System.Security.Claims;
 using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -11,6 +12,7 @@ using OpenIddict.Server.AspNetCore;
 
 namespace NashFridayStore.IdentityServer.Features.Connect.Authorize;
 
+[AllowAnonymous]
 [ApiController]
 [Route("/connect/authorize")]
 public class Endpoint(
