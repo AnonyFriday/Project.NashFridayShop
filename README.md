@@ -5,7 +5,7 @@
 ## Techstack
 
 - **🔧 Backend**: .NET 10 (ASP.NET Core Web Api, Entity Framework Core, FluentValidation)
-- **🌐 Frontend**: Next.js (Admin Site), ASP.NET Razor Pages (StoreFront)
+- **🌐 Frontend**: Next.js (Admin Site), ASP.NET Razor Pages (StoreFront), HTMX
 - **🧩 BFF**: OIDC client, YARP Reverse Proxy, Cookie-based authentication
 - **🔐 Identity**: OpenIddict, Authorization Code Flow + PKCE
 - **🗄️ Database**: SQL Server
@@ -17,38 +17,57 @@
 
 ## Current Supporting APIs
 
-| Layer           | Endpoint                     | Method | Description                                         | Status                | Tests     |
-| --------------- | ---------------------------- | ------ | --------------------------------------------------- | --------------------- | --------- |
-| API             | `/api/categories`            | GET    | Category menu / list categories                     | ✅ Completed          | ✅ UT, IT |
-| API             | `/api/categories/{id}`       | GET    | Category details                                    | ✅ Completed          | ✅ UT, IT |
-| API             | `/api/products`              | GET    | Product listing, filters, pagination                | ✅ Completed          | ✅ UT, IT |
-| API             | `/api/products/{id}`         | GET    | Product details                                     | ✅ Completed          | ✅ UT, IT |
-| API             | `/api/products`              | POST   | Create product                                      | ✅ Completed          | ✅ UT, IT |
-| API             | `/api/products/{id}`         | PUT    | Update product                                      | ✅ Completed          | ✅ UT, IT |
-| API             | `/api/products/{id}`         | DELETE | Soft delete product                                 | ✅ Completed          | ✅ UT, IT |
-| API             | `/api/products/{id}/ratings` | GET    | Product ratings list                                | ✅ Completed          | ✅ UT, IT |
-| API             | `/api/products/{id}/rating`  | POST   | Add rating/comment                                  | ✅ Completed          | ✅ UT, IT |
-| API             | `/api/orders`                | GET    | Order listing                                       | ❌ Not implemented    | ❌ None   |
-| API             | `/api/customers`             | GET    | Customer listing (Paginated & Searchable)           | ✅ Completed          | ❌ None   |
-| API             | `/api/customers/{id}`        | DELETE | Disable customer                                    | ❌ Not implemented    | ❌ None   |
-| Identity Server | `/connect/authorize`         | GET    | Start authorization code flow                       | ✅ Completed          | ❌ None   |
-| Identity Server | `/connect/token`             | POST   | Exchange auth code → tokens                         | ✅ Completed          | ❌ None   |
-| Identity Server | `/connect/logout`            | POST   | Identity logout flow                                | ✅ Completed          | ❌ None   |
-| BFF             | `/api/auth/login`            | GET    | Start login from React → redirect to IdentityServer | ✅ Completed          | ❌ None   |
-| BFF             | `/api/auth/me`               | GET    | Get current user info & claims                      | ✅ Completed          | ❌ None   |
-| BFF             | `/api/auth/logout`           | POST   | Logout BFF session + Identity session               | ✅ Completed          | ❌ None   |
-| BFF             | `/signin-oidc`               | GET    | OIDC callback endpoint (middleware handled)         | ✅ Middleware handled | ❌ None   |
-| BFF             | `/dev/auth/tokens`(Dev Only) | GET    | Return access_token, id_token, refresh_token        | ✅ Completed          | ❌ None   |
-| BFF             | `/api/{**catch-all}`         | ALL    | Reverse proxy React requests → API                  | ✅ Completed          | ❌ None   |
+| Layer               | Endpoint                                 | Method   | Description                                             | Status                | Tests     |
+| ------------------- | ---------------------------------------- | -------- | ------------------------------------------------------- | --------------------- | --------- |
+| **Public API**      | `/api/all/categories`                    | GET      | List all categories                                     | ✅ Completed          | ✅ UT, IT |
+| **Public API**      | `/api/all/categories/{id}`               | GET      | Category details                                        | ✅ Completed          | ✅ UT, IT |
+| **Public API**      | `/api/all/products`                      | GET      | Product listing, filters, pagination                    | ✅ Completed          | ✅ UT, IT |
+| **Public API**      | `/api/all/products/{id}`                 | GET      | Product details                                         | ✅ Completed          | ✅ UT, IT |
+| **Public API**      | `/api/all/products/{id}/ratings`         | GET      | Product ratings list                                    | ✅ Completed          | ✅ UT, IT |
+| **Customer API**    | `/api/customer/products/{id}/rating`     | POST     | Add product rating/comment                              | ✅ Completed          | ✅ UT, IT |
+| **Customer API**    | `/api/customer/cart`                     | GET      | Get current user cart                                   | ✅ Completed          | ❌ None   |
+| **Customer API**    | `/api/customer/cart`                     | POST     | Create or add item to cart or update product's quantity | ✅ Completed          | ❌ None   |
+| **Admin API**       | `/api/admin/products`                    | GET/POST | List products / Create product                          | ✅ Completed          | ✅ UT, IT |
+| **Admin API**       | `/api/admin/products/{id}`               | GET/PUT  | Product details / Update product                        | ✅ Completed          | ✅ UT, IT |
+| **Admin API**       | `/api/admin/products/{id}/toggle-delete` | POST     | Soft delete (toggle) product                            | ✅ Completed          | ✅ UT, IT |
+| **Admin API**       | `/api/admin/products/{id}/image`         | POST     | Update product image                                    | ✅ Completed          | ✅ UT, IT |
+| **Admin API**       | `/api/admin/categories`                  | GET/POST | List categories / Create category                       | ✅ Completed          | ✅ UT, IT |
+| **Admin API**       | `/api/admin/categories/{id}`             | GET/PUT  | Category details / Update category                      | ✅ Completed          | ✅ UT, IT |
+| **Admin API**       | `/api/admin/orders`                      | GET      | Order listing                                           | ❌ Not implemented    | ❌ None   |
+| **Identity Admin**  | `/api/admin/customers/{id}`              | DELETE   | Disable customer                                        | ❌ Not implemented    | ❌ None   |
+| **Identity Admin**  | `/api/admin/customers`                   | GET      | Customer listing (Paginated & Searchable)               | ✅ Completed          | ❌ None   |
+| **Identity Server** | `/connect/authorize`                     | GET      | Start OIDC authorization code flow                      | ✅ Completed          | ❌ None   |
+| **Identity Server** | `/connect/token`                         | POST     | Exchange auth code → tokens                             | ✅ Completed          | ❌ None   |
+| **Identity Server** | `/connect/logout`                        | POST     | Identity logout flow                                    | ✅ Completed          | ❌ None   |
+| **BFF**             | `/api/auth/login`                        | GET      | Start login from React → IdentityServer                 | ✅ Completed          | ❌ None   |
+| **BFF**             | `/api/auth/me`                           | GET      | Get current user info & claims                          | ✅ Completed          | ❌ None   |
+| **BFF**             | `/api/auth/logout`                       | POST     | Logout BFF session + Identity session                   | ✅ Completed          | ❌ None   |
+| **BFF**             | `/signin-oidc`                           | GET      | OIDC callback endpoint (middleware handled)             | ✅ Middleware handled | ❌ None   |
+| **BFF**             | `/dev/auth/tokens`(Dev Only)             | GET      | Return access_token, id_token, refresh_token            | ✅ Completed          | ❌ None   |
+| **BFF**             | `/api/{**catch-all}`                     | ALL      | Reverse proxy Customer-site + Admin-site requests → API | ✅ Completed          | ❌ None   |
 
-## Current Supporting Pages For Identity Server
+## Current Supporting Pages In Admin, Customer and Identity Server
 
-| Layer           | Endpoint            | Method | Description              | Status             | Tests   |
-| --------------- | ------------------- | ------ | ------------------------ | ------------------ | ------- |
-| Identity Server | `/Account/Login`    | GET    | Render Razor login page  | ✅ Completed       | ❌ None |
-| Identity Server | `/Account/Login`    | POST   | Submit login credentials | ✅ Completed       | ❌ None |
-| Identity Server | `/Account/Register` | GET    | Render registration page | ❌ Not implemented | ❌ None |
-| Identity Server | `/Account/Register` | POST   | Submit registration form | ❌ Not implemented | ❌ None |
+| Layer               | Endpoint                 | Method | Description                    | Status             | Tests   |
+| ------------------- | ------------------------ | ------ | ------------------------------ | ------------------ | ------- |
+| **Admin Site**      | `/dashboard`             | GET    | Admin overview & statistics    | ❌ Not implemented | ❌ None |
+| **Admin Site**      | `/products`              | GET    | Product management list        | ✅ Completed       | ❌ None |
+| **Admin Site**      | `/products/new`          | GET    | Create new product page        | ✅ Completed       | ❌ None |
+| **Admin Site**      | `/products/[id]`         | GET    | Edit product details page      | ✅ Completed       | ❌ None |
+| **Admin Site**      | `/categories`            | GET    | Category management list       | ✅ Completed       | ❌ None |
+| **Admin Site**      | `/categories/new`        | GET    | Create new category page       | ✅ Completed       | ❌ None |
+| **Admin Site**      | `/categories/[id]`       | GET    | Edit category details page     | ✅ Completed       | ❌ None |
+| **Admin Site**      | `/customers`             | GET    | Customer management list       | ✅ Completed       | ❌ None |
+| **Admin Site**      | `/orders`                | GET    | Order management list          | ❌ Not implemented | ❌ None |
+| **StoreFront**      | `/`                      | GET    | Home Page (Top Rated Products) | ✅ Completed       | ❌ None |
+| **StoreFront**      | `/Products`              | GET    | Product Search & Filter Page   | ✅ Completed       | ❌ None |
+| **StoreFront**      | `/Products/Details/{id}` | GET    | Product Details Page           | ✅ Completed       | ❌ None |
+| **StoreFront**      | `/Cart`                  | GET    | Shopping Cart Page             | ✅ Completed       | ❌ None |
+| **StoreFront**      | `/Errors/{code}`         | GET    | Global Error Pages (404, 500)  | ✅ Completed       | ❌ None |
+| **Identity Server** | `/Account/Login`         | GET    | Render Razor login page        | ✅ Completed       | ❌ None |
+| **Identity Server** | `/Account/Login`         | POST   | Submit login credentials       | ✅ Completed       | ❌ None |
+| **Identity Server** | `/Account/Register`      | GET    | Render registration page       | ❌ Not implemented | ❌ None |
+| **Identity Server** | `/Account/Register`      | POST   | Submit registration form       | ❌ Not implemented | ❌ None |
 
 ## ERD (V1)
 
@@ -58,7 +77,7 @@
 
 ![BFF and Identity Server Communication](./images/BFF_IdentityServer.png)
 
-## Week 1-2-3 Summary
+## Week 1-2-3-4 Summary
 
 ### Week 1-2 Highlights
 
@@ -72,15 +91,23 @@
 
 - **BE**: Added Quantity & Ratings to Products.
 - **BE**: Implemented Soft Delete (Toggle).
-- **BE**: Added searchable Customer list.
-- **BE**: Fixed Identity Server claims.
-- **Auth**: IdentityServer login UI.
+- **BE**: Added searchable Customer list in Identity Server.
 - **Auth**: Integrated full BFF Login/Session flow in Admin Portal.
-- **FE**: Built Admin Portal (Next.js 16).
-- **FE**: Added Proxy route protection.
-- **FE**: Implemented Product & Category CRUD.
-- **FE**: Added Customers listing page.
-- **Pending**: Image uploads & Logout & Dashboard & Customer-site
+- **FE**: Built Admin Portal (Next.js 15) with Product & Category CRUD.
+
+### Week 4 Highlights (Current)
+
+- **FE**: Developed **Resilient StoreFront Architecture**:
+  - Centralized Error Handling (404/500) with clean routing.
+  - Global Toast Notification System (DaisyUI + htmx).
+  - htmx trigger merging.
+  - API Safety Guard: Automatic backend error-to-toast mapping.
+- **Cart**: Implemented real-time Cart interactions (Add/Update/Remove) with navbar syncing.
+- **Admin**: Built modern Admin Portal (Next.js 16) with Product & Category CRUD.
+- **Admin**: Implemented product image management (API & UI).
+- **Auth**: Refactored authentication middleware for safe OIDC redirects with PKCE.
+- **Docs**: Comprehensive Reference Index for htmx, OIDC, and Modern .NET patterns.
+- **Pending**: Dashboard (Statistics) and Checkout flow (Stripe).
 
 ## Project Structure
 
@@ -271,68 +298,60 @@ public async Task GetProduct_ById_ShouldReturnProduct()
 
 ## Reference Links
 
-### Frontend Stack
+### 🌐 Frontend Stack & CI/CD
 
-- CI example: https://santhosh-adiga-u.medium.com/setting-up-a-complete-ci-cd-pipeline-for-react-using-github-actions-9a07613ceded
+- **React CI/CD**: [GitHub Actions for React](https://santhosh-adiga-u.medium.com/setting-up-a-complete-ci-cd-pipeline-for-react-using-github-actions-9a07613ceded)
+- **Deployment**: [Vercel](https://vercel.com)
+- **Testing**: [Jest (Unit/Integration)](https://jestjs.io/), [Cypress (E2E)](https://www.cypress.io/)
 
-### Backend
+### 🛡️ htmx & UI
 
-- SQL Server Docker image: https://hub.docker.com/r/microsoft/mssql-server
-- DbContext pooling guidance: https://medium.com/@razeshmsb02/adddbcontext-vs-adddbcontextpool-vs-adddbcontextfactory-3760857737d1
-- FluentValidation DI docs: https://docs.fluentvalidation.net/en/latest/di.html
-- Modern exception handling: https://www.milanjovanovic.tech/blog/global-error-handling-in-aspnetcore-8
-- ProblemDetails / API error handling: https://medium.com/@aseem2372005/handling-api-errors-the-right-way-understanding-problemdetails-in-asp-net-core-web-api-e3f7d404672c
-- HTTP error type reference: https://datatracker.ietf.org/doc/html/rfc7231#section-6.6.1
-- Content type RFC: https://datatracker.ietf.org/doc/html/rfc7807
+- **htmx Guide**: [htmx for ASP.NET Developers](https://aspnet-htmx.com/chapter05/)
+- **hx-trigger**: [Custom Event Triggers](https://htmx.org/headers/hx-trigger/)
+- **UI Frameworks**: [daisyUI](https://daisyui.com), [tailwindcss](https://tailwindcss.com)
 
-### Backend For Frontend (BFF)
+### 🧩 ASP.NET Core Razor Pages
 
-- Auth0 BFF guide: https://auth0.com/blog/the-backend-for-frontend-pattern-bff/
-- BFF explanation video: https://www.youtube.com/watch?v=hWJuX-8Ur2k
+- **ViewComponents**: [Reusable UI logic](https://learn.microsoft.com/en-us/aspnet/core/mvc/views/view-components)
+- **Tag Helpers**: [Native HTML enhancements](https://learn.microsoft.com/en-us/aspnet/core/mvc/views/tag-helpers/intro)
+- **Middleware**: [Request Pipeline & Delegates](https://medium.com/@Sina-Riyahi/understanding-request-delegates-and-middleware-in-asp-net-core-5f9b22d16613)
+- **Request Storage**: [HttpContext.Items (Request Scope)](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.httpcontext.items)
 
-### Reverse Proxy YARP
+### 🏗️ Architecture & Backend
 
-- How to setup: https://learn.microsoft.com/en-us/aspnet/core/fundamentals/servers/yarp/yarp-overview?view=aspnetcore-10.0
-- Project YARP: https://github.com/dotnet/yarp
+- **Vertical Slice Architecture**: [The Jimmy Bogard Pattern](https://nadirbad.dev/vertical-slice-architecture-dotnet)
+- **Modern Exception Handling**: [Global Error Handling in .NET 8+](https://www.milanjovanovic.tech/blog/global-error-handling-in-aspnetcore-8)
+- **ProblemDetails**: [RFC 7807 Implementation](https://medium.com/@aseem2372005/handling-api-errors-the-right-way-understanding-problemdetails-in-asp-net-core-web-api-e3f7d404672c)
+- **DbContext Pooling**: [Efficiency at scale](https://medium.com/@razeshmsb02/adddbcontext-vs-adddbcontextpool-vs-adddbcontextfactory-3760857737d1)
+- **HATEOAS**: [Self-Discoverable APIs](https://dev.to/wallacefreitas/supercharge-your-rest-apis-with-hateoas-the-key-to-smarter-self-discoverable-endpoints-5dg3)
+- **Delegating Handlers**: [Extending HttpClient](https://www.milanjovanovic.tech/blog/extending-httpclient-with-delegating-handlers-in-aspnetcore)
 
-### Identity Server
+### 🔐 Identity & Security
 
-- Duende docs: https://docs.duendesoftware.com/
-- IdentityServer docs: https://docs.duendesoftware.com/identityserver/
-- IdentityServer overview: https://docs.duendesoftware.com/identityserver/overview/big-picture/
+- **BFF Pattern**: [Backend For Frontend (Auth0)](https://auth0.com/blog/the-backend-for-frontend-pattern-bff/)
+- **IdentityServer**: [Duende Big Picture](https://docs.duendesoftware.com/identityserver/overview/big-picture/)
+- **OpenIddict**: [Auth Code Flow + PKCE](https://dev.to/naeemsahil/implementing-openid-connect-with-openiddict-4fmp)
+- **OIDC Claims**: [ID Token Standard](https://openid.net/specs/openid-connect-core-1_0.html#IDToken)
+- **JWT Auth**: [Configure Bearer Auth](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/configure-jwt-bearer-authentication)
 
-### OpenIddict
+### 🗄️ Database & Storage
 
-- OpenIddict guide: https://dev.to/naeemsahil/implementing-openid-connect-with-openiddict-4fmp
-- Client credentials flow: https://dev.to/robinvanderknaap/setting-up-an-authorization-server-with-openiddict-part-iii-client-credentials-flow-55lp
-- PAR configuration: https://documentation.openiddict.com/configuration/pushed-authorization-requests#allowing-client-applications-to-use-the-pushed-authorization-endpoint
+- **SQL Server**: [Official Docker Image](https://hub.docker.com/r/microsoft/mssql-server)
+- **Inheritance Mapping**: [TPH, TPT, TPC Patterns](https://medium.com/@sematopcu/inheritance-mapping-in-databases-tph-tpt-tpc-fc175c572880)
+- **Cloud Storage**: [Google Cloud Storage Buckets](https://docs.cloud.google.com/storage/docs/creating-buckets)
+- **Auth Storage**: [Application Default Credentials (ADC)](https://docs.cloud.google.com/docs/authentication/application-default-credentials)
 
-### OAuth2 / OpenID Connect
+### 🧪 Testing
 
-- OAuth2 + OIDC video: https://www.youtube.com/watch?v=uUxD1uF244E
-- OAuth2 article: https://viblo.asia/p/tim-hieu-doi-chut-ve-oauth2-eW65GvMLlDO
-- OAuth2 RFC: https://datatracker.ietf.org/doc/html/rfc6749#section-1.1
-- Required OIDC claims: https://openid.net/specs/openid-connect-core-1_0.html#IDToken
-- ID Token & ClaimsIdentity (Section 2): https://openid.net/specs/openid-connect-core-1_0.html#IDToken
+- **Integration Tests**: [ASP.NET Core Guide](https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests)
+- **In-Memory DBs**: [SQLite In-Memory Pros/Cons](https://learn.microsoft.com/en-us/dotnet/standard/data/sqlite/in-memory-databases)
+- **Serial Execution**: [Forcing serial tests in xUnit](https://stackoverflow.com/questions/1408175/execute-unit-tests-serially-rather-than-in-parallel)
 
-### Architecture & Testing
+### 🛠️ Tooling & Infrastructure
 
-- Vertical Slice Architecture guide: https://nadirbad.dev/vertical-slice-architecture-dotnet
-- Integration testing in ASP.NET Core: https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-10.0&pivots=xunit
-- SQLite in-memory databases: https://learn.microsoft.com/en-us/dotnet/standard/data/sqlite/in-memory-databases
-- Avoid in-memory DBs for tests: https://www.jimmybogard.com/avoid-in-memory-databases-for-tests/#:~:text=What%20are%20you%20using%20to,fail%20on%20the%20real%20thing.
-- Test execution serially: https://stackoverflow.com/questions/1408175/execute-unit-tests-serially-rather-than-in-parallel
-
-### Design Patterns
-
-- Options Pattern docs: https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/options?view=aspnetcore-10.0
-- Options Pattern example: https://medium.com/@vijaykr100/options-pattern-in-asp-net-core-7121e7bd5054
-- Options Pattern troubleshooting: https://stackoverflow.com/questions/61352682/error-cs1503-cannot-convert-from-microsoft-extensions-configuration-iconfigura
-
-### Tools & 3rd Party
-
-- ERD: https://lucid.app/lucidchart/80f9e014-52b0-4936-90e0-51cf2d40980b/edit?viewport_loc=32%2C-11%2C892%2C1085%2C0_0&invitationId=inv_1ef36d86-f9aa-4297-9f12-42a1ae19f457
-- Redis Insight: https://medium.com/@mahmud.ibrahim021/set-up-redis-with-redisinsight-using-docker-for-local-development-64b0c2aad4a7
+- **Reverse Proxy**: [YARP (Yet Another Reverse Proxy)](https://github.com/dotnet/yarp)
+- **Redis Insight**: [Docker Setup for Redis Visualization](https://medium.com/@mahmud.ibrahim021/set-up-redis-with-redisinsight-using-docker-for-local-development-64b0c2aad4a7)
+- **ERD**: [LucidChart Diagram](https://lucid.app/lucidchart/80f9e014-52b0-4936-90e0-51cf2d40980b/edit)
 
 ## Contribution
 
