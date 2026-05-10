@@ -4,7 +4,7 @@ using NashFridayStore.Domain.Commons;
 
 namespace NashFridayStore.API.Features.Customer.Cart.GetCart;
 
-// [Authorize(Roles = AppCts.Identity.Roles.Customer)]
+[Authorize(Roles = AppCts.Identity.Roles.Customer)]
 [ApiController]
 [Route("api/customer/cart")]
 public sealed class Endpoint(Handler handler) : ControllerBase
