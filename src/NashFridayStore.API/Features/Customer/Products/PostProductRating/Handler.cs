@@ -1,13 +1,17 @@
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
-using NashFridayStore.Domain.Entities;
+using NashFridayStore.API.Auth;
+using NashFridayStore.API.Commons.Exceptions;
 using NashFridayStore.Domain.Entities.Products;
 using NashFridayStore.Infrastructure.Data;
 
 namespace NashFridayStore.API.Features.Customer.Products.PostProductRating;
 
-public sealed class Handler(StoreDbContext dbContext, IValidator<Request> validator)
+public sealed class Handler(
+    StoreDbContext dbContext,
+    IValidator<Request> validator,
+    ICurrentUser currentUser)
 {
     public async Task<Response> HandleAsync(Request orgReq, CancellationToken ct)
     {
@@ -29,6 +33,12 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
             throw new Exceptions.ValidationException(validation.Errors);
         }
 
+        // If somehow, the user bypassing the authentication, throw app excetion unauthorized here
+        if (!currentUser.IsAuthenticated || currentUser.Id == Guid.Empty)
+        {
+            throw new UnauthorizedException();
+        }
+
         // Business Logic
         Product? product = await dbContext.Products
             .AsNoTracking()
@@ -44,6 +54,7 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
         {
             Id = Guid.NewGuid(),
             ProductId = req.ProductId,
+            CustomerId = currentUser.Id,
             Stars = req.RequestBody.Stars,
             Comment = req.RequestBody.Comment,
             CreatedAtUtc = DateTime.UtcNow
