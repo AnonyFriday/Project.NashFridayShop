@@ -2,6 +2,7 @@ using Microsoft.Extensions.Options;
 using NashFridayStore.StoreFront.AppOptions;
 using NashFridayStore.StoreFront.Interceptors;
 using NashFridayStore.StoreFront.Services;
+using NashFridayStore.StoreFront.Services.Cart;
 using NashFridayStore.StoreFront.Services.Categories;
 using NashFridayStore.StoreFront.Services.Identity;
 using NashFridayStore.StoreFront.Services.Products;
@@ -17,6 +18,12 @@ public static class ServiceCollectionExtension
 
         // Add HttpContextAccessor for HttpContext
         services.AddHttpContextAccessor();
+
+        // Configure Antiforgery for HTMX/AJAX
+        services.AddAntiforgery(options =>
+        {
+            options.HeaderName = "RequestVerificationToken";
+        });
 
         // Add API Settings from appsettings.json
         services.AddOptions<ApiUrlOptions>()
@@ -38,5 +45,6 @@ public static class ServiceCollectionExtension
         services.AddScoped<ICategoryApiClient, CategoryApiClient>();
         services.AddScoped<IProductApiClient, ProductApiClient>();
         services.AddScoped<IAccountApiClient, AccountApiClient>();
+        services.AddScoped<ICartApiClient, CartApiClient>();
     }
 }

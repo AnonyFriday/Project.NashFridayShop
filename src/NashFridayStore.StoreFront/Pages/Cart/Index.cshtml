@@ -1,0 +1,153 @@
+@page
+@model NashFridayStore.StoreFront.Pages.Cart.IndexModel
+@{
+    ViewData["Title"] = "Your Cart";
+}
+
+<div class="container mx-auto px-4 py-12 min-h-screen">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-4xl font-black mb-10 tracking-tight">Your Cart</h1>
+
+        @if (Model.Cart == null || !Model.Cart.Items.Any())
+        {
+            <div class="bg-base-200 rounded-3xl p-12 text-center border-2 border-dashed border-base-300">
+                <div class="bg-base-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 text-base-content/20">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.112 16.829a2.25 2.25 0 0 1-2.247 2.398H5.03a2.25 2.25 0 0 1-2.247-2.398l1.112-16.829c.081-1.212 1.084-2.157 2.301-2.157h11.233c1.217 0 2.22.945 2.301 2.157ZM7.5 10.5h9" />
+                    </svg>
+                </div>
+                <h2 class="text-xl font-bold mb-2">Your bag is empty</h2>
+                <p class="text-base-content/50 mb-8">Buy something to make your life happier!!</p>
+                <a asp-page="/Products/Index" class="btn btn-primary rounded-full px-8 uppercase tracking-widest font-black">Start Shopping</a>
+            </div>
+        }
+        else
+        {
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <!-- Items List -->
+                <div class="lg:col-span-2 space-y-6">
+                    @foreach (var item in Model.Cart.Items)
+                    {
+                        <div class="flex gap-6 p-6 bg-base-100 rounded-3xl border border-base-200 shadow-sm hover:shadow-md transition-shadow group">
+                            <!-- Product Image -->
+                            <div class="w-24 h-24 sm:w-32 sm:h-32 bg-base-200 rounded-2xl overflow-hidden flex-shrink-0">
+                                <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? $"https://placehold.co/200x200/png?text={item.ProductName.Replace(" ", "+")}" : item.ImageUrl)" 
+                                     alt="@item.ProductName" class="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                            </div>
+
+                            <!-- Product Info -->
+                            <div class="flex-1 flex flex-col justify-between py-1">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-black text-lg sm:text-xl mb-1 group-hover:text-primary transition-colors">@item.ProductName</h3>
+                                        <p class="text-primary font-black">$@item.PriceInUsd.ToString("F2")</p>
+                                    </div>
+                                    
+                                    @* minus the current item's quantity, then it will be deleted under the backend *@
+                                    <form method="post" hx-post="?handler=RemoveItem" hx-target="body">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="UpdateQuantityRequest.ProductId" value="@item.ProductId" />
+                                        <input type="hidden" name="UpdateQuantityRequest.Quantity" value="-@item.Quantity" />
+                                        <input type="hidden" name="UpdateQuantityRequest.ProductName" value="@item.ProductName" />
+                                        <input type="hidden" name="UpdateQuantityRequest.ImageUrl" value="@item.ImageUrl" />
+                                        <input type="hidden" name="UpdateQuantityRequest.Price" value="@item.PriceInUsd" />
+                                        <button type="submit" class="btn btn-ghost btn-circle btn-sm text-base-content/30 hover:text-error transition-colors">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <div class="flex justify-between items-center mt-4">
+                                    <!-- Quantity Controls -->
+                                    <div class="join border border-base-300 rounded-full bg-base-200/50 p-1">
+                                        <form method="post" 
+                                            hx-post="?handler=UpdateQuantity" 
+                                            hx-target="body" class="inline">
+                                            @Html.AntiForgeryToken()
+
+                                            <input type="hidden" name="UpdateQuantityRequest.ProductId"value="@item.ProductId" />
+                                            <input type="hidden" name="UpdateQuantityRequest.Quantity"value="-1" />
+                                            <input type="hidden" name="UpdateQuantityRequest.ProductName"value="@item.ProductName" />
+                                            <input type="hidden" name="UpdateQuantityRequest.ImageUrl"value="@item.ImageUrl" />
+                                            <input type="hidden" name="UpdateQuantityRequest.Price"value="@item.PriceInUsd" />
+
+                                            <button type="submit" class="btn btn-ghost btn-circle btn-xs join-item">-</button>
+                                        </form>
+                                        
+                                        <span class="w-8 text-center text-sm font-black flex items-center justify-center">@item.Quantity</span>
+                                        
+                                        <form method="post" hx-post="?handler=UpdateQuantity" 
+                                            hx-target="body" class="inline">
+                                            @Html.AntiForgeryToken()
+
+                                            <input type="hidden"
+                                                name="UpdateQuantityRequest.ProductId"
+                                                value="@item.ProductId" />
+
+                                            <input type="hidden"
+                                                name="UpdateQuantityRequest.Quantity"
+                                                value="1" />
+
+                                            <input type="hidden"
+                                                name="UpdateQuantityRequest.ProductName"
+                                                value="@item.ProductName" />
+
+                                            <input type="hidden"
+                                                name="UpdateQuantityRequest.ImageUrl"
+                                                value="@item.ImageUrl" />
+
+                                            <input type="hidden"
+                                                name="UpdateQuantityRequest.Price"
+                                                value="@item.PriceInUsd" />
+
+                                            <button type="submit" class="btn btn-ghost btn-circle btn-xs join-item">+</button>
+                                        </form>
+                                    </div>
+
+                                    <div class="text-right">
+                                        <p class="text-xs font-bold uppercase tracking-widest text-base-content/30 mb-1">Subtotal</p>
+                                        <p class="font-black text-lg">@((item.PriceInUsd * item.Quantity).ToString("F2"))</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <!-- Order Summary -->
+                <div class="lg:col-span-1">
+                    <div class="bg-base-200 rounded-3xl p-8 border border-base-200 sticky top-8">
+                        <h2 class="text-2xl font-black mb-6 tracking-tight">Summary</h2>
+                        
+                        <div class="space-y-4 mb-8">
+                            <div class="flex justify-between text-base-content/60">
+                                <span class="font-bold">Subtotal</span>
+                                <span class="font-black text-base-content">$@Model.Cart.TotalPriceInUsd.ToString("F2")</span>
+                            </div>
+                            <div class="flex justify-between text-base-content/60">
+                                <span class="font-bold">Shipping</span>
+                                <span class="font-black text-success uppercase text-xs tracking-widest mt-1">Free</span>
+                            </div>
+                            <div class="border-t border-base-content/10 pt-4 mt-4">
+                                <div class="flex justify-between items-baseline">
+                                    <span class="text-lg font-black uppercase tracking-widest">Total</span>
+                                    <span class="text-3xl font-black text-primary">$@Model.Cart.TotalPriceInUsd.ToString("F2")</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary btn-block rounded-full h-14 text-primary-content font-black uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                            Checkout Now
+                        </button>
+                        
+                        <div class="mt-6 flex items-center justify-center text-base-content/30 grayscale opacity-50">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg" class="h-6" alt="Stripe" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -10,3 +10,7 @@ ignore:
   - "**/IdentityServerDbContextSeeder.cs"
   - "**/obj/"
   - "**/bin/"
+  - "**/Program.cs"
+  - "**/AppOptions/*.cs"
+  - "**/Commons/*.cs"
+  - "**/*.cshtml"

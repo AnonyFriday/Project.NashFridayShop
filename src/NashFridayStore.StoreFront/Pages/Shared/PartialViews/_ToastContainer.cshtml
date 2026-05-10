@@ -1,0 +1,20 @@
+@* Simple Global Toast Component *@
+<div id="toast-container" class="toast toast-bottom toast-end z-[100]"></div>
+
+<script>
+    document.body.addEventListener('show-toast', (passedEvent) => {
+        const data = passedEvent.detail;
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+
+        const alertClass = data.type === 'error' ? 'alert-error' : 'alert-success';
+        toast.className = `alert ${alertClass} shadow-lg`;
+        toast.innerHTML = `<span>${data.message}</span>`;
+
+        container.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    });
+</script>
