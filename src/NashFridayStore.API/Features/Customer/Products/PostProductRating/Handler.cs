@@ -1,13 +1,16 @@
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
-using NashFridayStore.Domain.Entities;
+using NashFridayStore.API.Auth;
 using NashFridayStore.Domain.Entities.Products;
 using NashFridayStore.Infrastructure.Data;
 
 namespace NashFridayStore.API.Features.Customer.Products.PostProductRating;
 
-public sealed class Handler(StoreDbContext dbContext, IValidator<Request> validator)
+public sealed class Handler(
+    StoreDbContext dbContext,
+    IValidator<Request> validator,
+    ICurrentUser currentUser)
 {
     public async Task<Response> HandleAsync(Request orgReq, CancellationToken ct)
     {
@@ -44,6 +47,7 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
         {
             Id = Guid.NewGuid(),
             ProductId = req.ProductId,
+            CustomerId = currentUser.Id,
             Stars = req.RequestBody.Stars,
             Comment = req.RequestBody.Comment,
             CreatedAtUtc = DateTime.UtcNow

@@ -16,7 +16,10 @@ public sealed class Endpoint(Handler handler) : ControllerBase
         CancellationToken ct
     )
     {
-        var request = new Request(ProductId, body);
+        var request = new Request(
+            ProductId,
+            body);
+
         Response response = await handler.HandleAsync(request, ct);
         return CreatedAtAction(nameof(Post), response);
     }

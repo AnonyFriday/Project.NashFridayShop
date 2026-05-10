@@ -3,11 +3,11 @@ using System.Text.Json.Serialization;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
+using NashFridayStore.API.Auth;
 using NashFridayStore.API.Commons.Exceptions;
 using NashFridayStore.API.ExceptionHandlers;
 using NashFridayStore.Domain.Commons;
 using NashFridayStore.Infrastructure.AppOptions;
-using static NashFridayStore.Domain.Commons.AppCts;
 
 namespace NashFridayStore.API.Extensions;
 
@@ -42,7 +42,7 @@ public static class ServiceCollectionExtension
                 opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                 {
                     ValidateAudience = true,
-                    NameClaimType = "name", // dont use XML ugly name as set to false, then specify the name here to check in claim
+                    NameClaimType = "sub", // dont use XML ugly name as set to false, then specify the name here to check in claim
                     RoleClaimType = "role"
                 };
 
@@ -99,6 +99,9 @@ public static class ServiceCollectionExtension
 
         // All Handlers
         RegisterAllFeatureHandlers(serviceCollection);
+
+        // Add Warpper class on Principal to retrieve current Logged In User
+        serviceCollection.AddScoped<ICurrentUser, CurrentUser>();
     }
 
     private static void RegisterAllFeatureHandlers(IServiceCollection serviceCollection)

@@ -1,12 +1,13 @@
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OpenIddict.Abstractions;
 
 namespace NashFridayStore.BFF.Features.Auth.Me;
 
+[Authorize]
 [ApiController]
 [Route("api/auth/me")]
-
 public class Endpoint : ControllerBase
 {
     [HttpGet]
@@ -21,6 +22,9 @@ public class Endpoint : ControllerBase
         {
             CustomerId = User.FindFirstValue(OpenIddictConstants.Claims.Subject),
             IsAuthenticated = User.Identity?.IsAuthenticated ?? false,
+            ImageUrl = User.FindFirstValue(OpenIddictConstants.Claims.Picture),
+            FullName = User.FindFirstValue(OpenIddictConstants.Claims.Name),
+            UserName = User.FindFirstValue(OpenIddictConstants.Claims.Username),
             Email = User.FindFirstValue(OpenIddictConstants.Claims.Email),
             PhoneNumber = User.FindFirstValue(OpenIddictConstants.Claims.PhoneNumber),
             Roles = User.FindAll(OpenIddictConstants.Claims.Role).Select(c => c.Value).ToList(),
