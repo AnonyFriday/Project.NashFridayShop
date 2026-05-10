@@ -8,13 +8,9 @@ builder.Services.AddStoreFrontServices(builder.Configuration);
 
 WebApplication app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error");
-    app.UseHsts();
-}
+app.UseStatusCodePagesWithReExecute("/Errors/{0}");
 
+app.UseHsts();
 app.UseHttpsRedirection();
 
 app.UseRouting();

@@ -1,0 +1,27 @@
+@page
+@{
+    ViewData["Title"] = "Page Not Found";
+}
+
+<div class="min-h-[70vh] flex flex-col items-center justify-center px-4 text-center">
+    <div class="bg-primary/10 w-24 h-24 rounded-full flex items-center justify-center mb-8">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 text-primary">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+        </svg>
+    </div>
+
+    <h1 class="text-9xl font-black mb-4 tracking-tighter opacity-10">404</h1>
+    <h2 class="text-4xl font-black mb-4 tracking-tight -mt-16 relative">Lost in the aisles?</h2>
+    <p class="text-xl text-base-content/60 max-w-lg mb-10">
+        We couldn't find the page you were looking for. It might have been moved, deleted, or never existed in the first place.
+    </p>
+
+    <div class="flex flex-wrap gap-4 justify-center">
+        <a asp-page="/Index" class="btn btn-primary rounded-full px-8 font-black uppercase tracking-widest">
+            Back to Shop
+        </a>
+        <a asp-page="/Products/Index" class="btn btn-ghost rounded-full px-8 font-black uppercase tracking-widest">
+            Browse Products
+        </a>
+    </div>
+</div>
