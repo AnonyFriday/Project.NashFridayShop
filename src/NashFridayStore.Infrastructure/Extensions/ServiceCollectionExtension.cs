@@ -45,7 +45,7 @@ public static class ServiceCollectionExtension
         services.AddSingleton<StorageClient>(_ => StorageClient.Create());
 
         // Redis + Cart
-        // - Connection Multiplexer must be singleton
+        // - Connection Multiplexer must be singleton, designed as thread-safe and global reuse
         services.AddSingleton<IConnectionMultiplexer>(sp =>
         {
             ConnectionStringsOptions settings = sp.GetRequiredService<IOptions<ConnectionStringsOptions>>().Value;

@@ -1,4 +1,4 @@
-using NashFridayStore.Domain.Entities;
+using NashFridayStore.Domain.Entities.Products;
 
 namespace NashFridayStore.Infrastructure.Builders;
 
