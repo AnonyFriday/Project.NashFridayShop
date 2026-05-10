@@ -28,7 +28,7 @@
                 foreach (var product in Model.Products)
                 {
                     <li class="w-full border-b border-base-200 last:border-none">
-                    <a asp-page="/Products/Details/Index" asp-route-Id="@product.Id" 
+                    <a asp-page="/Products/Details/Index" asp-route-ProductId="@product.Id" 
                             class="flex items-center gap-4 py-3 px-4 hover:bg-base-200 transition-all w-full group">
                             <img src="@(string.IsNullOrEmpty(product.ImageUrl) ? $"https://placehold.co/100x100/png?text={product.Name.Replace(" ", "+")}" : product.ImageUrl)" 
                                     alt="@product.Name" 

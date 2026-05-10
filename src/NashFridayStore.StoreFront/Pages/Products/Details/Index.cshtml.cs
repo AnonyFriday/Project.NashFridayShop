@@ -64,7 +64,9 @@ public class IndexModel(
 
         if (Request.Headers.ContainsKey("HX-Request"))
         {
-            Response.Headers.Append("HX-Trigger", "cart-updated");
+            TriggerCartUpdateIcon();
+            TriggerToast($"{product.Name} added to bag!", "success");
+
             return new StatusCodeResult(204);
         }
 

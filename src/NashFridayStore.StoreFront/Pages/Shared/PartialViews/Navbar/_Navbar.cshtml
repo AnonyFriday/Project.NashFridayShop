@@ -32,15 +32,18 @@
         <div class="navbar-end gap-2 md:gap-4 md:w-[30%] justify-end">
 
             <!-- Cart Dropdown -->
-            @* At a trigger event named cart-updated here, whenever header contains cart-updated, it return the contain again *@
-            @* Listening anyone trigger from the body element go downs *@
-            <div id="navbar-cart" 
-                 class="dropdown dropdown-end"
-                 hx-get="?handler=CartStatus"
-                 hx-trigger="cart-updated from:body" 
-                 hx-swap="innerHTML">
-                <partial name="PartialViews/Navbar/_CartStatus" />
-            </div>
+            @if (isAuthenticated)
+            {
+                @* At a trigger event named cart-updated here, whenever header contains cart-updated, it return the contain again *@
+                @* Listening anyone trigger from the body element go downs *@
+                <div id="navbar-cart" 
+                     class="dropdown dropdown-end"
+                     hx-get="?handler=CartStatus"
+                     hx-trigger="cart-updated from:body" 
+                     hx-swap="innerHTML">
+                    <partial name="PartialViews/Navbar/_CartStatus" />
+                </div>
+            }
 
             <div class="h-6 w-px bg-base-content/10 hidden sm:block"></div>
 

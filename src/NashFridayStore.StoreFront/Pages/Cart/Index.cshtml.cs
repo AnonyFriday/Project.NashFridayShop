@@ -28,7 +28,8 @@ public class IndexModel(ICartApiClient cartApiClient) : BasePageModel
 
         if (Request.Headers.ContainsKey("HX-Request"))
         {
-            Response.Headers.Append("HX-Trigger", "cart-updated");
+            TriggerCartUpdateIcon();
+            TriggerToast("Bag updated successfully!", "success");
             return RedirectToPage();
         }
 
@@ -46,7 +47,8 @@ public class IndexModel(ICartApiClient cartApiClient) : BasePageModel
 
         if (Request.Headers.ContainsKey("HX-Request"))
         {
-            Response.Headers.Append("HX-Trigger", "cart-updated");
+            TriggerCartUpdateIcon();
+            TriggerToast("Item removed from bag", "success");
         }
 
         return RedirectToPage();
