@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using NashFridayStore.API.ExceptionHandlers;
 using NashFridayStore.Domain.Commons;
@@ -12,6 +13,39 @@ public static class ServiceCollectionExtension
 {
     public static void AddApiServices(this IServiceCollection serviceCollection)
     {
+        // Context 
+        serviceCollection.AddHttpContextAccessor();
+
+        // Settings at appsettings.json
+        serviceCollection.AddOptions<IdentityServerOptions>()
+            .BindConfiguration(IdentityServerOptions.IdentityServer)
+            .ValidateOnStart();
+
+        // Add JWT Token Handler for access_token from BFF and Authroization
+        serviceCollection
+            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer();
+
+        serviceCollection.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme)
+            .Configure<IOptions<IdentityServerOptions>>((opt, idSettings) =>
+            {
+                IdentityServerOptions settings = idSettings.Value;
+
+                opt.Authority = settings.Authority; // specify this to down the public key from the authority to decrypt the token
+                opt.Audience = settings.Audience;
+
+                opt.RequireHttpsMetadata = false;
+                opt.MapInboundClaims = false;
+
+                opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateAudience = true,
+                    NameClaimType = "name", // dont use XML ugly name as set to false, then specify the name here to check in claim
+                    RoleClaimType = "role"
+                };
+            });
+        serviceCollection.AddAuthorization();
+
         // Exception Handlers 
         serviceCollection.AddProblemDetails();
         serviceCollection.AddExceptionHandler<GeneralExceptionHandler>();

@@ -33,6 +33,9 @@ if (app.Environment.IsEnvironment(AppCts.Environment.Testing))
 app.UseHttpsRedirection();
 app.UseCors(AppCts.Policy.AdminSite);
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapControllers();
 
 await app.RunAsync();

@@ -47,4 +47,7 @@ public sealed record BffOptions
 
     [Required]
     public string ApiScope { get; init; } = string.Empty;
+
+    [Required]
+    public string ApiServerAudience { get; init; } = string.Empty;
 }

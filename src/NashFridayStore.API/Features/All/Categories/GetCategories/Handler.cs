@@ -2,7 +2,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using NashFridayStore.Domain.Commons;
-using NashFridayStore.Domain.Entities;
+using NashFridayStore.Domain.Entities.Categories;
 using NashFridayStore.Infrastructure.Data;
 
 namespace NashFridayStore.API.Features.All.Categories.GetCategories;

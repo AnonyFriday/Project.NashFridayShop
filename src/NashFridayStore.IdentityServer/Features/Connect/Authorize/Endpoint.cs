@@ -3,6 +3,8 @@ using System.Security.Claims;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using NashFridayStore.IdentityServer.AppOptions;
 using NashFridayStore.IdentityServer.Domain;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
@@ -12,7 +14,8 @@ namespace NashFridayStore.IdentityServer.Features.Connect.Authorize;
 [ApiController]
 [Route("/connect/authorize")]
 public class Endpoint(
-    UserManager<ApplicationUser> userManager
+    UserManager<ApplicationUser> userManager,
+    IOptions<SiteUrlsOption> options
 ) : ControllerBase
 {
     [HttpGet]
@@ -89,7 +92,6 @@ public class Endpoint(
                     user.FullName ?? string.Empty
                 )
                 .SetDestinations(
-                    OpenIddictConstants.Destinations.AccessToken,
                     OpenIddictConstants.Destinations.IdentityToken
                 )
             );
@@ -102,7 +104,6 @@ public class Endpoint(
                         user.AvatarUrl
                     )
                     .SetDestinations(
-                        OpenIddictConstants.Destinations.AccessToken,
                         OpenIddictConstants.Destinations.IdentityToken
                     )
                 );
@@ -142,6 +143,7 @@ public class Endpoint(
 
         var principal = new ClaimsPrincipal(identity);
         principal.SetScopes(request.GetScopes());
+        principal.SetResources(options.Value.Bff.ApiServerAudience);
 
         // OpenIddict will issue a token
         return SignIn(principal, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);

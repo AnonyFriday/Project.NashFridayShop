@@ -1,7 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NashFridayStore.Domain.Commons;
 
 namespace NashFridayStore.API.Features.Customer.Products.PostProductRating;
 
+[Authorize(Roles = AppCts.Identity.Roles.Customer)]
 [ApiController]
 [Route("api/customer/products/{productId:guid}/rating")]
 public sealed class Endpoint(Handler handler) : ControllerBase

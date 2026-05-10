@@ -25,6 +25,15 @@ public static class AppCts
         public const string AdminSite = "AdminSitePolicy";
     }
 
+    public static class Identity
+    {
+        public static class Roles
+        {
+            public const string Admin = "Admin";
+            public const string Customer = "Customer";
+        }
+    }
+
     public static class ProblemDetailsTypes
     {
         public sealed record ProblemType(int StatusCode, string TypeLink);
