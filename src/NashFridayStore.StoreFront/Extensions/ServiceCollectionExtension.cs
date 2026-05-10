@@ -19,6 +19,12 @@ public static class ServiceCollectionExtension
         // Add HttpContextAccessor for HttpContext
         services.AddHttpContextAccessor();
 
+        // Configure Antiforgery for HTMX/AJAX
+        services.AddAntiforgery(options =>
+        {
+            options.HeaderName = "RequestVerificationToken";
+        });
+
         // Add API Settings from appsettings.json
         services.AddOptions<ApiUrlOptions>()
             .Bind(configuration.GetSection(ApiUrlOptions.ApiSettings))
