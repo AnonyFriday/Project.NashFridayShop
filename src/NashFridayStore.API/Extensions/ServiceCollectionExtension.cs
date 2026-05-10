@@ -3,9 +3,11 @@ using System.Text.Json.Serialization;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
+using NashFridayStore.API.Commons.Exceptions;
 using NashFridayStore.API.ExceptionHandlers;
 using NashFridayStore.Domain.Commons;
 using NashFridayStore.Infrastructure.AppOptions;
+using static NashFridayStore.Domain.Commons.AppCts;
 
 namespace NashFridayStore.API.Extensions;
 
@@ -42,6 +44,20 @@ public static class ServiceCollectionExtension
                     ValidateAudience = true,
                     NameClaimType = "name", // dont use XML ugly name as set to false, then specify the name here to check in claim
                     RoleClaimType = "role"
+                };
+
+                opt.Events = new JwtBearerEvents
+                {
+                    OnChallenge = context =>
+                    {
+                        context.HandleResponse(); // skip default response and let me throw via exception handler
+                        throw new UnauthorizedException();
+                    },
+
+                    OnForbidden = context =>
+                    {
+                        throw new ForbiddenException();
+                    }
                 };
             });
         serviceCollection.AddAuthorization();
