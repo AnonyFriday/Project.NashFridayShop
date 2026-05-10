@@ -2,7 +2,6 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using NashFridayStore.API.Auth;
-using NashFridayStore.API.Commons.Exceptions;
 using NashFridayStore.Domain.Entities.Products;
 using NashFridayStore.Infrastructure.Data;
 
@@ -31,12 +30,6 @@ public sealed class Handler(
         if (!validation.IsValid)
         {
             throw new Exceptions.ValidationException(validation.Errors);
-        }
-
-        // If somehow, the user bypassing the authentication, throw app excetion unauthorized here
-        if (!currentUser.IsAuthenticated || currentUser.Id == Guid.Empty)
-        {
-            throw new UnauthorizedException();
         }
 
         // Business Logic
