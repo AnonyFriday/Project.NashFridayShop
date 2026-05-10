@@ -1,6 +1,5 @@
 import { baseApiSlice } from "@/lib/api/base.api";
 import { GetCategories, GetCategoryById, CreateCategory, UpdateCategory } from "./category.types";
-import { APP_ROUTES } from "@/lib/api/routes";
 
 export const categoryApiSlice = baseApiSlice.injectEndpoints({
     endpoints: (builder) => ({

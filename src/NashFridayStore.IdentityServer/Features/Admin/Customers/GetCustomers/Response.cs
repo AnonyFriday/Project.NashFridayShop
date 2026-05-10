@@ -9,6 +9,7 @@ public sealed record Response(
 public sealed record CustomerItem(
     Guid Id,
     string FullName,
+    string? AvatarUrl,
     string UserName,
     string Email,
     string? Address,

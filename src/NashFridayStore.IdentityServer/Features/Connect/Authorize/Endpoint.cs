@@ -74,7 +74,7 @@ public class Endpoint(
             );
         }
 
-        // If BFF requires scope Profile = Role + username
+        // If BFF requires scope Profile = Role + username + fullname + phone
         if (request.HasScope(
            OpenIddictConstants.Scopes.Profile))
         {
