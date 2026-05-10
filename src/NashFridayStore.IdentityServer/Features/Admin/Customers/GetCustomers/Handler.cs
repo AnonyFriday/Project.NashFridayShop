@@ -52,6 +52,7 @@ public sealed class Handler(
             .Select(u => new CustomerItem(
                 u.Id,
                 u.FullName,
+                u.AvatarUrl,
                 u.UserName!,
                 u.Email!,
                 u.Address,

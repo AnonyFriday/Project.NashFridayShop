@@ -56,7 +56,7 @@ export namespace GetProductById {
         includeDeleted?: boolean;
     }
 
-    export type Response = {
+    export interface Response {
         description: string;
         categoryId: string;
         categoryName?: string;

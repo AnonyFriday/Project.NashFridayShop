@@ -9,9 +9,10 @@ export namespace GetCustomers {
   export interface Item {
     id: string;
     fullName: string;
+    avatarUrl?: string;
     userName: string;
     email: string;
-    address: string;
+    address?: string;
     isDeleted: boolean;
     createdAtUtc: string;
   }
