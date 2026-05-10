@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NashFridayStore.StoreFront.Services.Categories;
 using NashFridayStore.StoreFront.Services.Products;
-
+using NashFridayStore.StoreFront.Services.Cart;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace NashFridayStore.StoreFront.Pages.Products;
@@ -9,7 +9,8 @@ namespace NashFridayStore.StoreFront.Pages.Products;
 [BindProperties(SupportsGet = true)]
 public class IndexModel(
     IProductApiClient productApiClient,
-    ICategoryApiClient categoryApiClient) : BasePageModel
+    ICategoryApiClient categoryApiClient,
+    ICartApiClient cartApiClient) : BasePageModel
 {
     [BindNever]
     public GetProducts.Response? ProductResponse { get; set; }
@@ -46,5 +47,25 @@ public class IndexModel(
         );
 
         ProductResponse = await productApiClient.GetProductsAsync(request);
+    }
+
+    public async Task<IActionResult> OnPostAddToCartAsync(Guid productId)
+    {
+        GetProduct.Response? product = await productApiClient.GetProductByIdAsync(new GetProduct.Request(productId));
+        if (product == null)
+        {
+            return NotFound();
+        }
+
+        await cartApiClient.CreateOrAddItemAsync(new CreateOrAddItemToCart.Request(
+            ProductId: productId,
+            Quantity: 1,
+            ProductName: product.Name,
+            ImageUrl: product.ImageUrl,
+            Price: product.PriceUsd
+        ));
+
+        TempData["SuccessMessage"] = $"{product.Name} added to cart!";
+        return RedirectToPage();
     }
 }
