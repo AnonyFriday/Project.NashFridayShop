@@ -6,5 +6,5 @@ public class ShoppingCartItem
     public string ProductName { get; set; } = string.Empty;
     public decimal PriceInUsd { get; set; }
     public int Quantity { get; set; }
-    public string? ImageUrl { get; set; }
+    public string ImageUrl { get; set; } = string.Empty;
 }
