@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using Microsoft.Extensions.DependencyInjection;
 using NashFridayStore.API.Features.All.Categories.GetCategory;
-using NashFridayStore.Domain.Entities;
+using NashFridayStore.Domain.Entities.Categories;
 using NashFridayStore.Infrastructure.Builders;
 using NashFridayStore.Infrastructure.Data;
 using NashFridayStore.IntegrationTests.Commons;

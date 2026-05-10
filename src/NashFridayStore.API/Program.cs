@@ -25,13 +25,12 @@ if (app.Environment.IsDevelopment())
     await seeder.SeedAsync();
 }
 
-if (app.Environment.IsEnvironment(AppCts.Environment.Testing))
-{
-    app.UseHsts();
-}
-
+app.UseHsts();
 app.UseHttpsRedirection();
 app.UseCors(AppCts.Policy.AdminSite);
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

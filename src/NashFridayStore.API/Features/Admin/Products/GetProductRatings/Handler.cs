@@ -2,7 +2,6 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using NashFridayStore.Domain.Commons;
-using NashFridayStore.Domain.Entities;
 using NashFridayStore.Domain.Entities.Products;
 using NashFridayStore.Infrastructure.Data;
 
@@ -65,6 +64,8 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
             .Select(x => new RatingItem(
                 x.Stars,
                 x.Comment,
+                x.CustomerName,
+                x.CustomerAvatarUrl,
                 x.CreatedAtUtc))
             .ToListAsync(ct);
 

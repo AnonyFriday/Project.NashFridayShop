@@ -161,8 +161,14 @@
                                             <span class="text-xs font-bold text-base-content/30 uppercase tracking-widest">@rating.CreatedAtUtc.ToString("MMM dd, yyyy")</span>
                                         </div>
 
-                                        @* Will change this to the actual username later *@
-                                        <h4 class="font-black text-lg mb-2 text-base-content group-hover:text-primary transition-colors">Verified Customer</h4>
+                                        <div class="flex items-center gap-4 mb-3">
+                                            <div class="avatar">
+                                                <div class="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                                                    <img src="@(string.IsNullOrEmpty(rating.CustomerAvatarUrl) ? $"https://i.pravatar.cc/150?u={rating.CustomerName}" : rating.CustomerAvatarUrl)" alt="@rating.CustomerName" />
+                                                </div>
+                                            </div>
+                                            <h4 class="font-black text-lg text-base-content group-hover:text-primary transition-colors">@rating.CustomerName</h4>
+                                        </div>
                                         <p class="text-base-content/70 leading-relaxed">@rating.Comment</p>
                                     </div>
                                 }

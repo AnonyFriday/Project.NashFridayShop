@@ -202,6 +202,11 @@ namespace NashFridayStore.IdentityServer.Migrations
                         .HasColumnType("nvarchar(300)")
                         .HasColumnName("address");
 
+                    b.Property<string>("AvatarUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnName("avatar_url");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)")
@@ -227,7 +232,8 @@ namespace NashFridayStore.IdentityServer.Migrations
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)")
                         .HasColumnName("full_name");
 
                     b.Property<bool>("IsDeleted")

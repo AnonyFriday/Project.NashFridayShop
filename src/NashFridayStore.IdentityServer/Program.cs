@@ -9,6 +9,8 @@ builder.Services.AddServices(builder.Configuration);
 
 WebApplication app = builder.Build();
 
+app.UseExceptionHandler();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -21,8 +23,8 @@ if (app.Environment.IsDevelopment())
     await seeder.SeedOidcDebugger();
 }
 
+app.UseHsts();
 app.UseHttpsRedirection();
-
 app.UseRouting();
 
 app.UseAuthentication();

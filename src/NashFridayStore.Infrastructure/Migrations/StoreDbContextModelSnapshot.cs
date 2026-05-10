@@ -69,6 +69,21 @@ namespace NashFridayStore.Infrastructure.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("created_at_utc");
 
+                    b.Property<string>("CustomerAvatarUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnName("customer_avatar_url");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("customer_id");
+
+                    b.Property<string>("CustomerName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasColumnName("customer_name");
+
                     b.Property<DateTime?>("DeletedAtUtc")
                         .HasColumnType("datetime2")
                         .HasColumnName("deleted_at_utc");
@@ -94,14 +109,18 @@ namespace NashFridayStore.Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("pk_product_ratings");
 
+                    b.HasIndex("CustomerId")
+                        .HasDatabaseName("ix_product_ratings_customer_id");
+
                     b.HasIndex("IsDeleted")
                         .HasDatabaseName("ix_product_ratings_is_deleted");
 
-                    b.HasIndex("ProductId")
-                        .HasDatabaseName("ix_product_ratings_product_id");
-
                     b.HasIndex("Stars")
                         .HasDatabaseName("ix_product_ratings_stars");
+
+                    b.HasIndex("ProductId", "CustomerId")
+                        .IsUnique()
+                        .HasDatabaseName("ux_product_ratings_product_customer_id");
 
                     b.ToTable("product_ratings", "store", t =>
                         {

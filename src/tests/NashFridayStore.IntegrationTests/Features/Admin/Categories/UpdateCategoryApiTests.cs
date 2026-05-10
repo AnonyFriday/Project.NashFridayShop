@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NashFridayStore.API.Features.Admin.Categories.UpdateCategory;
-using NashFridayStore.Domain.Entities;
+using NashFridayStore.Domain.Entities.Categories;
 using NashFridayStore.Infrastructure.Builders;
 using NashFridayStore.Infrastructure.Data;
 using NashFridayStore.IntegrationTests.Commons;

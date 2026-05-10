@@ -12,6 +12,7 @@ public static class AppCts
 
         public static class Auth
         {
+            public const string AdminPolicy = "AdminJwtPolicy";
             public const int CookieTimeToLiveInMinutes = 60;
         }
     }

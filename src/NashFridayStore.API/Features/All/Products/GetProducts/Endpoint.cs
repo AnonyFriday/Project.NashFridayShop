@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace NashFridayStore.API.Features.All.Products.GetProducts;
 
+[AllowAnonymous]
 [ApiController]
 [Route("api/all/products")]
 public sealed class Endpoint(Handler handler) : ControllerBase

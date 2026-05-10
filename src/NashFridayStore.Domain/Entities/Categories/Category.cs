@@ -1,6 +1,6 @@
 ﻿using NashFridayStore.Domain.Entities.Products;
 
-namespace NashFridayStore.Domain.Entities;
+namespace NashFridayStore.Domain.Entities.Categories;
 
 public sealed class Category
 {

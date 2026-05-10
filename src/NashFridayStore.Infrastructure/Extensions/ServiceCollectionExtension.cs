@@ -7,6 +7,7 @@ using NashFridayStore.Infrastructure.AppOptions;
 using NashFridayStore.Infrastructure.Interfaces;
 using NashFridayStore.Infrastructure.Services;
 using Google.Cloud.Storage.V1;
+using StackExchange.Redis;
 
 namespace NashFridayStore.Infrastructure.Extensions;
 
@@ -42,5 +43,14 @@ public static class ServiceCollectionExtension
         // - StorageClient is recommend as a singleton, not as a service
         services.AddScoped<IStorageService, FirebaseStorageService>();
         services.AddSingleton<StorageClient>(_ => StorageClient.Create());
+
+        // Redis + Cart
+        // - Connection Multiplexer must be singleton, designed as thread-safe and global reuse
+        services.AddSingleton<IConnectionMultiplexer>(sp =>
+        {
+            ConnectionStringsOptions settings = sp.GetRequiredService<IOptions<ConnectionStringsOptions>>().Value;
+            return ConnectionMultiplexer.Connect(settings.Caching);
+        });
+        services.AddScoped<ICartService, RedisCartService>();
     }
 }

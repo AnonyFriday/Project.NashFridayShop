@@ -6,4 +6,10 @@ internal static class AppCts
     {
         public const string AuthenticationType = "BffAuth";
     }
+
+    public static class Cookie
+    {
+        public const string BffCookieName = "NashFridayStore.BFF.Session";
+        public const string IdentityCookieName = "NashFridayStore.Identity.LoginSession";
+    }
 }

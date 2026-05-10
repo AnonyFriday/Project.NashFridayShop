@@ -1,12 +1,12 @@
 using System.Net;
 using System.Net.Http.Json;
 using Microsoft.Extensions.DependencyInjection;
-using NashFridayStore.Domain.Entities;
 using NashFridayStore.Domain.Entities.Products;
 using NashFridayStore.Infrastructure.Builders;
 using NashFridayStore.Infrastructure.Data;
 using NashFridayStore.IntegrationTests.Commons;
 using NashFridayStore.API.Features.Admin.Products.GetProductRatings;
+using NashFridayStore.Domain.Entities.Categories;
 
 namespace NashFridayStore.IntegrationTests.Features.Admin.Products;
 

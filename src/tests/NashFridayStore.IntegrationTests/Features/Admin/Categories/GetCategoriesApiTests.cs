@@ -1,10 +1,10 @@
 using System.Net.Http.Json;
 using Microsoft.Extensions.DependencyInjection;
-using NashFridayStore.Domain.Entities;
 using NashFridayStore.Infrastructure.Builders;
 using NashFridayStore.Infrastructure.Data;
 using NashFridayStore.IntegrationTests.Commons;
 using NashFridayStore.API.Features.Admin.Categories.GetCategories;
+using NashFridayStore.Domain.Entities.Categories;
 
 namespace NashFridayStore.IntegrationTests.Features.Admin.Categories;
 

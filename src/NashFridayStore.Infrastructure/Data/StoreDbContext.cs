@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using NashFridayStore.Domain.Entities;
+using NashFridayStore.Domain.Entities.Categories;
 using NashFridayStore.Domain.Entities.Products;
 
 namespace NashFridayStore.Infrastructure.Data;

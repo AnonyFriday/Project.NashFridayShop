@@ -1,10 +1,13 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
+using NashFridayStore.API.Commons.Exceptions;
 using NashFridayStore.API.ExceptionHandlers;
 using NashFridayStore.Domain.Commons;
 using NashFridayStore.Infrastructure.AppOptions;
+using static NashFridayStore.Domain.Commons.AppCts;
 
 namespace NashFridayStore.API.Extensions;
 
@@ -12,6 +15,53 @@ public static class ServiceCollectionExtension
 {
     public static void AddApiServices(this IServiceCollection serviceCollection)
     {
+        // Context 
+        serviceCollection.AddHttpContextAccessor();
+
+        // Settings at appsettings.json
+        serviceCollection.AddOptions<IdentityServerOptions>()
+            .BindConfiguration(IdentityServerOptions.IdentityServer)
+            .ValidateOnStart();
+
+        // Add JWT Token Handler for access_token from BFF and Authroization
+        serviceCollection
+            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer();
+
+        serviceCollection.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme)
+            .Configure<IOptions<IdentityServerOptions>>((opt, idSettings) =>
+            {
+                IdentityServerOptions settings = idSettings.Value;
+
+                opt.Authority = settings.Authority; // specify this to down the public key from the authority to decrypt the token
+                opt.Audience = settings.Audience;
+
+                opt.RequireHttpsMetadata = false;
+                opt.MapInboundClaims = false;
+
+                opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateAudience = true,
+                    NameClaimType = "name", // dont use XML ugly name as set to false, then specify the name here to check in claim
+                    RoleClaimType = "role"
+                };
+
+                opt.Events = new JwtBearerEvents
+                {
+                    OnChallenge = context =>
+                    {
+                        context.HandleResponse(); // skip default response and let me throw via exception handler
+                        throw new UnauthorizedException();
+                    },
+
+                    OnForbidden = context =>
+                    {
+                        throw new ForbiddenException();
+                    }
+                };
+            });
+        serviceCollection.AddAuthorization();
+
         // Exception Handlers 
         serviceCollection.AddProblemDetails();
         serviceCollection.AddExceptionHandler<GeneralExceptionHandler>();

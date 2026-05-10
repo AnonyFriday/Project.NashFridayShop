@@ -15,9 +15,23 @@ public static class AppCts
         public const int PageIndex = 0;
     }
 
+    public static class Cart
+    {
+        public const int CartimeToLiveInMinutes = 60;
+    }
+
     public static class Policy
     {
         public const string AdminSite = "AdminSitePolicy";
+    }
+
+    public static class Identity
+    {
+        public static class Roles
+        {
+            public const string Admin = "Admin";
+            public const string Customer = "Customer";
+        }
     }
 
     public static class ProblemDetailsTypes

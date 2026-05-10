@@ -1,75 +1,84 @@
 services:
   # Store Database
   nashfridaystore-db-store:
-    image: mcr.microsoft.com/mssql/server:2025-latest
     container_name: nashfridaystore-db-store
+    image: mcr.microsoft.com/mssql/server:2025-latest
     restart: always
     ports:
       - 1433:1433
+    volumes:
+      - nashfridaystore-db-store-data:/var/opt/mssql
+    environment:
+      - ACCEPT_EULA=Y
     env_file:
       - path: .secrets/nashfridaystore-db-store.env
         required: true
-    environment:
-      - ACCEPT_EULA=Y
-    volumes:
-      - nashfridaystore-db-store-data:/var/opt/mssql
     networks:
       - nashfridaystore-network
 
   # Identity Server Database
   nashfridaystore-db-identityserver:
-    image: mcr.microsoft.com/mssql/server:2025-latest
     container_name: nashfridaystore-db-identityserver
+    image: mcr.microsoft.com/mssql/server:2025-latest
     restart: always
     ports:
       - 1434:1433
+    volumes:
+      - nashfridaystore-db-identityserver-data:/var/opt/mssql
+    environment:
+      - ACCEPT_EULA=Y
     env_file:
       - path: .secrets/nashfridaystore-db-identityserver.env
         required: true
-    environment:
-      - ACCEPT_EULA=Y
-    volumes:
-      - nashfridaystore-db-identityserver-data:/var/opt/mssql
     networks:
       - nashfridaystore-network
 
-  # Redis
-  nashfridaystore-redis:
+  # Cart Redis
+  # - using --appendonly to persist cart in memory even redis crashes
+  nashfridaystore-redis-cart:
+    container_name: nashfridaystore-redis-cart
     image: redis/redis-stack-server:latest
-    container_name: nashfridaystore-redis
     restart: always
     ports:
       - "6379:6379"
     volumes:
-      - nashfridaystore-redis-data:/data
+      - nashfridaystore-redis-cart-data:/data
+    env_file:
+      - path: .secrets/nashfridaystore-redis-cart.env
+        required: true
+    networks:
+      - nashfridaystore-network
     healthcheck:
-      test: [ "CMD-SHELL", "redis-cli ping | grep PONG" ]
+      test: [ "CMD-SHELL", "redis-cli -a $${REDIS_PASSWORD} ping | grep PONG" ]
       interval: 10s
       timeout: 5s
       retries: 5
-    networks:
-      - nashfridaystore-network
+      start_period: 5s
+    command: >
+      sh -c "redis-stack-server --requirepass $${REDIS_PASSWORD} --databases $${REDIS_DATABASES} --appendonly yes"
 
-  # Redis Insight
+  # Redis Insight For Monitoring
   nashfridaystore-redisinsight:
-    image: redis/redisinsight:latest
     container_name: nashfridaystore-redisinsight
+    image: redis/redisinsight:latest
     restart: always
+    depends_on:
+      nashfridaystore-redis-cart:
+        condition: service_healthy
     ports:
       - "5540:5540"
     volumes:
       - nashfridaystore-redisinsight-data:/data
     networks:
       - nashfridaystore-network
-    depends_on:
-      - nashfridaystore-redis
-
-networks:
-  nashfridaystore-network:
-    driver: bridge
 
 volumes:
   nashfridaystore-db-store-data:
   nashfridaystore-db-identityserver-data:
-  nashfridaystore-redis-data:
+  nashfridaystore-redis-cart-data:
   nashfridaystore-redisinsight-data:
+
+
+networks:
+  nashfridaystore-network:
+    driver: bridge
