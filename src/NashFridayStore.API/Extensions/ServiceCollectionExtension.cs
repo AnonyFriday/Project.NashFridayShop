@@ -42,7 +42,7 @@ public static class ServiceCollectionExtension
                 opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                 {
                     ValidateAudience = true,
-                    NameClaimType = "name", // dont use XML ugly name as set to false, then specify the name here to check in claim
+                    NameClaimType = "sub", // dont use XML ugly name as set to false, then specify the name here to check in claim
                     RoleClaimType = "role"
                 };
 
