@@ -67,7 +67,9 @@ public class IndexModel(
 
         if (Request.Headers.ContainsKey("HX-Request"))
         {
-            return RedirectToPage();
+            // special header from HTMX, to find and triggr async on cart element
+            Response.Headers.Append("HX-Trigger", "cart-updated");
+            return new StatusCodeResult(204);
         }
 
         return RedirectToPage();

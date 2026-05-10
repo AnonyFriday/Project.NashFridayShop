@@ -10,4 +10,9 @@ public abstract class BasePageModel : PageModel
     {
         return ViewComponent("ProductSearchBar", new { orgReq });
     }
+
+    public IActionResult OnGetCartStatus()
+    {
+        return Partial("~/Pages/Shared/PartialViews/Navbar/_CartStatus.cshtml");
+    }
 }
