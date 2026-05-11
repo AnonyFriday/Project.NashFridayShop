@@ -36,6 +36,7 @@ public sealed class Handler(
         // Left Join Cart for better performance then querying in for loop
         var products = cart.Items
                 .LeftJoin(dbContext.Products, c => c.Key, p => p.Id, (c, p) => new { productCart = c, productDB = p })
+                .LeftJoin(dbContext.Categories, x => x.productDB != null ? x.productDB.CategoryId : Guid.Empty, cat => cat.Id, (x, cat) => new { x.productCart, x.productDB, category = cat })
                 .Select(x => new
                 {
                     Id = x.productCart.Key,
@@ -48,7 +49,9 @@ public sealed class Handler(
                     PriceInDb = x.productDB?.PriceUsd,
                     QuantityInDb = x.productDB?.Quantity,
                     StatusInDb = x.productDB?.Status,
-                    IsDeletedInDb = x.productDB?.IsDeleted
+                    IsDeletedInDb = x.productDB?.IsDeleted,
+                    CategoryId = x.category?.Id ?? Guid.Empty,
+                    CategoryName = x.category?.Name ?? string.Empty
                 })
                 .ToImmutableList();
 
@@ -92,7 +95,9 @@ public sealed class Handler(
             p.DescriptionInDb,
             p.ImageInDb,
             p.PriceInCart,
-            p.QuantityInCart));
+            p.QuantityInCart,
+            p.CategoryId,
+            p.CategoryName));
 
         var customer = new ICheckoutService.CustomerCheckoutDto(
             currentUser.Id,

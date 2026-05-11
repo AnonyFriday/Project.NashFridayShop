@@ -31,12 +31,8 @@ public class StripeCheckoutService(
                     Images = p.ImageUrl != null ? [p.ImageUrl] : null,
                     Metadata = new Dictionary<string, string>
                     {
-                        ["ProductId"] = p.Id.ToString(),
-                        ["ProductName"] = p.Name,
-                        ["Quantity"] = p.Quantity.ToString(CultureInfo.InvariantCulture),
-                        ["PriceInUsd"] = p.PriceInUsd.ToString(CultureInfo.InvariantCulture),
-                        ["Currency"] = AppCts.Currency.Usd,
-                        ["ImageUrl"] = p.ImageUrl ?? string.Empty
+                        ["CategoryId"] = p.CategoryId.ToString(),
+                        ["CategoryName"] = p.CategoryName
                     }
                 }
             }
