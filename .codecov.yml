@@ -14,3 +14,4 @@ ignore:
   - "**/AppOptions/*.cs"
   - "**/Commons/*.cs"
   - "**/*.cshtml"
+  - "**/NashFridayStore.Domain/**"
