@@ -9,6 +9,6 @@ public sealed class OrderItem
     public string ProductName { get; set; } = string.Empty;
     public string CategoryName { get; set; } = string.Empty;
     public int Quantity { get; set; }
-    public decimal UnitPriceInUsd { get; set; }
-    public decimal TotalPriceInUsd => Quantity * UnitPriceInUsd;
+    public decimal ProductUnitPriceInUsd { get; set; }
+    public decimal TotalPriceInUsd => Quantity * ProductUnitPriceInUsd;
 }

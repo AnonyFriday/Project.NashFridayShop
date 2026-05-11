@@ -6,7 +6,7 @@ public class Order : IEntityAuditable
 {
     public Guid Id { get; set; }
     public Guid CustomerId { get; set; }
-    public string CustomerName { get; set; } = string.Empty;
+    public string CustomerFullName { get; set; } = string.Empty;
     public string CustomerEmail { get; set; } = string.Empty;
     public string DeliveryAddress { get; set; } = string.Empty;
     public string Currency { get; set; } = AppCts.Currency.Usd;
