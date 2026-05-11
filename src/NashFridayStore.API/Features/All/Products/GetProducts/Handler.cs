@@ -81,6 +81,7 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
             )
             .Select(x => new ProductItem(
                 x.Product.Id,
+                x.Product.CategoryId,
                 x.Product.Name,
                 x.CategoryName,
                 x.Product.ImageUrl,

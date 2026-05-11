@@ -21,6 +21,7 @@ public static class GetProducts
 {
     public record ProductItem(
         Guid Id,
+        Guid CategoryId,
         string Name,
         string ImageUrl,
         string Description,
@@ -48,7 +49,9 @@ public static class GetTopRatedProducts
 {
     public record ProductItem(
         Guid Id,
+        Guid CategoryId,
         string Name,
+        string CategoryName,
         string ImageUrl,
         decimal PriceUsd,
         ProductStatus Status,

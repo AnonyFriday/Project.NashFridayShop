@@ -36,22 +36,21 @@ public sealed class Handler(
         // Left Join Cart for better performance then querying in for loop
         var products = cart.Items
                 .LeftJoin(dbContext.Products, c => c.Key, p => p.Id, (c, p) => new { productCart = c, productDB = p })
-                .LeftJoin(dbContext.Categories, x => x.productDB != null ? x.productDB.CategoryId : Guid.Empty, cat => cat.Id, (x, cat) => new { x.productCart, x.productDB, category = cat })
                 .Select(x => new
                 {
                     Id = x.productCart.Key,
                     NameInCart = x.productCart.Value.ProductName,
                     PriceInCart = x.productCart.Value.PriceInUsd,
                     QuantityInCart = x.productCart.Value.Quantity,
+                    CategoryId = x.productCart.Value.CategoryId,
+                    CategoryName = x.productCart.Value.CategoryName,
                     NameInDb = x.productDB?.Name,
                     DescriptionInDb = x.productDB?.Description,
                     ImageInDb = x.productDB?.ImageUrl,
                     PriceInDb = x.productDB?.PriceUsd,
                     QuantityInDb = x.productDB?.Quantity,
                     StatusInDb = x.productDB?.Status,
-                    IsDeletedInDb = x.productDB?.IsDeleted,
-                    CategoryId = x.category?.Id ?? Guid.Empty,
-                    CategoryName = x.category?.Name ?? string.Empty
+                    IsDeletedInDb = x.productDB?.IsDeleted
                 })
                 .ToImmutableList();
 

@@ -33,7 +33,9 @@ public sealed class Handler(
                 ProductName = req.ProductName,
                 PriceInUsd = req.Price,
                 Quantity = req.Quantity,
-                ImageUrl = req.ImageUrl
+                ImageUrl = req.ImageUrl,
+                CategoryId = req.CategoryId,
+                CategoryName = req.CategoryName
             };
 
             cart = new ShoppingCart
@@ -79,7 +81,9 @@ public sealed class Handler(
                         ProductName = req.ProductName,
                         PriceInUsd = req.Price,
                         Quantity = req.Quantity,
-                        ImageUrl = req.ImageUrl
+                        ImageUrl = req.ImageUrl,
+                        CategoryId = req.CategoryId,
+                        CategoryName = req.CategoryName
                     };
 
                     await cartService.UpdatePartialCartAsync(currentUser.Id, $"$.items['{req.ProductId}']", item);

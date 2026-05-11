@@ -7,7 +7,9 @@ public static class CreateOrAddItemToCart
         int Quantity,
         string ProductName,
         string ImageUrl,
-        decimal Price);
+        decimal Price,
+        Guid CategoryId,
+        string CategoryName);
 
     public record Response(
         Guid Id,
@@ -21,7 +23,9 @@ public static class GetCart
         string ProductName,
         decimal PriceInUsd,
         int Quantity,
-        string ImageUrl);
+        string ImageUrl,
+        Guid CategoryId,
+        string CategoryName);
 
     public record Response(
         Guid CustomerId,

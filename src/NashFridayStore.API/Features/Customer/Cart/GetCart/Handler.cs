@@ -36,7 +36,9 @@ public sealed class Handler(
                 i.ProductName,
                 i.PriceInUsd,
                 i.Quantity,
-                i.ImageUrl
+                i.ImageUrl,
+                i.CategoryId,
+                i.CategoryName
             )).ToList());
     }
 }
