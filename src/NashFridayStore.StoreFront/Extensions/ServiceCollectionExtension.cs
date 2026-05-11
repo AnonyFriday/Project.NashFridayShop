@@ -5,6 +5,7 @@ using NashFridayStore.StoreFront.Services;
 using NashFridayStore.StoreFront.Services.Cart;
 using NashFridayStore.StoreFront.Services.Categories;
 using NashFridayStore.StoreFront.Services.Identity;
+using NashFridayStore.StoreFront.Services.Orders;
 using NashFridayStore.StoreFront.Services.Products;
 
 namespace NashFridayStore.StoreFront.Extensions;
@@ -46,5 +47,6 @@ public static class ServiceCollectionExtension
         services.AddScoped<IProductApiClient, ProductApiClient>();
         services.AddScoped<IAccountApiClient, AccountApiClient>();
         services.AddScoped<ICartApiClient, CartApiClient>();
+        services.AddScoped<IOrderApiClient, OrderApiClient>();
     }
 }

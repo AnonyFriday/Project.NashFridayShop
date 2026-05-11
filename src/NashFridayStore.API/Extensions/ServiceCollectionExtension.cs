@@ -78,7 +78,7 @@ public static class ServiceCollectionExtension
         serviceCollection.AddOpenApi();
 
         // CORS
-        SiteUrlsOption SiteUrls = serviceCollection.BuildServiceProvider().GetRequiredService<IOptions<SiteUrlsOption>>().Value;
+        SiteUrlsOptions SiteUrls = serviceCollection.BuildServiceProvider().GetRequiredService<IOptions<SiteUrlsOptions>>().Value;
 
         serviceCollection.AddCors(options =>
         {

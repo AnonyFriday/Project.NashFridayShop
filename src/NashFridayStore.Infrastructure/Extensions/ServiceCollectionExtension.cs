@@ -8,6 +8,8 @@ using NashFridayStore.Infrastructure.Interfaces;
 using NashFridayStore.Infrastructure.Services;
 using Google.Cloud.Storage.V1;
 using StackExchange.Redis;
+using Microsoft.CodeAnalysis.Options;
+using Stripe;
 
 namespace NashFridayStore.Infrastructure.Extensions;
 
@@ -22,12 +24,16 @@ public static class ServiceCollectionExtension
             .Bind(configuration.GetSection(ConnectionStringsOptions.ConnectionStrings))
             .ValidateOnStart();
 
-        services.AddOptions<SiteUrlsOption>()
-            .Bind(configuration.GetSection(SiteUrlsOption.SiteUrls))
+        services.AddOptions<SiteUrlsOptions>()
+            .Bind(configuration.GetSection(SiteUrlsOptions.SiteUrls))
             .ValidateOnStart();
 
         services.AddOptions<FirebaseOptions>()
             .Bind(configuration.GetSection(FirebaseOptions.Firebase))
+            .ValidateOnStart();
+
+        services.AddOptions<StripeOptions>()
+            .Bind(configuration.GetSection(StripeOptions.Stripe))
             .ValidateOnStart();
 
         // DbContext + SQL Server + Seeder
@@ -52,5 +58,13 @@ public static class ServiceCollectionExtension
             return ConnectionMultiplexer.Connect(settings.Caching);
         });
         services.AddScoped<ICartService, RedisCartService>();
+
+        // Stripe
+        services.AddSingleton(sp =>
+        {
+            StripeOptions settings = sp.GetRequiredService<IOptions<StripeOptions>>().Value;
+            return new StripeClient(settings.SecretKey);
+        });
+        services.AddScoped<ICheckoutService, StripeCheckoutService>();
     }
 }

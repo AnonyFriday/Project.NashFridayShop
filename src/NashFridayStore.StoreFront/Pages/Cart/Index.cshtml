@@ -78,29 +78,16 @@
                                         
                                         <span class="w-8 text-center text-sm font-black flex items-center justify-center">@item.Quantity</span>
                                         
-                                        <form method="post" hx-post="?handler=UpdateQuantity" 
+                                        <form method="post" 
+                                            hx-post="?handler=UpdateQuantity" 
                                             hx-target="body" class="inline">
                                             @Html.AntiForgeryToken()
 
-                                            <input type="hidden"
-                                                name="UpdateQuantityRequest.ProductId"
-                                                value="@item.ProductId" />
-
-                                            <input type="hidden"
-                                                name="UpdateQuantityRequest.Quantity"
-                                                value="1" />
-
-                                            <input type="hidden"
-                                                name="UpdateQuantityRequest.ProductName"
-                                                value="@item.ProductName" />
-
-                                            <input type="hidden"
-                                                name="UpdateQuantityRequest.ImageUrl"
-                                                value="@item.ImageUrl" />
-
-                                            <input type="hidden"
-                                                name="UpdateQuantityRequest.Price"
-                                                value="@item.PriceInUsd" />
+                                            <input type="hidden" name="UpdateQuantityRequest.ProductId" value="@item.ProductId" />
+                                            <input type="hidden" name="UpdateQuantityRequest.Quantity" value="1" />
+                                            <input type="hidden" name="UpdateQuantityRequest.ProductName" value="@item.ProductName" />
+                                            <input type="hidden" name="UpdateQuantityRequest.ImageUrl" value="@item.ImageUrl" />
+                                            <input type="hidden" name="UpdateQuantityRequest.Price" value="@item.PriceInUsd" />
 
                                             <button type="submit" class="btn btn-ghost btn-circle btn-xs join-item">+</button>
                                         </form>
@@ -138,9 +125,9 @@
                             </div>
                         </div>
 
-                        <button class="btn btn-primary btn-block rounded-full h-14 text-primary-content font-black uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                        <a asp-page="/Checkout/Index" class="btn btn-primary btn-block rounded-full h-14 text-primary-content font-black uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center">
                             Checkout Now
-                        </button>
+                        </a>
                         
                         <div class="mt-6 flex items-center justify-center text-base-content/30 grayscale opacity-50">
                             <img src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg" class="h-6" alt="Stripe" />

@@ -9,7 +9,6 @@ export const productApiSlice = baseApiSlice.injectEndpoints({
                 params,
             }),
             providesTags: ['Product'],
-            keepUnusedDataFor: 0,
         }),
         getProductById: builder.query<GetProductById.Response, GetProductById.Request>({
             query: ({ id, includeDeleted = false }) => ({
@@ -17,7 +16,6 @@ export const productApiSlice = baseApiSlice.injectEndpoints({
                 params: { IncludeDeleted: includeDeleted },
             }),
             providesTags: ['Product'],
-            keepUnusedDataFor: 0,
         }),
         createProduct: builder.mutation<CreateProduct.Response, CreateProduct.Request>({
             query: (body) => ({

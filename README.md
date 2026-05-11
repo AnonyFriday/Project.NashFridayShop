@@ -27,6 +27,7 @@
 | **Customer API**    | `/api/customer/products/{id}/rating`     | POST     | Add product rating/comment                              | ✅ Completed          | ✅ UT, IT |
 | **Customer API**    | `/api/customer/cart`                     | GET      | Get current user cart                                   | ✅ Completed          | ❌ None   |
 | **Customer API**    | `/api/customer/cart`                     | POST     | Create or add item to cart or update product's quantity | ✅ Completed          | ❌ None   |
+| **Customer API**    | `/api/customer/orders/checkout`          | POST     | Create Stripe checkout session for current cart         | ✅ Completed          | ✅ UT     |
 | **Admin API**       | `/api/admin/products`                    | GET/POST | List products / Create product                          | ✅ Completed          | ✅ UT, IT |
 | **Admin API**       | `/api/admin/products/{id}`               | GET/PUT  | Product details / Update product                        | ✅ Completed          | ✅ UT, IT |
 | **Admin API**       | `/api/admin/products/{id}/toggle-delete` | POST     | Soft delete (toggle) product                            | ✅ Completed          | ✅ UT, IT |
@@ -48,26 +49,28 @@
 
 ## Current Supporting Pages In Admin, Customer and Identity Server
 
-| Layer               | Endpoint                 | Method | Description                    | Status             | Tests   |
-| ------------------- | ------------------------ | ------ | ------------------------------ | ------------------ | ------- |
-| **Admin Site**      | `/dashboard`             | GET    | Admin overview & statistics    | ❌ Not implemented | ❌ None |
-| **Admin Site**      | `/products`              | GET    | Product management list        | ✅ Completed       | ❌ None |
-| **Admin Site**      | `/products/new`          | GET    | Create new product page        | ✅ Completed       | ❌ None |
-| **Admin Site**      | `/products/[id]`         | GET    | Edit product details page      | ✅ Completed       | ❌ None |
-| **Admin Site**      | `/categories`            | GET    | Category management list       | ✅ Completed       | ❌ None |
-| **Admin Site**      | `/categories/new`        | GET    | Create new category page       | ✅ Completed       | ❌ None |
-| **Admin Site**      | `/categories/[id]`       | GET    | Edit category details page     | ✅ Completed       | ❌ None |
-| **Admin Site**      | `/customers`             | GET    | Customer management list       | ✅ Completed       | ❌ None |
-| **Admin Site**      | `/orders`                | GET    | Order management list          | ❌ Not implemented | ❌ None |
-| **StoreFront**      | `/`                      | GET    | Home Page (Top Rated Products) | ✅ Completed       | ❌ None |
-| **StoreFront**      | `/Products`              | GET    | Product Search & Filter Page   | ✅ Completed       | ❌ None |
-| **StoreFront**      | `/Products/Details/{id}` | GET    | Product Details Page           | ✅ Completed       | ❌ None |
-| **StoreFront**      | `/Cart`                  | GET    | Shopping Cart Page             | ✅ Completed       | ❌ None |
-| **StoreFront**      | `/Errors/{code}`         | GET    | Global Error Pages (404, 500)  | ✅ Completed       | ❌ None |
-| **Identity Server** | `/Account/Login`         | GET    | Render Razor login page        | ✅ Completed       | ❌ None |
-| **Identity Server** | `/Account/Login`         | POST   | Submit login credentials       | ✅ Completed       | ❌ None |
-| **Identity Server** | `/Account/Register`      | GET    | Render registration page       | ❌ Not implemented | ❌ None |
-| **Identity Server** | `/Account/Register`      | POST   | Submit registration form       | ❌ Not implemented | ❌ None |
+| Layer               | Endpoint                 | Method   | Description                    | Status             | Tests   |
+| ------------------- | ------------------------ | -------- | ------------------------------ | ------------------ | ------- |
+| **Admin Site**      | `/dashboard`             | GET      | Admin overview & statistics    | ❌ Not implemented | ❌ None |
+| **Admin Site**      | `/products`              | GET      | Product management list        | ✅ Completed       | ❌ None |
+| **Admin Site**      | `/products/new`          | GET      | Create new product page        | ✅ Completed       | ❌ None |
+| **Admin Site**      | `/products/[id]`         | GET      | Edit product details page      | ✅ Completed       | ❌ None |
+| **Admin Site**      | `/categories`            | GET      | Category management list       | ✅ Completed       | ❌ None |
+| **Admin Site**      | `/categories/new`        | GET      | Create new category page       | ✅ Completed       | ❌ None |
+| **Admin Site**      | `/categories/[id]`       | GET      | Edit category details page     | ✅ Completed       | ❌ None |
+| **Admin Site**      | `/customers`             | GET      | Customer management list       | ✅ Completed       | ❌ None |
+| **Admin Site**      | `/orders`                | GET      | Order management list          | ❌ Not implemented | ❌ None |
+| **StoreFront**      | `/`                      | GET      | Home Page (Top Rated Products) | ✅ Completed       | ❌ None |
+| **StoreFront**      | `/Products`              | GET      | Product Search & Filter Page   | ✅ Completed       | ❌ None |
+| **StoreFront**      | `/Products/Details/{id}` | GET      | Product Details Page           | ✅ Completed       | ❌ None |
+| **StoreFront**      | `/Cart`                  | GET      | Shopping Cart Page             | ✅ Completed       | ❌ None |
+| **StoreFront**      | `/Checkout`              | GET/POST | Checkout Page (Form + Summary) | ✅ Completed       | ❌ None |
+| **StoreFront**      | `/Checkout/Success`      | GET      | Order Success Confirmation     | ✅ Completed       | ❌ None |
+| **StoreFront**      | `/Errors/{code}`         | GET      | Global Error Pages (404, 500)  | ✅ Completed       | ❌ None |
+| **Identity Server** | `/Account/Login`         | GET      | Render Razor login page        | ✅ Completed       | ❌ None |
+| **Identity Server** | `/Account/Login`         | POST     | Submit login credentials       | ✅ Completed       | ❌ None |
+| **Identity Server** | `/Account/Register`      | GET      | Render registration page       | ❌ Not implemented | ❌ None |
+| **Identity Server** | `/Account/Register`      | POST     | Submit registration form       | ❌ Not implemented | ❌ None |
 
 ## ERD (V1)
 

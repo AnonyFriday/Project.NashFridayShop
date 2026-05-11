@@ -7,6 +7,11 @@ public static class AppCts
         public const string Testing = "Testing";
     }
 
+    public static class Currency
+    {
+        public const string Usd = "USD";
+    }
+
     public static class Api
     {
         public const int MaxStars = 5;
