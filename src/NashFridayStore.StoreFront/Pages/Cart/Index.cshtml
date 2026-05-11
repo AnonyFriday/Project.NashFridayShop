@@ -40,6 +40,7 @@
                                 <div class="flex justify-between items-start">
                                     <div>
                                         <h3 class="font-black text-lg sm:text-xl mb-1 group-hover:text-primary transition-colors">@item.ProductName</h3>
+                                        <p class="text-[10px] uppercase tracking-[0.2em] font-black text-base-content/30 mb-2">@item.CategoryName</p>
                                         <p class="text-primary font-black">$@item.PriceInUsd.ToString("F2")</p>
                                     </div>
                                     
@@ -51,6 +52,8 @@
                                         <input type="hidden" name="UpdateQuantityRequest.ProductName" value="@item.ProductName" />
                                         <input type="hidden" name="UpdateQuantityRequest.ImageUrl" value="@item.ImageUrl" />
                                         <input type="hidden" name="UpdateQuantityRequest.Price" value="@item.PriceInUsd" />
+                                        <input type="hidden" name="UpdateQuantityRequest.CategoryId" value="@item.CategoryId" />
+                                        <input type="hidden" name="UpdateQuantityRequest.CategoryName" value="@item.CategoryName" />
                                         <button type="submit" class="btn btn-ghost btn-circle btn-sm text-base-content/30 hover:text-error transition-colors">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -72,6 +75,8 @@
                                             <input type="hidden" name="UpdateQuantityRequest.ProductName"value="@item.ProductName" />
                                             <input type="hidden" name="UpdateQuantityRequest.ImageUrl"value="@item.ImageUrl" />
                                             <input type="hidden" name="UpdateQuantityRequest.Price"value="@item.PriceInUsd" />
+                                            <input type="hidden" name="UpdateQuantityRequest.CategoryId" value="@item.CategoryId" />
+                                            <input type="hidden" name="UpdateQuantityRequest.CategoryName" value="@item.CategoryName" />
 
                                             <button type="submit" class="btn btn-ghost btn-circle btn-xs join-item">-</button>
                                         </form>
@@ -88,6 +93,8 @@
                                             <input type="hidden" name="UpdateQuantityRequest.ProductName" value="@item.ProductName" />
                                             <input type="hidden" name="UpdateQuantityRequest.ImageUrl" value="@item.ImageUrl" />
                                             <input type="hidden" name="UpdateQuantityRequest.Price" value="@item.PriceInUsd" />
+                                            <input type="hidden" name="UpdateQuantityRequest.CategoryId" value="@item.CategoryId" />
+                                            <input type="hidden" name="UpdateQuantityRequest.CategoryName" value="@item.CategoryName" />
 
                                             <button type="submit" class="btn btn-ghost btn-circle btn-xs join-item">+</button>
                                         </form>

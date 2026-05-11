@@ -5,4 +5,6 @@ public record Request(
     int Quantity,
     string ProductName,
     string ImageUrl,
-    decimal Price);
+    decimal Price,
+    Guid CategoryId,
+    string CategoryName);

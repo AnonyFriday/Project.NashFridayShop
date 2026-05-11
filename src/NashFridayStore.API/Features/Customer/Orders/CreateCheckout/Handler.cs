@@ -42,6 +42,8 @@ public sealed class Handler(
                     NameInCart = x.productCart.Value.ProductName,
                     PriceInCart = x.productCart.Value.PriceInUsd,
                     QuantityInCart = x.productCart.Value.Quantity,
+                    CategoryId = x.productCart.Value.CategoryId,
+                    CategoryName = x.productCart.Value.CategoryName,
                     NameInDb = x.productDB?.Name,
                     DescriptionInDb = x.productDB?.Description,
                     ImageInDb = x.productDB?.ImageUrl,
@@ -92,7 +94,9 @@ public sealed class Handler(
             p.DescriptionInDb,
             p.ImageInDb,
             p.PriceInCart,
-            p.QuantityInCart));
+            p.QuantityInCart,
+            p.CategoryId,
+            p.CategoryName));
 
         var customer = new ICheckoutService.CustomerCheckoutDto(
             currentUser.Id,

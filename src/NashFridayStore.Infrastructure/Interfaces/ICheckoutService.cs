@@ -8,7 +8,9 @@ public interface ICheckoutService
         string? Description,
         string? ImageUrl,
         decimal PriceInUsd,
-        int Quantity);
+        int Quantity,
+        Guid CategoryId,
+        string CategoryName);
 
     public record CustomerCheckoutDto(
         Guid Id,

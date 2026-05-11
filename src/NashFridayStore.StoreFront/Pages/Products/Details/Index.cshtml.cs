@@ -53,7 +53,9 @@ public class IndexModel(
             Quantity: QuantityToAdd,
             ProductName: product.Name,
             ImageUrl: product.ImageUrl,
-            Price: product.PriceUsd
+            Price: product.PriceUsd,
+            CategoryId: product.CategoryId,
+            CategoryName: product.CategoryName
         ));
 
         if (result == null)

@@ -14,4 +14,6 @@ public record ShoppingCartItemResponse(
     string ProductName,
     decimal PriceInUsd,
     int Quantity,
-    string ImageUrl);
+    string ImageUrl,
+    Guid CategoryId,
+    string CategoryName);
