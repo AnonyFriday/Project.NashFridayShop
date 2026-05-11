@@ -6,7 +6,7 @@ namespace NashFridayStore.API.Features.Customer.Orders.CreateCheckout;
 
 [Authorize(Roles = AppCts.Identity.Roles.Customer)]
 [ApiController]
-[Route("customer/orders/checkout")]
+[Route("api/customer/orders/checkout")]
 public sealed class Endpoint(Handler handler) : ControllerBase
 {
     [HttpPost]
