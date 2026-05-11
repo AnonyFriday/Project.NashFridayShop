@@ -24,8 +24,8 @@ public static class ServiceCollectionExtension
             .Bind(configuration.GetSection(ConnectionStringsOptions.ConnectionStrings))
             .ValidateOnStart();
 
-        services.AddOptions<SiteUrlsOption>()
-            .Bind(configuration.GetSection(SiteUrlsOption.SiteUrls))
+        services.AddOptions<SiteUrlsOptions>()
+            .Bind(configuration.GetSection(SiteUrlsOptions.SiteUrls))
             .ValidateOnStart();
 
         services.AddOptions<FirebaseOptions>()
@@ -33,7 +33,7 @@ public static class ServiceCollectionExtension
             .ValidateOnStart();
 
         services.AddOptions<StripeOptions>()
-            .Bind(configuration.GetSection(FirebaseOptions.Firebase))
+            .Bind(configuration.GetSection(StripeOptions.Stripe))
             .ValidateOnStart();
 
         // DbContext + SQL Server + Seeder
@@ -65,5 +65,6 @@ public static class ServiceCollectionExtension
             StripeOptions settings = sp.GetRequiredService<IOptions<StripeOptions>>().Value;
             return new StripeClient(settings.SecretKey);
         });
+        services.AddScoped<ICheckoutService, StripeCheckoutService>();
     }
 }

@@ -29,6 +29,10 @@ public sealed class OrderConfiguration : IEntityTypeConfiguration<Order>
             .HasMaxLength(300)
             .IsRequired();
 
+        builder.Property(x => x.PhoneNumber)
+            .HasMaxLength(20)
+            .IsRequired();
+
         builder.Property(x => x.Currency)
             .HasMaxLength(100)
             .IsRequired();

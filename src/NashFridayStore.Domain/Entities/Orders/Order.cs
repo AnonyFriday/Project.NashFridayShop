@@ -9,6 +9,7 @@ public class Order : IEntityAuditable
     public string CustomerFullName { get; set; } = string.Empty;
     public string CustomerEmail { get; set; } = string.Empty;
     public string DeliveryAddress { get; set; } = string.Empty;
+    public string PhoneNumber { get; set; } = string.Empty;
     public string Currency { get; set; } = AppCts.Currency.Usd;
     public decimal TotalPriceInUsd { get; set; }
     public string? StripeCheckoutSessionId { get; set; }
