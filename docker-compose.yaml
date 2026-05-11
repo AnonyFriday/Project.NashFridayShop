@@ -83,9 +83,9 @@ services:
     command:
       - listen
       - --api-key
-      - ${STRIPE_API_KEY}
+      - $$STRIPE_API_KEY
       - --forward-to
-      - https://host.docker.internal:7176/api/orders/webhook
+      - $$STRIPE_FORWARD_URL
       - --skip-verify
 
 volumes:
