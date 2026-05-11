@@ -30,6 +30,10 @@ public static class ServiceCollectionExtension
             .Bind(configuration.GetSection(FirebaseOptions.Firebase))
             .ValidateOnStart();
 
+        services.AddOptions<StripeOptions>()
+            .Bind(configuration.GetSection(FirebaseOptions.Firebase))
+            .ValidateOnStart();
+
         // DbContext + SQL Server + Seeder
         services.AddDbContext<StoreDbContext>((sp, options) =>
         {
