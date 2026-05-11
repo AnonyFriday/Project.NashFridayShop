@@ -25,9 +25,10 @@
 | **Public API**      | `/api/all/products/{id}`                 | GET      | Product details                                         | ✅ Completed          | ✅ UT, IT |
 | **Public API**      | `/api/all/products/{id}/ratings`         | GET      | Product ratings list                                    | ✅ Completed          | ✅ UT, IT |
 | **Customer API**    | `/api/customer/products/{id}/rating`     | POST     | Add product rating/comment                              | ✅ Completed          | ✅ UT, IT |
-| **Customer API**    | `/api/customer/cart`                     | GET      | Get current user cart                                   | ✅ Completed          | ❌ None   |
-| **Customer API**    | `/api/customer/cart`                     | POST     | Create or add item to cart or update product's quantity | ✅ Completed          | ❌ None   |
+| **Customer API**    | `/api/customer/cart`                     | GET      | Get current user cart                                   | ✅ Completed          | ✅ UT     |
+| **Customer API**    | `/api/customer/cart`                     | POST     | Create or add item to cart or update product's quantity | ✅ Completed          | ✅ UT     |
 | **Customer API**    | `/api/customer/orders/checkout`          | POST     | Create Stripe checkout session for current cart         | ✅ Completed          | ✅ UT     |
+| **Customer API**    | `/api/customer/orders/webhook`           | POST     | Handle Stripe Webhook (Checkout completed)              | ✅ Completed          | ✅ UT     |
 | **Admin API**       | `/api/admin/products`                    | GET/POST | List products / Create product                          | ✅ Completed          | ✅ UT, IT |
 | **Admin API**       | `/api/admin/products/{id}`               | GET/PUT  | Product details / Update product                        | ✅ Completed          | ✅ UT, IT |
 | **Admin API**       | `/api/admin/products/{id}/toggle-delete` | POST     | Soft delete (toggle) product                            | ✅ Completed          | ✅ UT, IT |
@@ -49,28 +50,28 @@
 
 ## Current Supporting Pages In Admin, Customer and Identity Server
 
-| Layer               | Endpoint                 | Method   | Description                    | Status             | Tests   |
-| ------------------- | ------------------------ | -------- | ------------------------------ | ------------------ | ------- |
-| **Admin Site**      | `/dashboard`             | GET      | Admin overview & statistics    | ❌ Not implemented | ❌ None |
-| **Admin Site**      | `/products`              | GET      | Product management list        | ✅ Completed       | ❌ None |
-| **Admin Site**      | `/products/new`          | GET      | Create new product page        | ✅ Completed       | ❌ None |
-| **Admin Site**      | `/products/[id]`         | GET      | Edit product details page      | ✅ Completed       | ❌ None |
-| **Admin Site**      | `/categories`            | GET      | Category management list       | ✅ Completed       | ❌ None |
-| **Admin Site**      | `/categories/new`        | GET      | Create new category page       | ✅ Completed       | ❌ None |
-| **Admin Site**      | `/categories/[id]`       | GET      | Edit category details page     | ✅ Completed       | ❌ None |
-| **Admin Site**      | `/customers`             | GET      | Customer management list       | ✅ Completed       | ❌ None |
-| **Admin Site**      | `/orders`                | GET      | Order management list          | ❌ Not implemented | ❌ None |
-| **StoreFront**      | `/`                      | GET      | Home Page (Top Rated Products) | ✅ Completed       | ❌ None |
-| **StoreFront**      | `/Products`              | GET      | Product Search & Filter Page   | ✅ Completed       | ❌ None |
-| **StoreFront**      | `/Products/Details/{id}` | GET      | Product Details Page           | ✅ Completed       | ❌ None |
-| **StoreFront**      | `/Cart`                  | GET      | Shopping Cart Page             | ✅ Completed       | ❌ None |
-| **StoreFront**      | `/Checkout`              | GET/POST | Checkout Page (Form + Summary) | ✅ Completed       | ❌ None |
-| **StoreFront**      | `/Checkout/Success`      | GET      | Order Success Confirmation     | ✅ Completed       | ❌ None |
-| **StoreFront**      | `/Errors/{code}`         | GET      | Global Error Pages (404, 500)  | ✅ Completed       | ❌ None |
-| **Identity Server** | `/Account/Login`         | GET      | Render Razor login page        | ✅ Completed       | ❌ None |
-| **Identity Server** | `/Account/Login`         | POST     | Submit login credentials       | ✅ Completed       | ❌ None |
-| **Identity Server** | `/Account/Register`      | GET      | Render registration page       | ❌ Not implemented | ❌ None |
-| **Identity Server** | `/Account/Register`      | POST     | Submit registration form       | ❌ Not implemented | ❌ None |
+| Layer               | Endpoint                 | Method   | Description                    | Status             |
+| ------------------- | ------------------------ | -------- | ------------------------------ | ------------------ |
+| **Admin Site**      | `/dashboard`             | GET      | Admin overview & statistics    | ❌ Not implemented |
+| **Admin Site**      | `/products`              | GET      | Product management list        | ✅ Completed       |
+| **Admin Site**      | `/products/new`          | GET      | Create new product page        | ✅ Completed       |
+| **Admin Site**      | `/products/[id]`         | GET      | Edit product details page      | ✅ Completed       |
+| **Admin Site**      | `/categories`            | GET      | Category management list       | ✅ Completed       |
+| **Admin Site**      | `/categories/new`        | GET      | Create new category page       | ✅ Completed       |
+| **Admin Site**      | `/categories/[id]`       | GET      | Edit category details page     | ✅ Completed       |
+| **Admin Site**      | `/customers`             | GET      | Customer management list       | ✅ Completed       |
+| **Admin Site**      | `/orders`                | GET      | Order management list          | ❌ Not implemented |
+| **StoreFront**      | `/`                      | GET      | Home Page (Top Rated Products) | ✅ Completed       |
+| **StoreFront**      | `/Products`              | GET      | Product Search & Filter Page   | ✅ Completed       |
+| **StoreFront**      | `/Products/Details/{id}` | GET      | Product Details Page           | ✅ Completed       |
+| **StoreFront**      | `/Cart`                  | GET      | Shopping Cart Page             | ✅ Completed       |
+| **StoreFront**      | `/Checkout`              | GET/POST | Checkout Page (Form + Summary) | ✅ Completed       |
+| **StoreFront**      | `/Checkout/Success`      | GET      | Order Success Confirmation     | ✅ Completed       |
+| **StoreFront**      | `/Errors/{code}`         | GET      | Global Error Pages (404, 500)  | ✅ Completed       |
+| **Identity Server** | `/Account/Login`         | GET      | Render Razor login page        | ✅ Completed       |
+| **Identity Server** | `/Account/Login`         | POST     | Submit login credentials       | ✅ Completed       |
+| **Identity Server** | `/Account/Register`      | GET      | Render registration page       | ❌ Not implemented |
+| **Identity Server** | `/Account/Register`      | POST     | Submit registration form       | ❌ Not implemented |
 
 ## ERD (V1)
 
@@ -337,6 +338,12 @@ public async Task GetProduct_ById_ShouldReturnProduct()
 - **OIDC Claims**: [ID Token Standard](https://openid.net/specs/openid-connect-core-1_0.html#IDToken)
 - **JWT Auth**: [Configure Bearer Auth](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/configure-jwt-bearer-authentication)
 
+### 🎪 Payment & Webhooks
+
+- **Stripe CLI**: [Local Webhook Testing](https://stripe.com/docs/stripe-cli)
+- **Signature Verification**: [Security Best Practices](https://stripe.com/docs/webhooks/signatures)
+- **Event Lifecycle**: [Checkout Events Guide](https://stripe.com/docs/payments/checkout/how-checkout-works)
+
 ### 🗄️ Database & Storage
 
 - **SQL Server**: [Official Docker Image](https://hub.docker.com/r/microsoft/mssql-server)
@@ -349,6 +356,7 @@ public async Task GetProduct_ById_ShouldReturnProduct()
 - **Integration Tests**: [ASP.NET Core Guide](https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests)
 - **In-Memory DBs**: [SQLite In-Memory Pros/Cons](https://learn.microsoft.com/en-us/dotnet/standard/data/sqlite/in-memory-databases)
 - **Serial Execution**: [Forcing serial tests in xUnit](https://stackoverflow.com/questions/1408175/execute-unit-tests-serially-rather-than-in-parallel)
+- **Coverage Separation**: [Codecov Flags Documentation](https://docs.codecov.com/docs/flags)
 
 ### 🛠️ Tooling & Infrastructure
 
