@@ -21,7 +21,8 @@
     <!-- Web libs -->
     <PackageVersion Include="Microsoft.Web.LibraryManager.Build" Version="3.0.71" />
     <!-- API -->
-    <PackageVersion Include="NRedisStack" Version="1.3.0" />
+    <PackageVersion Include="Stripe.net" Version="51.1.0" />
+    <PackageVersion Include="NRedisStack" Version="1.4.0" />
     <PackageVersion Include="StackExchange.Redis" Version="3.0.2-preview" />
     <PackageVersion Include="Yarp.ReverseProxy" Version="2.3.0" />
     <PackageVersion Include="FluentValidation" Version="12.1.1" />

@@ -8,6 +8,8 @@ using NashFridayStore.Infrastructure.Interfaces;
 using NashFridayStore.Infrastructure.Services;
 using Google.Cloud.Storage.V1;
 using StackExchange.Redis;
+using Microsoft.CodeAnalysis.Options;
+using Stripe;
 
 namespace NashFridayStore.Infrastructure.Extensions;
 
@@ -56,5 +58,12 @@ public static class ServiceCollectionExtension
             return ConnectionMultiplexer.Connect(settings.Caching);
         });
         services.AddScoped<ICartService, RedisCartService>();
+
+        // Stripe
+        services.AddSingleton(sp =>
+        {
+            StripeOptions settings = sp.GetRequiredService<IOptions<StripeOptions>>().Value;
+            return new StripeClient(settings.SecretKey);
+        });
     }
 }
