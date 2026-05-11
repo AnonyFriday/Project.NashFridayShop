@@ -72,6 +72,22 @@ services:
     networks:
       - nashfridaystore-network
 
+  # Stripe CLI, listening webhook from Stripe
+  nashfridaystore-stripe-cli:
+    container_name: nashfridaystore-stripe-cli
+    image: stripe/stripe-cli:latest
+    restart: unless-stopped
+    env_file:
+      - path: .secrets/nashfridaystore-stripe-cli.env
+        required: true
+    command:
+      - listen
+      - --api-key
+      - ${STRIPE_API_KEY}
+      - --forward-to
+      - https://host.docker.internal:7176/api/orders/webhook
+      - --skip-verify
+
 volumes:
   nashfridaystore-db-store-data:
   nashfridaystore-db-identityserver-data:
