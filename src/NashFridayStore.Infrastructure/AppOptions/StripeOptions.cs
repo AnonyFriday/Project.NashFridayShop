@@ -8,4 +8,13 @@ public class StripeOptions
 
     [Required]
     public string SecretKey { get; set; } = string.Empty;
+
+    [Required]
+    public string WebhookSecret { get; set; } = string.Empty;
+
+    [Required]
+    public string ReturnSuccessUrl { get; set; } = string.Empty;
+
+    [Required]
+    public string ReturnCancelUrl { get; set; } = string.Empty;
 }
