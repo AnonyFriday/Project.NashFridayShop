@@ -2,6 +2,8 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using NashFridayStore.StoreFront.Commons;
+using NashFridayStore.StoreFront.Commons.Exceptions;
 using NashFridayStore.StoreFront.Pages.Shared.Components.ProductSearchBar;
 
 namespace NashFridayStore.StoreFront.Pages;
@@ -23,7 +25,7 @@ public abstract class BasePageModel : PageModel
         return Partial("~/Pages/Shared/PartialViews/Navbar/_CartStatus.cshtml");
     }
 
-    protected void TriggerToast(string message, string type = "success")
+    protected void TriggerToast(string message, string type = AppCts.ToastType.Success)
     {
         AppendTrigger("show-toast", new { message, type });
     }

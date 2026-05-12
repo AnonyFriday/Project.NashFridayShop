@@ -43,6 +43,15 @@ public sealed class Handler(
             throw new Exceptions.ProductNotFoundException(req.ProductId);
         }
 
+        // customer can only rate 1 time
+        bool isRated = await dbContext.ProductRatings
+                            .AnyAsync(x => x.CustomerId == currentUser.Id && x.ProductId == product.Id, ct);
+
+        if (isRated)
+        {
+            throw new Exceptions.AlreadyPostRatingException(product.Name);
+        }
+
         var newRating = new ProductRating
         {
             Id = Guid.NewGuid(),

@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Options;
 using NashFridayStore.StoreFront.AppOptions;
+using NashFridayStore.StoreFront.ExceptionHandlers;
 using NashFridayStore.StoreFront.Interceptors;
 using NashFridayStore.StoreFront.Services;
 using NashFridayStore.StoreFront.Services.Cart;
@@ -19,6 +20,10 @@ public static class ServiceCollectionExtension
 
         // Add HttpContextAccessor for HttpContext
         services.AddHttpContextAccessor();
+
+        // Exception Handling
+        services.AddExceptionHandler<ApiExceptionHandler>();
+        services.AddProblemDetails();
 
         // Configure Antiforgery for HTMX/AJAX
         services.AddAntiforgery(options =>

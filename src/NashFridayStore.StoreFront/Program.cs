@@ -8,6 +8,7 @@ builder.Services.AddStoreFrontServices(builder.Configuration);
 
 WebApplication app = builder.Build();
 
+app.UseExceptionHandler();
 app.UseStatusCodePagesWithReExecute("/Errors/{0}");
 
 app.UseHsts();

@@ -102,3 +102,17 @@ public static class GetProductRatings
         int PageIndex = 0,
         int PageSize = 10);
 }
+
+public static class PostProductRating
+{
+    public record Request(
+        Guid ProductId,
+        int Stars,
+        string? Comment);
+
+    public record Response(
+        Guid ProductId,
+        int Stars,
+        string? Comment,
+        DateTime CreatedAtUtc);
+}
