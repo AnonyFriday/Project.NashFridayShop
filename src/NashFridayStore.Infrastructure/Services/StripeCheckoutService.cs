@@ -95,6 +95,7 @@ public class StripeCheckoutService(
                   || x.StripePaymentIntentId == command.StripePaymentIntentId,
               ct);
 
+        // using the stripe checkout session to confirm that we dont create 2 orders for the same checkout session
         // if exists, then just ignore, no need to create new order
         if (orderExists)
         {

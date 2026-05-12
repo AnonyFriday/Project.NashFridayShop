@@ -43,20 +43,25 @@ public sealed class Handler(
 
         switch (stripeEvent.Type)
         {
-            case EventTypes.PaymentIntentSucceeded:
             case EventTypes.CheckoutSessionCompleted:
-                var session = stripeEvent.Data.Object as Session;
-                await HandleCheckoutSessionCompletedAsync(session!, ct);
+                if (stripeEvent.Data.Object is Session session)
+                {
+                    await HandleCheckoutSessionCompletedAsync(session, ct);
+                }
                 break;
 
             case EventTypes.PaymentIntentPaymentFailed:
-                var paymentIntent = stripeEvent.Data.Object as PaymentIntent;
-                await HandlePaymentIntentFailedAsync(paymentIntent!, ct);
+                if (stripeEvent.Data.Object is PaymentIntent failedIntent)
+                {
+                    await HandlePaymentIntentFailedAsync(failedIntent, ct);
+                }
                 break;
 
             case EventTypes.ChargeRefunded:
-                var charge = stripeEvent.Data.Object as Charge;
-                await HandleChargeRefundedAsync(charge!, ct);
+                if (stripeEvent.Data.Object is Charge charge)
+                {
+                    await HandleChargeRefundedAsync(charge, ct);
+                }
                 break;
         }
 
