@@ -6,6 +6,8 @@ namespace NashFridayStore.StoreFront.Middlewares;
 
 public sealed class SetLoggedInUserMiddleware(RequestDelegate next)
 {
+    private static readonly string[] _protectedPaths = ["/Orders", "/Checkout", "/Profile"];
+
     public async Task InvokeAsync(HttpContext context, IAccountApiClient accountApiClient)
     {
         // Logged-in = have those two cookies
@@ -14,7 +16,7 @@ public sealed class SetLoggedInUserMiddleware(RequestDelegate next)
 
         if (string.IsNullOrEmpty(bffCookie) || string.IsNullOrEmpty(identityCookie))
         {
-            await next(context);
+            await HandleUnauthenticatedAsync(context, accountApiClient);
             return;
         }
 
@@ -29,7 +31,7 @@ public sealed class SetLoggedInUserMiddleware(RequestDelegate next)
 
         if (!userInfo.IsAuthenticated)
         {
-            await next(context);
+            await HandleUnauthenticatedAsync(context, accountApiClient);
             return;
         }
 
@@ -50,6 +52,22 @@ public sealed class SetLoggedInUserMiddleware(RequestDelegate next)
 
         var identity = new ClaimsIdentity(claims, AppCts.Identity.AuthenticationType);
         context.User = new ClaimsPrincipal(identity);
+
+        await next(context);
+    }
+
+    private async Task HandleUnauthenticatedAsync(HttpContext context, IAccountApiClient accountApiClient)
+    {
+        string path = context.Request.Path.Value ?? string.Empty;
+        
+        bool isProtected = _protectedPaths.Any(p => path.StartsWith(p, StringComparison.OrdinalIgnoreCase));
+
+        if (isProtected)
+        {
+            string returnUrl = $"{path}{context.Request.QueryString}";
+            context.Response.Redirect(accountApiClient.GetLoginRedirectAddress(returnUrl));
+            return;
+        }
 
         await next(context);
     }
