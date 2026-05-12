@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using NashFridayStore.StoreFront.Commons;
 using NashFridayStore.StoreFront.Services.Cart;
 using NashFridayStore.StoreFront.Services.Orders;
 
@@ -31,7 +32,7 @@ public class IndexModel(
 
         if (Cart == null || !Cart.Items.Any())
         {
-            TriggerToast("Your cart is empty.", "error");
+            TriggerToast("Your cart is empty.", AppCts.ToastType.Error);
             return RedirectToPage("/Cart/Index");
         }
 
@@ -44,6 +45,7 @@ public class IndexModel(
 
         if (response == null || string.IsNullOrEmpty(response.CheckoutUrl))
         {
+            TriggerToast("Failed to create checkout session. Please try again.", AppCts.ToastType.Error);
             return Page();
         }
 

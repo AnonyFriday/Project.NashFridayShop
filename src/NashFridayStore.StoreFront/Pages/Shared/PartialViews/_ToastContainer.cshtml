@@ -1,3 +1,4 @@
+@using NashFridayStore.StoreFront.Commons
 @* Simple Global Toast Component *@
 <div id="toast-container" class="toast toast-bottom toast-end z-[100]"></div>
 
@@ -7,12 +8,13 @@
         const container = document.getElementById('toast-container');
         const toast = document.createElement('div');
 
-        const alertClass = data.type === 'error' ? 'alert-error' : 'alert-success';
+        const alertClass = data.type === '@AppCts.ToastType.Error' ? 'alert-error' : 'alert-success';
+        const textClass = data.type == '@AppCts.ToastType.Error' ? 'text-white' : '';
         toast.className = `alert ${alertClass} shadow-lg`;
-        toast.innerHTML = `<span>${data.message}</span>`;
+        toast.innerHTML = `<span class='font-bold uppercase tracking-widest ${textClass}'>${data.message}</span>`;
 
         container.appendChild(toast);
-        
+
         setTimeout(() => {
             toast.remove();
         }, 3000);
