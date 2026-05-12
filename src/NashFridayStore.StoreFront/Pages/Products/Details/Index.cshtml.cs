@@ -23,6 +23,12 @@ public class IndexModel(
 
     [BindProperty]
     public int QuantityToAdd { get; set; } = 1;
+
+    [BindProperty]
+    public int Stars { get; set; } = 5;
+
+    [BindProperty]
+    public string? Comment { get; set; }
     #endregion
 
     public async Task<IActionResult> OnGetAsync()
@@ -39,6 +45,30 @@ public class IndexModel(
         return Page();
     }
 
+    public async Task<IActionResult> OnPostPostRatingAsync()
+    {
+        if (Stars < 1 || Stars > 5)
+        {
+            ModelState.AddModelError("Stars", "Please select a star rating between 1 and 5.");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return await OnGetAsync();
+        }
+
+        await productApiClient.PostProductRatingAsync(new PostProductRating.Request(ProductId, Stars, Comment));
+
+        if (Request.Headers.ContainsKey("HX-Request"))
+        {
+            TriggerToast("Thank you for your feedback!", "success");
+            Response.Headers.Append("HX-Refresh", "true");
+            return Content("");
+        }
+
+        return RedirectToPage(new { ProductId });
+    }
+
     public async Task<IActionResult> OnPostAddToCartAsync()
     {
         // Make sure to always get a the lastest information from product
@@ -48,7 +78,7 @@ public class IndexModel(
             return NotFound();
         }
 
-        CreateOrAddItemToCart.Response? result = await cartApiClient.CreateOrAddItemAsync(new CreateOrAddItemToCart.Request(
+        await cartApiClient.CreateOrAddItemAsync(new CreateOrAddItemToCart.Request(
             ProductId: ProductId,
             Quantity: QuantityToAdd,
             ProductName: product.Name,
@@ -57,12 +87,6 @@ public class IndexModel(
             CategoryId: product.CategoryId,
             CategoryName: product.CategoryName
         ));
-
-        if (result == null)
-        {
-            ModelState.AddModelError("", "Failed to add item to cart. Please try again.");
-            return await OnGetAsync();
-        }
 
         if (Request.Headers.ContainsKey("HX-Request"))
         {

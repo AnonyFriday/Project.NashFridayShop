@@ -68,7 +68,11 @@
                                 class="badge badge-primary badge-sm text-[8px] text-primary-content border-none">New</span>
                             </a>
                         </li>
-                        <li><a href="/Settings" class="py-3 hover:text-primary">Settings</a></li>
+                        <li>
+                            <a href="/Orders" class="py-3 hover:text-primary">
+                                My Orders
+                            </a>
+                        </li>
                         <li>
                             <form action="@AccountApiClient.GetLogoutRedirectAddress(returnUrl)" method="post">
                                 <button type="submit" class="w-full text-left py-3 text-error hover:text-error/80">Logout</button>

@@ -2,6 +2,12 @@ namespace NashFridayStore.StoreFront.Commons;
 
 internal static class AppCts
 {
+    public static class ToastType
+    {
+        public const string Success = "success";
+        public const string Error = "error";
+    }
+
     public static class Identity
     {
         public const string AuthenticationType = "BffAuth";

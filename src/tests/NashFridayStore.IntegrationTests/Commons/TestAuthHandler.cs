@@ -20,6 +20,7 @@ public class TestAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions
         // Currently add 1 test user, 2 roles for testing purpose only
         Claim[] claims = new[]
         {
+            new Claim("sub", "00000000-0000-0000-0000-000000000001"),
             new Claim(ClaimTypes.Name, "TestUser"),
             new Claim(ClaimTypes.Role, AppCts.Identity.Roles.Admin),
             new Claim(ClaimTypes.Role, AppCts.Identity.Roles.Customer),

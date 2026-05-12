@@ -64,4 +64,11 @@ public class ProductApiClient : IProductApiClient
     {
         return await _apiClient.GetAsync<GetProductRatings.Response>($"api/all/products/{request.ProductId}/ratings?pageIndex={request.PageIndex}&pageSize={request.PageSize}");
     }
+
+    public async Task<PostProductRating.Response?> PostProductRatingAsync(PostProductRating.Request request)
+    {
+        return await _apiClient.PostAsync<object, PostProductRating.Response>(
+            $"api/customer/products/{request.ProductId}/rating",
+            new { Stars = request.Stars, Comment = request.Comment });
+    }
 }

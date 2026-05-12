@@ -13,4 +13,10 @@ public static class Exceptions
         "Product Not Found",
         $"Product with ID '{productId}' was not found"
     );
+
+    public sealed class AlreadyPostRatingException(string productName) : AppException(
+        ProblemDetailsTypes.Conflict,
+        "Customer already rated the product",
+        $"You already rated the product {productName}"
+    );
 }

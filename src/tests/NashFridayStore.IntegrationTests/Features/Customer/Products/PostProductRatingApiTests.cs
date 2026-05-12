@@ -56,6 +56,48 @@ public class PostProductRatingApiTests : IClassFixture<CustomWebApplicationFacto
         Assert.Equal("Product Not Found", problemDetails.Title);
         Assert.Contains(productIdNotExists.ToString(), problemDetails.Detail);
     }
+
+    [Trait("PostProductRatingApi", "ProductId")]
+    [Fact]
+    public async Task PostProductRating_CustomerId_AlreadyRateAProduct()
+    {
+        // Arrange
+        CancellationToken ct = TestContext.Current.CancellationToken;
+        var testUserId = Guid.Parse("00000000-0000-0000-0000-000000000001");
+
+        Category category = new CategoryBuilder().Build();
+        Product product = new ProductBuilder()
+            .WithCategoryId(category.Id)
+            .Build();
+
+        ProductRating existingRating = new ProductRatingBuilder()
+            .WithStars(4)
+            .WithComment("I Love You")
+            .WithCustomerId(testUserId)
+            .WithProductId(product.Id)
+            .Build();
+
+        _dbContext.Categories.Add(category);
+        _dbContext.Products.Add(product);
+        _dbContext.ProductRatings.Add(existingRating);
+        await _dbContext.SaveChangesAsync(ct);
+
+        // another rating
+        var request = new RequestBody("Hate You", 1);
+
+        // Act
+        // - since we already create the claim as 000-000, when calling this api, 1 user rates the same thing
+        HttpResponseMessage response = await _client.PostAsJsonAsync(
+            $"/api/customer/products/{product.Id}/rating", request, ct);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
+        ProblemDetails? problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>(CustomWebApplicationFactory.DefaultJsonOptions, cancellationToken: ct);
+
+        Assert.NotNull(problemDetails);
+        Assert.Equal("Customer already rated the product", problemDetails.Title);
+        Assert.Contains(product.Name, problemDetails.Detail);
+    }
     #endregion
 
     #region Success
