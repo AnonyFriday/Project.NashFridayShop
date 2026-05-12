@@ -40,7 +40,11 @@ public static class ServiceCollectionExtension
         services.AddDbContext<StoreDbContext>((sp, options) =>
         {
             ConnectionStringsOptions settings = sp.GetRequiredService<IOptions<ConnectionStringsOptions>>().Value;
-            options.UseSqlServer(settings.Database);
+            options.UseSqlServer(settings.Database, sqlOptions =>
+            {
+                // Splitting query by default on .Include() to avoid N + 1 queries
+                sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+            });
             options.UseSnakeCaseNamingConvention();
         });
         services.AddTransient<StoreDbContextSeeder>();
