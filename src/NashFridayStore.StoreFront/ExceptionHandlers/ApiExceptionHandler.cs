@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Diagnostics;
+using NashFridayStore.StoreFront.Commons;
 using NashFridayStore.StoreFront.Commons.Exceptions;
 
 namespace NashFridayStore.StoreFront.ExceptionHandlers;
@@ -31,7 +32,7 @@ public class ApiExceptionHandler : IExceptionHandler
         }
 
         // trigger a toast if we got an error
-        var toastEvent = new { message, type = "error" };
+        var toastEvent = new { message, type = AppCts.ToastType.Error };
         var trigger = new Dictionary<string, object> { { "show-toast", toastEvent } };
         httpContext.Response.Headers["HX-Trigger"] = JsonSerializer.Serialize(trigger, _jsonOptions);
 

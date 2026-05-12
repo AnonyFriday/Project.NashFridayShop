@@ -1,5 +1,3 @@
-using System.Security.Claims;
-
 namespace NashFridayStore.API.Auth;
 
 public class CurrentUser(IHttpContextAccessor httpContextAccessor) : ICurrentUser
