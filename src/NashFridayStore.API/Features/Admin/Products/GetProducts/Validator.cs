@@ -11,6 +11,7 @@ public sealed class Validator : AbstractValidator<Request>
     public const string InvalidProductStatus = "Invalid product status.";
     public const string MinPriceGreaterThanOrEqualZero = "Min Price must be greater than or equal to 0.";
     public const string MaxPriceGreaterThanOrEqualZero = "Max Price must be greater than or equal to 0.";
+    public const string InvalidSortBy = "Invalid sort by option.";
 
     public Validator()
     {
@@ -46,5 +47,10 @@ public sealed class Validator : AbstractValidator<Request>
             .IsInEnum()
             .WithMessage(InvalidProductStatus)
             .When(x => x.Status.HasValue);
+
+        RuleFor(x => x.SortBy)
+            .IsInEnum()
+            .WithMessage(InvalidSortBy)
+            .When(x => x.SortBy.HasValue);
     }
 }
