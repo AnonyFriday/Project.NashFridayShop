@@ -10,6 +10,7 @@ using Google.Cloud.Storage.V1;
 using StackExchange.Redis;
 using Microsoft.CodeAnalysis.Options;
 using Stripe;
+using NashFridayStore.Infrastructure.Interfaces.Payment;
 
 namespace NashFridayStore.Infrastructure.Extensions;
 

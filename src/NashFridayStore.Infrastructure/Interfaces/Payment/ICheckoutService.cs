@@ -1,6 +1,6 @@
-namespace NashFridayStore.Infrastructure.Interfaces;
+namespace NashFridayStore.Infrastructure.Interfaces.Payment;
 
-public interface ICheckoutService
+public partial interface ICheckoutService
 {
     public record CheckoutItemDto(
         Guid Id,
@@ -22,5 +22,17 @@ public interface ICheckoutService
     Task<string> CreateCheckoutSessionAsync(
         IEnumerable<CheckoutItemDto> items,
         CustomerCheckoutDto customer,
-        CancellationToken cancellationToken = default);
+        CancellationToken ct);
+
+    Task HandlePaymentReceivedAsync(
+        PaymentReceivedCommand command,
+        CancellationToken ct);
+
+    Task HandlePaymentFailedAsync(
+        PaymentFailedCommand command,
+        CancellationToken ct);
+
+    Task HandleRefundAsync(
+        RefundCommand command,
+        CancellationToken ct);
 }
