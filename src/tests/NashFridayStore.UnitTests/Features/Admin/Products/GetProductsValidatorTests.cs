@@ -230,7 +230,16 @@ public class GetProductsValidatorTests
     [Trait("UT", "General")]
     public void Validate_RequestIsValid_ShouldNotHaveAnyValidationErrors()
     {
-        var request = new Request(null, "Laptop", 10, 100, 0, 10);
+        var request = new Request(
+            CategoryId: null,
+            SearchName: "Laptop",
+            MinPrice: 10,
+            MaxPrice: 100,
+            Status: ProductStatus.InStock,
+            SortBy: SortBy.Newest,
+            PageIndex: 0,
+            PageSize: 10
+        );
 
         TestValidationResult<Request> result = _validator.TestValidate(request);
 
