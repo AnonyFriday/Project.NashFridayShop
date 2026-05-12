@@ -7,7 +7,7 @@ import { useGetCategoriesQuery } from "@/features/categories/category.api";
 import DataTable, { ColumnDef } from "@/features/shared/components/DataTable";
 import Pagination from "@/features/shared/components/Pagination";
 import { ActionGroupInDataTable, ViewButton, EditButton, DeleteButton } from "@/features/shared/components/Buttons/DataTableButtons";
-import { GetProducts, ProductStatus } from "@/features/products/product.types";
+import { GetProducts, ProductStatus, ProductSortBy } from "@/features/products/product.types";
 import { ProductStatusHelper } from "@/features/products/product.helper";
 import Image from "next/image";
 import ProductStatusBadge from "@/features/products/components/ProductStatusBadge";
@@ -29,6 +29,7 @@ export default function ProductsPage() {
     status: undefined,
     minPrice: undefined,
     maxPrice: undefined,
+    sortBy: ProductSortBy.Newest,
     includeDeleted: true,
   };
 
@@ -38,6 +39,7 @@ export default function ProductsPage() {
     status: undefined,
     minPrice: undefined,
     maxPrice: undefined,
+    sortBy: ProductSortBy.Newest,
     includeDeleted: true,
   });
 
@@ -56,6 +58,7 @@ export default function ProductsPage() {
     searchName: filters.searchName || undefined,
     categoryId: filters.categoryId || undefined,
     status: (filters.status as ProductStatus) || undefined,
+    sortBy: filters.sortBy || undefined,
     includeDeleted: filters.includeDeleted,
   });
 
@@ -73,7 +76,8 @@ export default function ProductsPage() {
       validFilters.status !== filters.status ||
       validFilters.includeDeleted !== filters.includeDeleted ||
       validFilters.minPrice !== filters.minPrice ||
-      validFilters.maxPrice !== filters.maxPrice
+      validFilters.maxPrice !== filters.maxPrice ||
+      validFilters.sortBy !== filters.sortBy
     ) {
       setFilters(validFilters);
       setPageIndex(0);
@@ -87,6 +91,7 @@ export default function ProductsPage() {
     })) || [];
 
   const statusOptions = ProductStatusHelper.getOptions();
+  const sortOptions = ProductStatusHelper.getSortOptions();
 
   const [toggleDelete] = useDeleteProductMutation();
 
@@ -231,6 +236,14 @@ export default function ProductsPage() {
             initialValue={filters.maxPrice}
             onNumberChange={(val) => handleFilterChange({ ...filters, maxPrice: val })}
             className="sm:w-32"
+          />
+          <SelectInput
+            label="Sort By"
+            placeholder="Sort..."
+            value={filters.sortBy || ""}
+            options={sortOptions}
+            onChange={(val) => handleFilterChange({ ...filters, sortBy: (val as ProductSortBy) || undefined })}
+            className="sm:w-48"
           />
 
           {/* Archive Toggle and Reset */}
