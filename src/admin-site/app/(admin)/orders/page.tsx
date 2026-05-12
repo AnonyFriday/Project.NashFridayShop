@@ -44,11 +44,6 @@ export default function OrdersPage() {
 
   const columns: ColumnDef<GetOrders.Item>[] = [
     {
-      key: "id",
-      header: "Order ID",
-      render: (order) => <span className="font-mono text-xs text-base-content/60">{order.id.split("-")[0]}...</span>,
-    },
-    {
       key: "customerFullName",
       header: "Customer",
       render: (order) => (
