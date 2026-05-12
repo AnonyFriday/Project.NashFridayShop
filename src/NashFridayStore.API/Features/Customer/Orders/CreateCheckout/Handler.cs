@@ -6,6 +6,7 @@ using NashFridayStore.Domain.Entities.Carts;
 using NashFridayStore.Domain.Entities.Products;
 using NashFridayStore.Infrastructure.Data;
 using NashFridayStore.Infrastructure.Interfaces;
+using NashFridayStore.Infrastructure.Interfaces.Payment;
 
 namespace NashFridayStore.API.Features.Customer.Orders.CreateCheckout;
 
