@@ -16,4 +16,7 @@ ignore:
   - "**/*.cshtml"
   - "**/NashFridayStore.Domain/**"
   - "**/Auth/**"
+
+  # Some specific endpoints not need for testings
+  - "**/GetMyOrders/**"
   - "**/Dockerfile"

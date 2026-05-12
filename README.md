@@ -65,6 +65,7 @@
 | **StoreFront**      | `/Products`              | GET      | Product Search & Filter Page   | ✅ Completed       |
 | **StoreFront**      | `/Products/Details/{id}` | GET      | Product Details Page           | ✅ Completed       |
 | **StoreFront**      | `/Cart`                  | GET      | Shopping Cart Page             | ✅ Completed       |
+| **StoreFront**      | `/Orders`                | GET      | My Orders History Page         | ✅ Completed       |
 | **StoreFront**      | `/Checkout`              | GET/POST | Checkout Page (Form + Summary) | ✅ Completed       |
 | **StoreFront**      | `/Checkout/Success`      | GET      | Order Success Confirmation     | ✅ Completed       |
 | **StoreFront**      | `/Errors/{code}`         | GET      | Global Error Pages (404, 500)  | ✅ Completed       |
