@@ -23,6 +23,17 @@ export namespace ProductStatus {
     }
 }
 
+export enum ProductSortBy {
+    Newest = "Newest",
+    Oldest = "Oldest",
+    PriceAsc = "PriceAsc",
+    PriceDesc = "PriceDesc",
+    NameAsc = "NameAsc",
+    NameDesc = "NameDesc",
+    QuantityAsc = "QuantityAsc",
+    QuantityDesc = "QuantityDesc",
+}
+
 // === APIs
 
 export namespace GetProducts {
@@ -33,6 +44,7 @@ export namespace GetProducts {
         minPrice?: number
         maxPrice?: number
         status?: ProductStatus
+        sortBy?: ProductSortBy
         includeDeleted?: boolean
     }
 

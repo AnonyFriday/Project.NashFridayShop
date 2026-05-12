@@ -23,4 +23,17 @@ export const ProductStatusHelper = {
         value: status as string,
       }));
   },
+
+  getSortOptions(): SelectInputOptions[] {
+    return [
+      { label: "Newest", value: "Newest" },
+      { label: "Oldest", value: "Oldest" },
+      { label: "Price: Low to High", value: "PriceAsc" },
+      { label: "Price: High to Low", value: "PriceDesc" },
+      { label: "Name: A-Z", value: "NameAsc" },
+      { label: "Name: Z-A", value: "NameDesc" },
+      { label: "Stock: Low to High", value: "QuantityAsc" },
+      { label: "Stock: High to Low", value: "QuantityDesc" },
+    ];
+  },
 };

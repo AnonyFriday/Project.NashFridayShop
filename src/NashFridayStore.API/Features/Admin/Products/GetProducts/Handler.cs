@@ -50,8 +50,19 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
 
         int totalItems = await query.CountAsync(ct);
 
+        query = req.SortBy switch
+        {
+            SortBy.Oldest => query.OrderBy(x => x.CreatedAtUtc),
+            SortBy.PriceAsc => query.OrderBy(x => x.PriceUsd),
+            SortBy.PriceDesc => query.OrderByDescending(x => x.PriceUsd),
+            SortBy.NameAsc => query.OrderBy(x => x.Name),
+            SortBy.NameDesc => query.OrderByDescending(x => x.Name),
+            SortBy.QuantityAsc => query.OrderBy(x => x.Quantity),
+            SortBy.QuantityDesc => query.OrderByDescending(x => x.Quantity),
+            _ => query.OrderByDescending(x => x.CreatedAtUtc)
+        };
+
         List<ProductItem> items = await query
-            .OrderByDescending(x => x.CreatedAtUtc)
             .Skip(req.PageIndex * req.PageSize)
             .Take(req.PageSize)
             .Select(x => new ProductItem(
