@@ -12,8 +12,10 @@
 - **🏗️ Architecture**: Vertical Slice Architecture
 - **🧪 Testing**: xUnit, Coverlet
 - **🛠️ Tooling**: Directory.Packages.props, Directory.Build.props, docker-compose.yaml
+- **🔧 API Docs**: Scalar
+- **📊 Dashboard**: Metabase
 - **🎪 Payment**: Stripe
-- **🛒 Cart**: Redis
+- **🛒 Cart**: Redis, RedisInsight
 
 ## Current Supporting APIs
 
@@ -35,8 +37,8 @@
 | **Admin API**       | `/api/admin/products/{id}/image`         | POST     | Update product image                                    | ✅ Completed          | ✅ UT, IT |
 | **Admin API**       | `/api/admin/categories`                  | GET/POST | List categories / Create category                       | ✅ Completed          | ✅ UT, IT |
 | **Admin API**       | `/api/admin/categories/{id}`             | GET/PUT  | Category details / Update category                      | ✅ Completed          | ✅ UT, IT |
-| **Admin API**       | `/api/admin/orders`                      | GET      | Order listing                                           | ❌ Not implemented    | ❌ None   |
-| **Identity Admin**  | `/api/admin/customers/{id}`              | DELETE   | Disable customer                                        | ❌ Not implemented    | ❌ None   |
+| **Admin API**       | `/api/admin/orders`                      | GET      | Order listing (Paginated & Searchable)                  | ✅ Completed          | ✅ UT, IT |
+| **Admin API**       | `/api/admin/orders/{id}`                 | GET      | Order details                                           | ✅ Completed          | ✅ UT, IT |
 | **Identity Admin**  | `/api/admin/customers`                   | GET      | Customer listing (Paginated & Searchable)               | ✅ Completed          | ❌ None   |
 | **Identity Server** | `/connect/authorize`                     | GET      | Start OIDC authorization code flow                      | ✅ Completed          | ❌ None   |
 | **Identity Server** | `/connect/token`                         | POST     | Exchange auth code → tokens                             | ✅ Completed          | ❌ None   |
@@ -52,7 +54,7 @@
 
 | Layer               | Endpoint                 | Method   | Description                    | Status             |
 | ------------------- | ------------------------ | -------- | ------------------------------ | ------------------ |
-| **Admin Site**      | `/dashboard`             | GET      | Admin overview & statistics    | ❌ Not implemented |
+| **Admin Site**      | `/dashboard`             | GET      | Admin overview & statistics    | ✅ Completed       |
 | **Admin Site**      | `/products`              | GET      | Product management list        | ✅ Completed       |
 | **Admin Site**      | `/products/new`          | GET      | Create new product page        | ✅ Completed       |
 | **Admin Site**      | `/products/[id]`         | GET      | Edit product details page      | ✅ Completed       |
@@ -60,12 +62,15 @@
 | **Admin Site**      | `/categories/new`        | GET      | Create new category page       | ✅ Completed       |
 | **Admin Site**      | `/categories/[id]`       | GET      | Edit category details page     | ✅ Completed       |
 | **Admin Site**      | `/customers`             | GET      | Customer management list       | ✅ Completed       |
-| **Admin Site**      | `/orders`                | GET      | Order management list          | ❌ Not implemented |
+| **Admin Site**      | `/orders`                | GET      | Order management list          | ✅ Completed       |
+| **Admin Site**      | `/orders/[id]`           | GET      | Order details page             | ✅ Completed       |
+| **Admin Site**      | `[...slug]`              | ALL      | Global 404 Routing             | ✅ Completed       |
 | **StoreFront**      | `/`                      | GET      | Home Page (Top Rated Products) | ✅ Completed       |
 | **StoreFront**      | `/Products`              | GET      | Product Search & Filter Page   | ✅ Completed       |
 | **StoreFront**      | `/Products/Details/{id}` | GET      | Product Details Page           | ✅ Completed       |
 | **StoreFront**      | `/Cart`                  | GET      | Shopping Cart Page             | ✅ Completed       |
 | **StoreFront**      | `/Orders`                | GET      | My Orders History Page         | ✅ Completed       |
+| **StoreFront**      | `/Profile`               | GET      | User Profile & Account Details | ✅ Completed       |
 | **StoreFront**      | `/Checkout`              | GET/POST | Checkout Page (Form + Summary) | ✅ Completed       |
 | **StoreFront**      | `/Checkout/Success`      | GET      | Order Success Confirmation     | ✅ Completed       |
 | **StoreFront**      | `/Errors/{code}`         | GET      | Global Error Pages (404, 500)  | ✅ Completed       |
@@ -74,45 +79,43 @@
 | **Identity Server** | `/Account/Register`      | GET      | Render registration page       | ❌ Not implemented |
 | **Identity Server** | `/Account/Register`      | POST     | Submit registration form       | ❌ Not implemented |
 
+## Architecture
+
+![System Architecture](./images/NashFriday_Architecture.png)
+
 ## ERD (V1)
 
-![ERD Diagram](./images/erd_v1_no_identity.png)
+### Store Domain
+![Store ERD](./images/erd_store.png)
+
+### Identity Domain
+![Identity ERD](./images/erd_identity.png)
 
 ## BFF + Reverse Proxy, Identity Server, API Server, Frontends communications
 
 ![BFF and Identity Server Communication](./images/BFF_IdentityServer.png)
 
-## Week 1-2-3-4 Summary
+## Running the Project
 
-### Week 1-2 Highlights
+To get the NashFriday Store ecosystem running locally, follow these steps:
 
-- **Infra**: Setup Docker (SQL Server, Redis), CI Pipelines, and Vertical Slice Architecture.
-- **Testing**: Integrated xUnit & SQLite In-Memory for API integration tests.
-- **Backend**: Built API Server & Identity Server (OpenIddict + Auth Code Flow + PKCE).
-- **Security**: Implemented BFF Pattern with YARP Reverse Proxy & Cookie sessions.
-- **Frontend**: Scaffolded Admin Portal (Next.js) & StoreFront (Razor Pages).
-
-### Week 3 Highlights
-
-- **BE**: Added Quantity & Ratings to Products.
-- **BE**: Implemented Soft Delete (Toggle).
-- **BE**: Added searchable Customer list in Identity Server.
-- **Auth**: Integrated full BFF Login/Session flow in Admin Portal.
-- **FE**: Built Admin Portal (Next.js 15) with Product & Category CRUD.
-
-### Week 4 Highlights (Current)
-
-- **FE**: Developed **Resilient StoreFront Architecture**:
-  - Centralized Error Handling (404/500) with clean routing.
-  - Global Toast Notification System (DaisyUI + htmx).
-  - htmx trigger merging.
-  - API Safety Guard: Automatic backend error-to-toast mapping.
-- **Cart**: Implemented real-time Cart interactions (Add/Update/Remove) with navbar syncing.
-- **Admin**: Built modern Admin Portal (Next.js 16) with Product & Category CRUD.
-- **Admin**: Implemented product image management (API & UI).
-- **Auth**: Refactored authentication middleware for safe OIDC redirects with PKCE.
-- **Docs**: Comprehensive Reference Index for htmx, OIDC, and Modern .NET patterns.
-- **Pending**: Dashboard (Statistics) and Checkout flow (Stripe).
+1. **Docker Infrastructure**: Start the required infrastructure services using Docker Compose:
+   ```bash
+   docker-compose up -d
+   ```
+2. **Secrets Configuration**: Ensure you have the `.secret` folder containing the necessary encryption keys and sensitive configurations. This folder must be placed in the same directory as the `docker-compose.yaml` file.
+   > [!IMPORTANT]
+   > Contact the project owner to obtain the `.secret` folder and the necessary values for your `appsettings.json` files if you are missing them.
+3. **Backend Services**: Run all four .NET API projects using `dotnet watch` for hot-reloading:
+   - `NashFridayStore.API`
+   - `NashFridayStore.BFF`
+   - `NashFridayStore.IdentityServer`
+   - `NashFridayStore.StoreFront` (Razor Pages)
+4. **Admin Dashboard**: Navigate to the `src/admin-site` directory and start the development server:
+   ```bash
+   npm run dev
+   ```
+5. **Monitoring**: Open **Redis Insight** to monitor the cart sessions and caching layers in real-time.
 
 ## Project Structure
 
@@ -313,6 +316,7 @@ public async Task GetProduct_ById_ShouldReturnProduct()
 
 - **htmx Guide**: [htmx for ASP.NET Developers](https://aspnet-htmx.com/chapter05/)
 - **hx-trigger**: [Custom Event Triggers](https://htmx.org/headers/hx-trigger/)
+- **htmx Deep Dive**: [Chapter 08 - Triggers](https://aspnet-htmx.com/chapter08/)
 - **UI Frameworks**: [daisyUI](https://daisyui.com), [tailwindcss](https://tailwindcss.com)
 
 ### 🧩 ASP.NET Core Razor Pages
@@ -320,6 +324,7 @@ public async Task GetProduct_ById_ShouldReturnProduct()
 - **ViewComponents**: [Reusable UI logic](https://learn.microsoft.com/en-us/aspnet/core/mvc/views/view-components)
 - **Tag Helpers**: [Native HTML enhancements](https://learn.microsoft.com/en-us/aspnet/core/mvc/views/tag-helpers/intro)
 - **Middleware**: [Request Pipeline & Delegates](https://medium.com/@Sina-Riyahi/understanding-request-delegates-and-middleware-in-asp-net-core-5f9b22d16613)
+- **Official Middleware Docs**: [ASP.NET Core Middleware](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware/?view=aspnetcore-10.0)
 - **Request Storage**: [HttpContext.Items (Request Scope)](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.httpcontext.items)
 
 ### 🏗️ Architecture & Backend
@@ -336,14 +341,19 @@ public async Task GetProduct_ById_ShouldReturnProduct()
 - **BFF Pattern**: [Backend For Frontend (Auth0)](https://auth0.com/blog/the-backend-for-frontend-pattern-bff/)
 - **IdentityServer**: [Duende Big Picture](https://docs.duendesoftware.com/identityserver/overview/big-picture/)
 - **OpenIddict**: [Auth Code Flow + PKCE](https://dev.to/naeemsahil/implementing-openid-connect-with-openiddict-4fmp)
+- **Client Credentials**: [Setting up OpenIddict Client Credentials](https://dev.to/robinvanderknaap/setting-up-an-authorization-server-with-openiddict-part-iii-client-credentials-flow-55lp)
+- **PAR Configuration**: [Pushed Authorization Requests](https://documentation.openiddict.com/configuration/pushed-authorization-requests)
 - **OIDC Claims**: [ID Token Standard](https://openid.net/specs/openid-connect-core-1_0.html#IDToken)
+- **OAuth 2.0 Spec**: [RFC 6749 Section 1.1](https://datatracker.ietf.org/doc/html/rfc6749#section-1.1)
 - **JWT Auth**: [Configure Bearer Auth](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/configure-jwt-bearer-authentication)
 
 ### 🎪 Payment & Webhooks
 
 - **Stripe CLI**: [Local Webhook Testing](https://stripe.com/docs/stripe-cli)
+- **Docker Compose**: [Stripe CLI + Docker (Martin Bean)](https://martinbean.dev/blog/2025/08/15/using-the-stripe-cli-with-docker-compose/)
 - **Signature Verification**: [Security Best Practices](https://stripe.com/docs/webhooks/signatures)
-- **Event Lifecycle**: [Checkout Events Guide](https://stripe.com/docs/payments/checkout/how-checkout-works)
+- **Testing**: [Stripe Testing Guide](https://docs.stripe.com/testing)
+- **Event Lifecycle**: [Stripe Event Types](https://docs.stripe.com/api/events/types)
 
 ### 🗄️ Database & Storage
 
@@ -362,6 +372,9 @@ public async Task GetProduct_ById_ShouldReturnProduct()
 ### 🛠️ Tooling & Infrastructure
 
 - **Reverse Proxy**: [YARP (Yet Another Reverse Proxy)](https://github.com/dotnet/yarp)
+- **YARP Overview**: [Microsoft YARP Docs](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/servers/yarp/yarp-overview?view=aspnetcore-10.0)
+- **OpenAPI Customization**: [Customize OpenAPI in .NET](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/customize-openapi?view=aspnetcore-10.0)
+- **Scalar JWT**: [JWT Support in Scalar](https://stackoverflow.com/questions/79265776/how-to-add-jwt-token-support-globally-in-scalar-for-a-net-9-application)
 - **Redis Insight**: [Docker Setup for Redis Visualization](https://medium.com/@mahmud.ibrahim021/set-up-redis-with-redisinsight-using-docker-for-local-development-64b0c2aad4a7)
 - **ERD**: [LucidChart Diagram](https://lucid.app/lucidchart/80f9e014-52b0-4936-90e0-51cf2d40980b/edit)
 
