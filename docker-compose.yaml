@@ -83,11 +83,24 @@ services:
     command: -c "stripe listen --api-key $$STRIPE_API_KEY --forward-to $$STRIPE_FORWARD_URL --skip-verify"
     entrypoint: /bin/sh
 
+  # Metabase service for Dashboard
+  nashfridaystore-metabase-dashboard:
+    container_name: nashfridaystore-metabase-dashboard
+    image: metabase/metabase:latest
+    restart: unless-stopped
+    ports:
+      - "3333:3000"
+    volumes:
+      - nashfridaystore-metabase-dashboard-data:/metabase-data
+    networks:
+      - nashfridaystore-network
+
 volumes:
   nashfridaystore-db-store-data:
   nashfridaystore-db-identityserver-data:
   nashfridaystore-redis-cart-data:
   nashfridaystore-redisinsight-data:
+  nashfridaystore-metabase-dashboard-data:
 
 
 networks:
