@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-import { APP_ROUTES } from "@/lib/api/routes";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { useLogoutRedirectMutation } from "@/features/auth/auth.api";
 import { logout } from "@/features/auth/auth.slice";
@@ -44,9 +42,6 @@ export default function NavbarProfile() {
             </div>
           </div>
           <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow border border-base-200">
-            <li>
-              <Link href={APP_ROUTES.PROFILE}>Profile</Link>
-            </li>
             <li>
               <button onClick={handleLogout} className="text-error w-full text-left">
                 Logout
