@@ -90,7 +90,9 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
                 x.Product.Status,
                 (x.Product.ProductRatings.Any() ? x.Product.ProductRatings.Average(x => (decimal)x.Stars) : 0).NormalizeRating(),
                 x.Product.Quantity,
-                x.Product.IsDeleted)
+                x.Product.IsDeleted,
+                x.Product.CreatedAtUtc,
+                x.Product.UpdatedAtUtc)
             )
             .ToListAsync(ct);
 

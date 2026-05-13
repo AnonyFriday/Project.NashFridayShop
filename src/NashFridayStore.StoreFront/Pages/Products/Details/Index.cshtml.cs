@@ -59,6 +59,7 @@ public class IndexModel(
 
         await productApiClient.PostProductRatingAsync(new PostProductRating.Request(ProductId, Stars, Comment));
 
+        // refresh HTML page but does not refresh a whole browser
         if (Request.Headers.ContainsKey("HX-Request"))
         {
             TriggerToast("Thank you for your feedback!", "success");
