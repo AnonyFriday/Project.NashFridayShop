@@ -1,8 +1,8 @@
 @page
-@model NashFridayStore.IdentityServer.Pages.Account.Login
+@model NashFridayStore.IdentityServer.Pages.Account.Register
 @{
     Layout = null;
-    ViewData["Title"] = "Sign In";
+    ViewData["Title"] = "Create Account";
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -34,10 +34,10 @@
             </div>
             
             <h2 class="text-2xl font-bold text-slate-800 tracking-tight uppercase">
-                Sign In
+                Create Account
             </h2>
             <p class="mt-2 text-sm text-slate-500">
-                Please enter your credentials to continue.
+                Join NashFriday Shop today.
             </p>
         </div>
 
@@ -47,11 +47,27 @@
 
             <div class="space-y-5">
                 <div>
+                    <label asp-for="Input.FullName" class="block text-xs font-bold text-slate-500 uppercase tracking-wider ml-1 mb-1">Full Name</label>
+                    <input asp-for="Input.FullName"
+                           class="block w-full px-4 py-4 border-2 border-slate-100 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 focus:ring-0 transition-all bg-white"
+                           placeholder="Enter your full name" />
+                    <span asp-validation-for="Input.FullName" class="text-xs text-rose-500 mt-1 ml-1 block font-medium"></span>
+                </div>
+
+                <div>
                     <label asp-for="Input.Email" class="block text-xs font-bold text-slate-500 uppercase tracking-wider ml-1 mb-1">Email</label>
                     <input asp-for="Input.Email"
                            class="block w-full px-4 py-4 border-2 border-slate-100 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 focus:ring-0 transition-all bg-white"
                            placeholder="Enter your email" />
                     <span asp-validation-for="Input.Email" class="text-xs text-rose-500 mt-1 ml-1 block font-medium"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Input.PhoneNumber" class="block text-xs font-bold text-slate-500 uppercase tracking-wider ml-1 mb-1">Phone Number (Optional)</label>
+                    <input asp-for="Input.PhoneNumber"
+                           class="block w-full px-4 py-4 border-2 border-slate-100 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 focus:ring-0 transition-all bg-white"
+                           placeholder="0123456789" />
+                    <span asp-validation-for="Input.PhoneNumber" class="text-xs text-rose-500 mt-1 ml-1 block font-medium"></span>
                 </div>
 
                 <div>
@@ -62,24 +78,24 @@
                     <span asp-validation-for="Input.Password" class="text-xs text-rose-500 mt-1 ml-1 block font-medium"></span>
                 </div>
 
-                <div class="flex items-center ml-1">
-                    <input asp-for="Input.RememberMe" type="checkbox"
-                           class="h-4 w-4 text-red-600 focus:ring-red-500 border-slate-300 rounded transition-all cursor-pointer" />
-                    <label asp-for="Input.RememberMe" class="ml-2 block text-sm font-medium text-slate-600 cursor-pointer select-none">
-                        Remember me
-                    </label>
+                <div>
+                    <label asp-for="Input.ConfirmPassword" class="block text-xs font-bold text-slate-500 uppercase tracking-wider ml-1 mb-1">Confirm Password</label>
+                    <input asp-for="Input.ConfirmPassword" type="password"
+                           class="block w-full px-4 py-4 border-2 border-slate-100 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 focus:ring-0 transition-all bg-white"
+                           placeholder="••••••••" />
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-xs text-rose-500 mt-1 ml-1 block font-medium"></span>
                 </div>
             </div>
 
             <div class="flex flex-col gap-3">
                 <button type="submit"
                         class="w-full py-4 px-4 border border-transparent text-sm font-black rounded-2xl text-white bg-red-600 hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all transform active:scale-[0.98] shadow-xl uppercase tracking-widest">
-                    Sign In
+                    Register
                 </button>
-                <button type="button" onclick="history.back()"
-                        class="w-full py-4 px-4 bg-white border-2 border-slate-200 text-sm font-black rounded-2xl text-slate-400 hover:bg-slate-50 hover:text-slate-600 transition-all text-center uppercase tracking-widest">
-                    Cancel
-                </button>
+                <a asp-page="Login" asp-route-returnUrl="@Model.ReturnUrl"
+                   class="w-full py-4 px-4 bg-white border-2 border-slate-200 text-sm font-black rounded-2xl text-slate-400 hover:bg-slate-50 hover:text-slate-600 transition-all text-center uppercase tracking-widest">
+                    Back to Login
+                </a>
             </div>
         </form>
 
@@ -93,10 +109,6 @@
         }
 
         <div class="mt-10 pt-8 border-t border-slate-100 text-center">
-            <p class="text-sm text-slate-500 mb-4">
-                You can register now if don't have an account. 
-                <a asp-page="Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-red-600 font-bold hover:underline">Register here</a>
-            </p>
             <p class="text-xs text-slate-400 font-medium">
                 &copy; @DateTime.Now.Year NashFriday. All rights reserved.
             </p>
