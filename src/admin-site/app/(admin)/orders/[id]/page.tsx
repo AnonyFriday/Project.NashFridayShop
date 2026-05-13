@@ -12,7 +12,12 @@ export default function OrderDetailPage() {
   const router = useRouter();
   const { data, isLoading, error } = useGetOrderByIdQuery(id as string);
 
-  if (isLoading) return <div className="flex justify-center p-20"><span className="loading loading-spinner loading-lg"></span></div>;
+  if (isLoading)
+    return (
+      <div className="flex justify-center p-20">
+        <span className="loading loading-spinner loading-lg"></span>
+      </div>
+    );
   if (error || !data) return <div className="alert alert-error">Order not found.</div>;
 
   const columns: ColumnDef<GetOrderById.OrderItemDetail>[] = [

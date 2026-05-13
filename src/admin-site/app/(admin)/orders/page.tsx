@@ -56,11 +56,7 @@ export default function OrdersPage() {
     {
       key: "totalPriceInUsd",
       header: "Total",
-      render: (order) => (
-        <span className="font-semibold text-primary">
-          ${order.totalPriceInUsd.toFixed(2)}
-        </span>
-      ),
+      render: (order) => <span className="font-semibold text-primary">${order.totalPriceInUsd.toFixed(2)}</span>,
     },
     {
       key: "orderStatus",
@@ -75,9 +71,7 @@ export default function OrdersPage() {
     {
       key: "createdAtUtc",
       header: "Date",
-      render: (order) => (
-        <span className="text-xs">{new Date(order.createdAtUtc).toLocaleDateString()}</span>
-      ),
+      render: (order) => <span className="text-xs">{new Date(order.createdAtUtc).toLocaleDateString()}</span>,
     },
     {
       key: "actions",

@@ -174,6 +174,18 @@ export default function ProductsPage() {
       ),
     },
     {
+      key: "createdAtUtc",
+      header: "Created At",
+      render: (product) => <span className="text-xs">{new Date(product.createdAtUtc).toLocaleString()}</span>,
+    },
+    {
+      key: "updatedAtUtc",
+      header: "Updated At",
+      render: (product) => (
+        <span className="text-xs">{product.updatedAtUtc ? new Date(product.updatedAtUtc).toLocaleString() : "Never"}</span>
+      ),
+    },
+    {
       key: "actions",
       header: "Actions",
       render: (product) => (
