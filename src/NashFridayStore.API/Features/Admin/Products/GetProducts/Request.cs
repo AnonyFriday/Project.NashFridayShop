@@ -1,3 +1,5 @@
+using NashFridayStore.Domain.Entities.Products;
+
 namespace NashFridayStore.API.Features.Admin.Products.GetProducts;
 
 public sealed record Request(

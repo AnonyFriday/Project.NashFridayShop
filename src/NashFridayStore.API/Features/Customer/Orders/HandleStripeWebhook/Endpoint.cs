@@ -8,7 +8,13 @@ namespace NashFridayStore.API.Features.Customer.Orders.HandleStripeWebhook;
 [Route("api/customer/orders/webhook")]
 public sealed class Endpoint(Handler handler) : ControllerBase
 {
+    /// <summary>
+    /// Handle Stripe webhooks for order status updates
+    /// </summary>
     [HttpPost]
+    [Tags("Customer - Orders")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Post(
         [FromHeader(Name = "Stripe-Signature")] string? stripeSignature,
         CancellationToken ct)
