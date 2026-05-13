@@ -9,7 +9,16 @@ namespace NashFridayStore.API.Features.Admin.Products.UpdateProduct;
 [Route("api/admin/products/{id:guid}")]
 public sealed class Endpoint(Handler handler) : ControllerBase
 {
+    /// <summary>
+    /// Update an existing product
+    /// </summary>
     [HttpPut]
+    [Tags("Admin - Products")]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> Put(
         [FromRoute] Guid id,
         [FromQuery] bool includeDeleted,

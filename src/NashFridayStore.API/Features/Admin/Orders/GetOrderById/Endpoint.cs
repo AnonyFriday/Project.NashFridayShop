@@ -9,7 +9,15 @@ namespace NashFridayStore.API.Features.Admin.Orders.GetOrderById;
 [Route("api/admin/orders/{id:guid}")]
 public sealed class Endpoint(Handler handler) : ControllerBase
 {
+    /// <summary>
+    /// Get an order by ID for admin
+    /// </summary>
     [HttpGet]
+    [Tags("Admin - Orders")]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> Get(
         Guid id,
         CancellationToken ct

@@ -9,7 +9,15 @@ namespace NashFridayStore.API.Features.Admin.Products.CreateProduct;
 [Route("api/admin/products")]
 public sealed class Endpoint(Handler handler) : ControllerBase
 {
+    /// <summary>
+    /// Create a new product
+    /// </summary>
     [HttpPost]
+    [Tags("Admin - Products")]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> Post(
         [FromBody] Request request,
         CancellationToken ct

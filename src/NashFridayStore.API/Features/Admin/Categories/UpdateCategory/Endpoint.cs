@@ -9,7 +9,16 @@ namespace NashFridayStore.API.Features.Admin.Categories.UpdateCategory;
 [Route("api/admin/categories")]
 public sealed class Endpoint(Handler handler) : ControllerBase
 {
+    /// <summary>
+    /// Update an existing category
+    /// </summary>
     [HttpPut("{id:guid}")]
+    [Tags("Admin - Categories")]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> Update(
         [FromRoute] Guid id,
         [FromBody] RequestBody body,

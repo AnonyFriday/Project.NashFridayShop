@@ -9,7 +9,15 @@ namespace NashFridayStore.API.Features.Admin.Products.ToggleDeleteProduct;
 [Route("api/admin/products/{id:guid}")]
 public sealed class Endpoint(Handler handler) : ControllerBase
 {
+    /// <summary>
+    /// Toggle soft delete status of a product
+    /// </summary>
     [HttpPatch]
+    [Tags("Admin - Products")]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> ToggleDelete(
         [FromRoute] Guid id,
         CancellationToken ct
