@@ -59,21 +59,38 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
             SortBy.NameDesc => query.OrderByDescending(x => x.Name),
             SortBy.QuantityAsc => query.OrderBy(x => x.Quantity),
             SortBy.QuantityDesc => query.OrderByDescending(x => x.Quantity),
+            SortBy.RatingAsc => query.OrderBy(x => x.ProductRatings.Any()
+                        ? x.ProductRatings.Average(r => r.Stars)
+                        : 0),
+            SortBy.RatingDesc => query.OrderByDescending(x => x.ProductRatings.Any()
+                        ? x.ProductRatings.Average(r => r.Stars)
+                        : 0),
             _ => query.OrderByDescending(x => x.CreatedAtUtc)
         };
 
         List<ProductItem> items = await query
             .Skip(req.PageIndex * req.PageSize)
             .Take(req.PageSize)
+            .LeftJoin(
+                dbContext.Categories,
+                p => p.CategoryId,
+                c => c.Id,
+                (p, c) => new
+                {
+                    Product = p,
+                    CategoryName = c != null ? c.Name : "Others"
+                }
+            )
             .Select(x => new ProductItem(
-                x.Id,
-                x.Name,
-                x.ImageUrl,
-                x.PriceUsd,
-                x.Status,
-                (x.ProductRatings.Any() ? x.ProductRatings.Average(x => (decimal)x.Stars) : 0).NormalizeRating(),
-                x.Quantity,
-                x.IsDeleted)
+                x.Product.Id,
+                x.Product.Name,
+                x.CategoryName,
+                x.Product.ImageUrl,
+                x.Product.PriceUsd,
+                x.Product.Status,
+                (x.Product.ProductRatings.Any() ? x.Product.ProductRatings.Average(x => (decimal)x.Stars) : 0).NormalizeRating(),
+                x.Product.Quantity,
+                x.Product.IsDeleted)
             )
             .ToListAsync(ct);
 

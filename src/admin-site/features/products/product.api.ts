@@ -11,7 +11,7 @@ export const productApiSlice = baseApiSlice.injectEndpoints({
             providesTags: ['Product'],
         }),
         getProductById: builder.query<GetProductById.Response, GetProductById.Request>({
-            query: ({ id, includeDeleted = false }) => ({
+            query: ({ id, includeDeleted = true }) => ({
                 url: `admin/products/${id}`,
                 params: { IncludeDeleted: includeDeleted },
             }),
@@ -26,7 +26,7 @@ export const productApiSlice = baseApiSlice.injectEndpoints({
             invalidatesTags: ['Product'],
         }),
         updateProduct: builder.mutation<UpdateProduct.Response, UpdateProduct.Request>({
-            query: ({ id, body, includeDeleted = false }) => ({
+            query: ({ id, body, includeDeleted = true }) => ({
                 url: `admin/products/${id}`,
                 method: 'PUT',
                 params: { includeDeleted },
@@ -35,7 +35,7 @@ export const productApiSlice = baseApiSlice.injectEndpoints({
             invalidatesTags: ['Product'],
         }),
         updateProductImage: builder.mutation<UpdateProductImage.Response, UpdateProductImage.Request>({
-            query: ({ productId, imageFile, includeDeleted = false }) => {
+            query: ({ productId, imageFile, includeDeleted = true }) => {
                 const formData = new FormData();
                 formData.append('imageFile', imageFile);
                 return {

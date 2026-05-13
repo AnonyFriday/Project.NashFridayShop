@@ -32,6 +32,8 @@ export enum ProductSortBy {
     NameDesc = "NameDesc",
     QuantityAsc = "QuantityAsc",
     QuantityDesc = "QuantityDesc",
+    RatingAsc = "RatingAsc",
+    RatingDesc = "RatingDesc"
 }
 
 // === APIs
@@ -51,6 +53,7 @@ export namespace GetProducts {
     export interface Item {
         id: string
         name: string
+        categoryName: string
         imageUrl: string
         priceUsd: number
         status: ProductStatus

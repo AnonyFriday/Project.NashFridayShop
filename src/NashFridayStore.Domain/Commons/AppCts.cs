@@ -18,6 +18,7 @@ public static class AppCts
         public const int MinStars = 1;
         public const int PageSize = 10;
         public const int PageIndex = 0;
+        public const int ThresholdForNewProduct = 7;
     }
 
     public static class Cart
