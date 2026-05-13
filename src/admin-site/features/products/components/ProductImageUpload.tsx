@@ -21,10 +21,36 @@ export const ProductImageUpload = ({ productId, initialImageUrl, onSuccess, onSk
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      setSelectedFile(file);
-      setPreviewUrl(URL.createObjectURL(file)); // create the preview url based on the submitted image
+    if (!file) return;
+
+    // validate file type
+    const validTypes = ["image/jpeg", "image/png", "image/jpg"];
+    if (!validTypes.includes(file.type)) {
+      dispatch(
+        enqueueToast({
+          message: "Please select a valid image file (JPG, PNG, or WEBP).",
+          type: ToastType.Error,
+        }),
+      );
+      e.target.value = "";
+      return;
     }
+
+    // Validate File Size (Max 5MB)
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+      dispatch(
+        enqueueToast({
+          message: "Image size must be less than 5MB.",
+          type: ToastType.Error,
+        }),
+      );
+      e.target.value = "";
+      return;
+    }
+
+    setSelectedFile(file);
+    setPreviewUrl(URL.createObjectURL(file)); // create the preview url based on the submitted image
   };
 
   const handleUpload = async () => {
