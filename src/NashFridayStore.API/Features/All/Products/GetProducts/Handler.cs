@@ -89,7 +89,7 @@ public sealed class Handler(StoreDbContext dbContext, IValidator<Request> valida
                 x.Product.Status,
                 (x.Product.ProductRatings.Any() ? x.Product.ProductRatings.Average(r => (decimal)r.Stars) : 0).NormalizeRating(),
                 x.Product.Quantity,
-                (DateTime.UtcNow - x.Product.CreatedAtUtc).TotalDays <= 7
+                (DateTime.UtcNow - x.Product.CreatedAtUtc).TotalDays <= AppCts.Api.ThresholdForNewProduct // just create upto 7 days is consider new product
             ))
             .ToListAsync(ct);
 

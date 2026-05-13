@@ -21,6 +21,8 @@ public enum SortBy
     PriceDesc,
     NameAsc,
     NameDesc,
+    RatingAsc,
+    RatingDesc,
     QuantityAsc,
     QuantityDesc
 }

@@ -137,6 +137,11 @@ export default function ProductsPage() {
       render: (product) => <span className="font-medium">{product.name}</span>,
     },
     {
+      key: "category",
+      header: "Category",
+      render: (product) => <span className="font-medium">{product.categoryName}</span>,
+    },
+    {
       key: "quantity",
       header: "Stock",
       render: (product) => (
@@ -197,7 +202,7 @@ export default function ProductsPage() {
       {/* Product Filters */}
       <div className="flex flex-col gap-6">
         <div className="flex flex-wrap items-center gap-4 bg-base-100 p-4 rounded-box border border-base-200 shadow-sm">
-          <div className="flex-1 min-w-[200px]">
+          <div className="flex-1 min-w-50">
             <label className="label label-text text-xs font-bold uppercase text-base-content/50">Search Products</label>
             <SearchInput
               placeholder="Search by name..."
