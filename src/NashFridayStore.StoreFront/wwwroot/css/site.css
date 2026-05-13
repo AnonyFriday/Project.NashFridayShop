@@ -1,31 +1,66 @@
-html {
-  font-size: 14px;
+:root,
+[data-theme="cmyk"] {
+  /* We use !important to make sure we win the fight against the linked CSS */
+  --color-primary: #d6001c !important;
+  --color-primary-content: oklch(100% 0.026 337.6) !important;
+
+  --color-base-100: oklch(100% 0 0) !important;
+  --color-base-200: oklch(95% 0 0) !important;
+  --color-base-300: oklch(90% 0 0) !important;
+  --color-base-content: oklch(20% 0 0) !important;
+
+  --color-secondary: oklch(84.1% 0.119 22.216) !important;
+  --color-secondary-content: oklch(35.9% 0.04 359.339) !important;
+
+  --color-accent: oklch(94.228% 0.189 105.306) !important;
+  --color-accent-content: oklch(18.845% 0.037 105.306) !important;
+
+  --color-neutral: oklch(21.778% 0 0) !important;
+  --color-neutral-content: oklch(84.355% 0 0) !important;
+
+  --color-info: oklch(68.475% 0.094 217.284) !important;
+  --color-info-content: oklch(13.695% 0.018 217.284) !important;
+
+  --color-success: oklch(46.949% 0.162 321.406) !important;
+  --color-success-content: oklch(89.389% 0.032 321.406) !important;
+
+  --color-warning: oklch(71.236% 0.159 52.023) !important;
+  --color-warning-content: oklch(14.247% 0.031 52.023) !important;
+
+  --color-error: oklch(62.013% 0.208 28.717) !important;
+  --color-error-content: oklch(12.402% 0.041 28.717) !important;
+
+  --radius-selector: 1rem !important;
+  --radius-field: 0.5rem !important;
+  --radius-box: 1rem !important;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+@theme {
+  /* Map Tailwind to the forced variables */
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-accent: var(--color-accent);
+  --color-neutral: var(--color-neutral);
+  --color-base-100: var(--color-base-100);
+
+  --font-sans: "Geist Sans", ui-sans-serif, system-ui;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+.glass-nav {
+  @apply bg-base-100/70 backdrop-blur-lg border-b border-base-200;
 }
 
 body {
-  margin-bottom: 60px;
+  @apply font-sans antialiased bg-base-100 text-base-content;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+html {
+  box-sizing: border-box;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
 }

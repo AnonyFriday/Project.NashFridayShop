@@ -1,0 +1,34 @@
+@using NashFridayStore.StoreFront.Services.Cart
+@inject ICartApiClient CartApiClient
+
+@{
+    var cart = await CartApiClient.GetCartAsync();
+    var itemCount = cart?.Items.Sum(i => i.Quantity) ?? 0;
+    var totalPrice = cart?.TotalPriceInUsd ?? 0;
+}
+
+<div tabindex="0" role="button"
+     class="btn btn-ghost btn-circle text-base-content/70 hover:text-primary">
+    <div class="indicator">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+             stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+        </svg>
+        <span class="badge badge-sm indicator-item badge-primary text-primary-content font-bold border-none">@itemCount</span>
+    </div>
+</div>
+
+<div tabindex="0"
+     class="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow-xl border border-base-200">
+    <div class="card-body">
+        <span class="text-lg font-black tracking-tight text-base-content">@itemCount @(itemCount == 1 ? "Item" : "Items")</span>
+        <span class="text-primary font-bold text-sm">Subtotal: $@totalPrice.ToString("F2")</span>
+        <div class="card-actions mt-2">
+            <a asp-page="/Cart/Index"
+               class="btn btn-primary btn-block text-primary-content font-black tracking-widest uppercase text-[10px] rounded-full">
+                View cart
+            </a>
+        </div>
+    </div>
+</div>

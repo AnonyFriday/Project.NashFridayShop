@@ -10,3 +10,13 @@ ignore:
   - "**/IdentityServerDbContextSeeder.cs"
   - "**/obj/"
   - "**/bin/"
+  - "**/Program.cs"
+  - "**/AppOptions/*.cs"
+  - "**/Commons/**/*.cs"
+  - "**/*.cshtml"
+  - "**/NashFridayStore.Domain/**"
+  - "**/Auth/**"
+
+  # Some specific endpoints not need for testings
+  - "**/GetMyOrders/**"
+  - "**/Dockerfile"

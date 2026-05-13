@@ -1,4 +1,6 @@
+using System.Net.Http.Headers;
 using System.Reflection;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.Options;
@@ -6,6 +8,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using NashFridayStore.BFF.AppOptions;
 using NashFridayStore.BFF.Commons;
 using Yarp.ReverseProxy.Configuration;
+using Yarp.ReverseProxy.Transforms;
 
 namespace NashFridayStore.BFF.Extensions;
 
@@ -34,34 +37,49 @@ public static class ServiceCollectionExtension
             otp.Cookie.HttpOnly = true;
             otp.Cookie.SameSite = SameSiteMode.Lax;
             otp.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            otp.ExpireTimeSpan = TimeSpan.FromMinutes(AppCts.Auth.CookieTimeToLiveInMinutes);
         })
         .AddOpenIdConnect();
 
         // Configure OpenIdConnect with options
         services
             .AddOptions<OpenIdConnectOptions>(OpenIdConnectDefaults.AuthenticationScheme)
-            .Configure<IOptions<SiteUrlsOption>>((opt, siteUrlsOtp) =>
-            {
-                IdentityServerOptions identityServerOpts = siteUrlsOtp.Value.IdentityServer;
+                .Configure<IOptions<SiteUrlsOption>>((opt, siteUrlsOtp) =>
+                {
+                    IdentityServerOptions identityServerOpts = siteUrlsOtp.Value.IdentityServer;
 
-                opt.Authority = identityServerOpts.Authority;
-                opt.ClientId = identityServerOpts.ClientId;
-                opt.ClientSecret = identityServerOpts.ClientSecret;
-                opt.CallbackPath = identityServerOpts.SignInCallbackPath;
-                opt.SignedOutCallbackPath = identityServerOpts.SignOutCallbackPath;
-                opt.ResponseType = OpenIdConnectResponseType.Code;
-                opt.SaveTokens = true;
-                opt.UsePkce = true;
-                opt.RequireHttpsMetadata = false; // disable for development only
-                opt.MapInboundClaims = false; // fixed claim been renamed into the legacy name (xml schema)
+                    opt.Authority = identityServerOpts.Authority;
+                    opt.ClientId = identityServerOpts.ClientId;
+                    opt.ClientSecret = identityServerOpts.ClientSecret;
+                    opt.CallbackPath = identityServerOpts.SignInCallbackPath;
+                    opt.SignedOutCallbackPath = identityServerOpts.SignOutCallbackPath;
+                    opt.ResponseType = OpenIdConnectResponseType.Code;
+                    opt.SaveTokens = true;
+                    opt.UsePkce = true;
+                    opt.RequireHttpsMetadata = false; // disable for development only
+                    opt.MapInboundClaims = false; // fixed claim been renamed into the legacy name (xml schema)
 
-                // BFF requires claims based on supported scope from identity server
-                opt.Scope.Add(OpenIdConnectScope.OpenId);
-                opt.Scope.Add(OpenIdConnectScope.Profile);
-                opt.Scope.Add(OpenIdConnectScope.Email);
-                opt.Scope.Add(OpenIdConnectScope.OfflineAccess);
-                opt.Scope.Add(identityServerOpts.ApiScope);
-            });
+                    // BFF requires claims based on supported scope from identity server
+                    opt.Scope.Add(OpenIdConnectScope.OpenId);
+                    opt.Scope.Add(OpenIdConnectScope.Profile);
+                    opt.Scope.Add(OpenIdConnectScope.Email);
+                    opt.Scope.Add(OpenIdConnectScope.OfflineAccess);
+                    opt.Scope.Add(identityServerOpts.ApiScope);
+
+                    // happens when id_token and access_token granted
+                    opt.Events = new OpenIdConnectEvents
+                    {
+                        OnTokenValidated = context =>
+                        {
+                            if (context.Properties != null)
+                            {
+                                context.Properties.IsPersistent = true;
+                                context.Properties.ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(AppCts.Auth.TokenTimeToLiveInMinutes);
+                            }
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
 
         // Add Authorization
         services.AddAuthorization();
@@ -76,18 +94,18 @@ public static class ServiceCollectionExtension
         SiteUrlsOption SiteUrls = services.BuildServiceProvider().GetRequiredService<IOptions<SiteUrlsOption>>().Value;
 
         services.AddCors(options =>
-        {
-            options.AddPolicy(AppCts.Policy.AdminSite, policy =>
-            {
-                if (SiteUrls.AdminUrls.Length > 0)
                 {
-                    policy.WithOrigins(SiteUrls.AdminUrls)
-                            .AllowAnyMethod()
-                            .AllowAnyHeader()
-                            .AllowCredentials();
-                }
-            });
-        });
+                    options.AddPolicy(AppCts.Policy.AdminSite, policy =>
+                    {
+                        if (SiteUrls.AdminUrls.Length > 0)
+                        {
+                            policy.WithOrigins(SiteUrls.AdminUrls)
+                                    .AllowAnyMethod()
+                                    .AllowAnyHeader()
+                                    .AllowCredentials();
+                        }
+                    });
+                });
 
         // Register Handlers
         RegisterAllFeatureHandlers(services);
@@ -103,23 +121,56 @@ public static class ServiceCollectionExtension
         string identityServerUrl = siteUrls.IdentityServer.Authority;
 
         services.AddReverseProxy()
+            .AddTransforms(context =>
+            {
+                // Decrypt the cookie schema
+                context.AddRequestTransform(async contextTransform =>
+                {
+                    string? accessToken = await contextTransform.HttpContext.GetTokenAsync("access_token");
+                    if (!string.IsNullOrWhiteSpace(accessToken))
+                    {
+                        // attach bearer token to subsequent request
+                        contextTransform.ProxyRequest.Headers.Authorization = new AuthenticationHeaderValue(
+                            "Bearer", accessToken
+                        );
+                    }
+                });
+            })
             .LoadFromMemory(
                 routes: [
                     new RouteConfig() {
-                        RouteId = "identity-route",
+                        RouteId = "admin-identity-route",
                         ClusterId = "identity-cluster",
                         Match = new RouteMatch() {
                             Methods = ["GET", "POST", "PUT", "DELETE", "PATCH"],
-                            Path = "/api/customers/{**catch-all}"
+                            Path = "/api/admin/customers/{**catch-all}"
                         }
                     },
 
                     new RouteConfig() {
-                        RouteId = "api-route",
+                        RouteId = "admin-api-route",
                         ClusterId = "api-cluster",
                         Match = new RouteMatch() {
                             Methods = ["GET", "POST", "PUT", "DELETE", "PATCH"],
-                            Path = "/api/{**catch-all}" // catch all request with /api/products, /api/categories,..
+                            Path = "/api/admin/{**catch-all}" // catch all request with /api/admin/products, /api/admin/categories,..
+                        }
+                    },
+
+                    new RouteConfig() {
+                        RouteId = "customer-api-route",
+                        ClusterId = "api-cluster",
+                        Match = new RouteMatch() {
+                            Methods = ["GET", "POST", "PUT", "PATCH"], // do not allow delete in any cases
+                            Path = "/api/customer/{**catch-all}"
+                        }
+                    },
+
+                    new RouteConfig() {
+                        RouteId = "all-api-route",
+                        ClusterId = "api-cluster",
+                        Match = new RouteMatch() {
+                            Methods = ["GET"],
+                            Path = "/api/all/{**catch-all}" // Only allow views for public api
                         }
                     },
                 ],

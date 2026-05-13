@@ -1,25 +1,24 @@
 import { baseApiSlice } from "@/lib/api/base.api";
 import { GetCategories, GetCategoryById, CreateCategory, UpdateCategory } from "./category.types";
-import { APP_ROUTES } from "@/lib/api/routes";
 
 export const categoryApiSlice = baseApiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getCategories: builder.query<GetCategories.Response, GetCategories.Request>({
             query: (params) => ({
-                url: APP_ROUTES.CATEGORIES,
+                url: "admin/categories",
                 params
             }),
             providesTags: ['Category'],
         }),
         getCategoryById: builder.query<GetCategoryById.Response, string>({
             query: (id) => ({
-                url: `${APP_ROUTES.CATEGORIES}/${id}`,
+                url: `admin/categories/${id}`,
             }),
             providesTags: ['Category'],
         }),
         createCategory: builder.mutation<CreateCategory.Response, CreateCategory.Request>({
             query: (body) => ({
-                url: APP_ROUTES.CATEGORIES,
+                url: "admin/categories",
                 method: 'POST',
                 body,
             }),
@@ -27,7 +26,7 @@ export const categoryApiSlice = baseApiSlice.injectEndpoints({
         }),
         updateCategory: builder.mutation<UpdateCategory.Response, UpdateCategory.Request>({
             query: ({ id, body }) => ({
-                url: `${APP_ROUTES.CATEGORIES}/${id}`,
+                url: `admin/categories/${id}`,
                 method: 'PUT',
                 body,
             }),
@@ -35,7 +34,7 @@ export const categoryApiSlice = baseApiSlice.injectEndpoints({
         }),
         deleteCategory: builder.mutation<void, string>({
             query: (id) => ({
-                url: `${APP_ROUTES.CATEGORIES}/${id}`,
+                url: `admin/categories/${id}`,
                 method: 'DELETE',
             }),
             invalidatesTags: ['Category'],

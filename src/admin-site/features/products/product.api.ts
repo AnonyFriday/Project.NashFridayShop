@@ -5,31 +5,29 @@ export const productApiSlice = baseApiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getProducts: builder.query<GetProducts.Response, GetProducts.Request>({
             query: (params) => ({
-                url: "products",
+                url: "admin/products",
                 params,
             }),
             providesTags: ['Product'],
-            keepUnusedDataFor: 0,
         }),
         getProductById: builder.query<GetProductById.Response, GetProductById.Request>({
-            query: ({ id, includeDeleted = false }) => ({
-                url: `products/${id}`,
+            query: ({ id, includeDeleted = true }) => ({
+                url: `admin/products/${id}`,
                 params: { IncludeDeleted: includeDeleted },
             }),
             providesTags: ['Product'],
-            keepUnusedDataFor: 0,
         }),
         createProduct: builder.mutation<CreateProduct.Response, CreateProduct.Request>({
             query: (body) => ({
-                url: "products",
+                url: "admin/products",
                 method: 'POST',
                 body,
             }),
             invalidatesTags: ['Product'],
         }),
         updateProduct: builder.mutation<UpdateProduct.Response, UpdateProduct.Request>({
-            query: ({ id, body, includeDeleted = false }) => ({
-                url: `products/${id}`,
+            query: ({ id, body, includeDeleted = true }) => ({
+                url: `admin/products/${id}`,
                 method: 'PUT',
                 params: { includeDeleted },
                 body,
@@ -37,11 +35,11 @@ export const productApiSlice = baseApiSlice.injectEndpoints({
             invalidatesTags: ['Product'],
         }),
         updateProductImage: builder.mutation<UpdateProductImage.Response, UpdateProductImage.Request>({
-            query: ({ productId, imageFile, includeDeleted = false }) => {
+            query: ({ productId, imageFile, includeDeleted = true }) => {
                 const formData = new FormData();
                 formData.append('imageFile', imageFile);
                 return {
-                    url: `products/${productId}/image`,
+                    url: `admin/products/${productId}/image`,
                     method: 'PATCH',
                     params: { includeDeleted },
                     body: formData,
@@ -51,7 +49,7 @@ export const productApiSlice = baseApiSlice.injectEndpoints({
         }),
         deleteProduct: builder.mutation<void, string>({
             query: (id) => ({
-                url: `products/${id}`,
+                url: `admin/products/${id}`,
                 method: 'PATCH',
             }),
             invalidatesTags: ['Product'],

@@ -1,18 +1,23 @@
 using System.Net;
 using System.Security.Claims;
 using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using NashFridayStore.IdentityServer.AppOptions;
 using NashFridayStore.IdentityServer.Domain;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
 
 namespace NashFridayStore.IdentityServer.Features.Connect.Authorize;
 
+[AllowAnonymous]
 [ApiController]
 [Route("/connect/authorize")]
 public class Endpoint(
-    UserManager<ApplicationUser> userManager
+    UserManager<ApplicationUser> userManager,
+    IOptions<SiteUrlsOption> options
 ) : ControllerBase
 {
     [HttpGet]
@@ -69,7 +74,7 @@ public class Endpoint(
             );
         }
 
-        // If BFF requires scope Profile = Role + username
+        // If BFF requires scope Profile = Role + username + fullname + phone
         if (request.HasScope(
            OpenIddictConstants.Scopes.Profile))
         {
@@ -82,6 +87,29 @@ public class Endpoint(
                     OpenIddictConstants.Destinations.IdentityToken
                 )
             );
+
+            identity.AddClaim(
+                new Claim(
+                    OpenIddictConstants.Claims.Name,
+                    user.FullName ?? string.Empty
+                )
+                .SetDestinations(
+                    OpenIddictConstants.Destinations.IdentityToken
+                )
+            );
+
+            if (!string.IsNullOrEmpty(user.AvatarUrl))
+            {
+                identity.AddClaim(
+                    new Claim(
+                        OpenIddictConstants.Claims.Picture,
+                        user.AvatarUrl
+                    )
+                    .SetDestinations(
+                        OpenIddictConstants.Destinations.IdentityToken
+                    )
+                );
+            }
 
             identity.AddClaim(
                 new Claim(
@@ -117,6 +145,7 @@ public class Endpoint(
 
         var principal = new ClaimsPrincipal(identity);
         principal.SetScopes(request.GetScopes());
+        principal.SetResources(options.Value.Bff.ApiServerAudience);
 
         // OpenIddict will issue a token
         return SignIn(principal, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);

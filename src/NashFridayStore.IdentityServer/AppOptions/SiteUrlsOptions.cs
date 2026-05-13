@@ -6,6 +6,8 @@ public sealed record SiteUrlsOption
 {
     public const string SiteUrls = "SiteUrls";
 
+    public string IdentityServerUrl { get; init; } = string.Empty;
+
     public BffOptions Bff { get; init; } = new();
 
     public OidcDebuggerOptions OidcDebugger { get; init; } = new();
@@ -47,4 +49,7 @@ public sealed record BffOptions
 
     [Required]
     public string ApiScope { get; init; } = string.Empty;
+
+    [Required]
+    public string ApiServerAudience { get; init; } = string.Empty;
 }

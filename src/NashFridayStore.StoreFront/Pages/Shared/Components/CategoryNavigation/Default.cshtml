@@ -1,0 +1,53 @@
+@model CategoryNavigationResponseVM
+
+<style>
+    @@keyframes marquee {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+        animation: marquee 30s linear infinite;
+        display: flex;
+        flex-direction: row;
+        width: max-content;
+    }
+    .animate-marquee:hover {
+        animation-play-state: paused;
+    }
+    /* Hide scrollbar for a cleaner look */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style>
+
+<div class="bg-base-100 py-2 shadow-sm overflow-hidden whitespace-nowrap relative w-full no-scrollbar">
+    <div class="animate-marquee hover:cursor-pointer">
+        @if (Model.Categories.Any())
+        {
+            <!-- Render the list twice to create a looping -->
+            @for (int i = 0; i < 2; i++)
+            {
+                <ul class="flex px-4 font-bold text-[11px] uppercase tracking-[0.25em] gap-8 md:gap-16 shrink-0 items-center border-r border-transparent">
+                    @foreach (var category in Model.Categories)
+                    {
+                        <li>
+                            <a asp-page="/Products/Index" asp-route-CategoryId="@category.Id" class="hover:text-primary transition-colors text-base-content whitespace-nowrap">
+                                @category.Name
+                            </a>
+                        </li>
+                    }
+                </ul>
+            }
+        }
+        else
+        {
+            <div class="w-full text-center text-[10px] text-base-content/50 uppercase tracking-widest py-1">
+                No categories available
+            </div>
+        }
+    </div>
+</div>

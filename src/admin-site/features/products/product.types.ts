@@ -23,6 +23,19 @@ export namespace ProductStatus {
     }
 }
 
+export enum ProductSortBy {
+    Newest = "Newest",
+    Oldest = "Oldest",
+    PriceAsc = "PriceAsc",
+    PriceDesc = "PriceDesc",
+    NameAsc = "NameAsc",
+    NameDesc = "NameDesc",
+    QuantityAsc = "QuantityAsc",
+    QuantityDesc = "QuantityDesc",
+    RatingAsc = "RatingAsc",
+    RatingDesc = "RatingDesc"
+}
+
 // === APIs
 
 export namespace GetProducts {
@@ -33,12 +46,14 @@ export namespace GetProducts {
         minPrice?: number
         maxPrice?: number
         status?: ProductStatus
+        sortBy?: ProductSortBy
         includeDeleted?: boolean
     }
 
     export interface Item {
         id: string
         name: string
+        categoryName: string
         imageUrl: string
         priceUsd: number
         status: ProductStatus
@@ -56,7 +71,7 @@ export namespace GetProductById {
         includeDeleted?: boolean;
     }
 
-    export type Response = {
+    export interface Response {
         description: string;
         categoryId: string;
         categoryName?: string;

@@ -7,6 +7,10 @@ using NashFridayStore.Infrastructure.AppOptions;
 using NashFridayStore.Infrastructure.Interfaces;
 using NashFridayStore.Infrastructure.Services;
 using Google.Cloud.Storage.V1;
+using StackExchange.Redis;
+using Microsoft.CodeAnalysis.Options;
+using Stripe;
+using NashFridayStore.Infrastructure.Interfaces.Payment;
 
 namespace NashFridayStore.Infrastructure.Extensions;
 
@@ -21,19 +25,27 @@ public static class ServiceCollectionExtension
             .Bind(configuration.GetSection(ConnectionStringsOptions.ConnectionStrings))
             .ValidateOnStart();
 
-        services.AddOptions<SiteUrlsOption>()
-            .Bind(configuration.GetSection(SiteUrlsOption.SiteUrls))
+        services.AddOptions<SiteUrlsOptions>()
+            .Bind(configuration.GetSection(SiteUrlsOptions.SiteUrls))
             .ValidateOnStart();
 
         services.AddOptions<FirebaseOptions>()
             .Bind(configuration.GetSection(FirebaseOptions.Firebase))
             .ValidateOnStart();
 
+        services.AddOptions<StripeOptions>()
+            .Bind(configuration.GetSection(StripeOptions.Stripe))
+            .ValidateOnStart();
+
         // DbContext + SQL Server + Seeder
         services.AddDbContext<StoreDbContext>((sp, options) =>
         {
             ConnectionStringsOptions settings = sp.GetRequiredService<IOptions<ConnectionStringsOptions>>().Value;
-            options.UseSqlServer(settings.Database);
+            options.UseSqlServer(settings.Database, sqlOptions =>
+            {
+                // Splitting query by default on .Include() to avoid N + 1 queries
+                sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+            });
             options.UseSnakeCaseNamingConvention();
         });
         services.AddTransient<StoreDbContextSeeder>();
@@ -42,5 +54,22 @@ public static class ServiceCollectionExtension
         // - StorageClient is recommend as a singleton, not as a service
         services.AddScoped<IStorageService, FirebaseStorageService>();
         services.AddSingleton<StorageClient>(_ => StorageClient.Create());
+
+        // Redis + Cart
+        // - Connection Multiplexer must be singleton, designed as thread-safe and global reuse
+        services.AddSingleton<IConnectionMultiplexer>(sp =>
+        {
+            ConnectionStringsOptions settings = sp.GetRequiredService<IOptions<ConnectionStringsOptions>>().Value;
+            return ConnectionMultiplexer.Connect(settings.Caching);
+        });
+        services.AddScoped<ICartService, RedisCartService>();
+
+        // Stripe
+        services.AddSingleton(sp =>
+        {
+            StripeOptions settings = sp.GetRequiredService<IOptions<StripeOptions>>().Value;
+            return new StripeClient(settings.SecretKey);
+        });
+        services.AddScoped<ICheckoutService, StripeCheckoutService>();
     }
 }

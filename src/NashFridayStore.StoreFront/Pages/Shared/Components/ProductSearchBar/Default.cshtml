@@ -1,0 +1,52 @@
+@model ProductSearchBarResponseVM
+
+<div class="join shadow-sm relative group w-full">
+    <input asp-for="@Model.SearchName" type="search" placeholder="@Model.Placeholder"
+            hx-get="?handler=ProductSearchBar"
+            hx-target="#search-results-list"
+            hx-select="#search-results-list"
+            hx-trigger="input changed delay:500ms, search"
+            hx-swap="outerHTML"
+            class="input input-bordered join-item w-full min-w-50 lg:min-w-112.5 bg-base-100 border-base-300 focus:outline-none focus:border-primary peer" 
+            />
+    <button type="submit" class="btn btn-primary join-item px-6">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                class="w-5 h-5 text-primary-content">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                    d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+        </svg>
+    </button>
+    
+    @* Drop down will appear product here *@
+    <div id="search-results-list"
+        class="absolute top-full left-0 mt-2 w-full bg-base-100 rounded-box shadow-xl border border-base-200 hidden peer-focus:block hover:block z-80 overflow-hidden">
+        
+        @* Clean flex list for total control over hover area *@
+        <ul class="flex flex-col w-full">
+            @if (Model.Products.Any())
+            {
+                foreach (var product in Model.Products)
+                {
+                    <li class="w-full border-b border-base-200 last:border-none">
+                    <a asp-page="/Products/Details/Index" asp-route-ProductId="@product.Id" 
+                            class="flex items-center gap-4 py-3 px-4 hover:bg-base-200 transition-all w-full group">
+                            <img src="@(string.IsNullOrEmpty(product.ImageUrl) ? $"https://placehold.co/100x100/png?text={product.Name.Replace(" ", "+")}" : product.ImageUrl)" 
+                                    alt="@product.Name" 
+                                    class="w-12 h-12 rounded object-cover shadow-sm group-hover:scale-105 transition-transform duration-300" />
+                            <div class="flex flex-col">
+                                <span class="font-bold text-base-content text-sm group-hover:text-primary transition-colors">@product.Name</span>
+                                <span class="text-xs text-base-content/60 italic">@product.CategoryName</span>
+                            </div>
+                        </a>
+                    </li>
+                }
+            }
+            else
+            {
+                <li class="p-8 text-center text-sm text-base-content/50 italic">
+                    No products found for "@Model.SearchName"
+                </li>
+            }
+        </ul>
+    </div>
+</div>

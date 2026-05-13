@@ -7,17 +7,37 @@ public static class AppCts
         public const string Testing = "Testing";
     }
 
+    public static class Currency
+    {
+        public const string Usd = "USD";
+    }
+
     public static class Api
     {
-        public const int MaxStars = 10;
+        public const int MaxStars = 5;
         public const int MinStars = 1;
         public const int PageSize = 10;
         public const int PageIndex = 0;
+        public const int ThresholdForNewProduct = 7;
+    }
+
+    public static class Cart
+    {
+        public const int CartimeToLiveInMinutes = 60;
     }
 
     public static class Policy
     {
         public const string AdminSite = "AdminSitePolicy";
+    }
+
+    public static class Identity
+    {
+        public static class Roles
+        {
+            public const string Admin = "Admin";
+            public const string Customer = "Customer";
+        }
     }
 
     public static class ProblemDetailsTypes

@@ -6,4 +6,10 @@ public static class AppCts
     {
         public const string AdminSite = "AdminSitePolicy";
     }
+
+    public static class Auth
+    {
+        public const int TokenTimeToLiveInMinutes = 60;
+        public const int CookieTimeToLiveInMinutes = 60;
+    }
 }

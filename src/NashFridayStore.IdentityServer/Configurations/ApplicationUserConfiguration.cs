@@ -17,6 +17,14 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
                 .IsRequired()
                 .HasMaxLength(100);
 
+        builder.Property(x => x.FullName)
+                .IsRequired()
+                .HasMaxLength(150);
+
+        builder.Property(x => x.AvatarUrl)
+                .IsRequired(false)
+                .HasMaxLength(500);
+
         builder.Property(x => x.Address)
                 .IsRequired(false)
                 .HasMaxLength(300);

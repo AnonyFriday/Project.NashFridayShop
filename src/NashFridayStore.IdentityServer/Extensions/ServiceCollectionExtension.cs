@@ -1,12 +1,17 @@
 using System.Reflection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NashFridayStore.IdentityServer.AppOptions;
+using NashFridayStore.IdentityServer.Commons;
+using NashFridayStore.IdentityServer.Commons.Exceptions;
+using NashFridayStore.IdentityServer.ExceptionHandlers;
 using NashFridayStore.IdentityServer.Data;
 using NashFridayStore.IdentityServer.Domain;
 using OpenIddict.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NashFridayStore.IdentityServer.Extensions;
 
@@ -14,6 +19,8 @@ public static class ServiceCollectionExtension
 {
     public static void AddServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddHttpContextAccessor();
+
         // Settings at appsettings.json
         services.AddOptions<ConnectionStringsOptions>()
             .Bind(configuration.GetSection(ConnectionStringsOptions.ConnectionStrings))
@@ -40,6 +47,58 @@ public static class ServiceCollectionExtension
                 .AddEntityFrameworkStores<IdentityServerDbContext>()
                 .AddDefaultTokenProviders();
 
+        // Add JwtBearer Token Handler for Admin API endpoints
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer();
+
+        services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme)
+            .Configure<IOptions<SiteUrlsOption>>((opt, siteUrlsOtp) =>
+            {
+                SiteUrlsOption settings = siteUrlsOtp.Value;
+
+                opt.Authority = settings.IdentityServerUrl;
+                opt.Audience = settings.Bff.ApiServerAudience;
+
+                opt.RequireHttpsMetadata = false;
+                opt.MapInboundClaims = false;
+
+                opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateAudience = true,
+                    NameClaimType = "name",
+                    RoleClaimType = "role"
+                };
+
+                opt.Events = new JwtBearerEvents
+                {
+                    OnChallenge = context =>
+                    {
+                        context.HandleResponse(); // skip default response and let me throw via exception handler
+                        throw new UnauthorizedException();
+                    },
+
+                    OnForbidden = context =>
+                    {
+                        throw new ForbiddenException();
+                    }
+                };
+            });
+        services.AddAuthorization(options =>
+        {
+            // cannot override the default policy as JWT Bearer since the Login currently using cookie
+            // create a explicit policy for endpoints that resolve JWT token via [Authorize]
+            options.AddPolicy(AppCts.Identity.Auth.AdminPolicy, policy =>
+            {
+                policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
+                policy.RequireAuthenticatedUser();
+            });
+        });
+
+        // Exception Handler
+        services.AddProblemDetails();
+        services.AddExceptionHandler<GeneralExceptionHandler>();
+        services.AddExceptionHandler<InternalServerErrorExceptionHandler>();
+
         // Configure Cookies for Authentication
         services.ConfigureApplicationCookie(opt =>
         {
@@ -48,6 +107,7 @@ public static class ServiceCollectionExtension
             opt.Cookie.SameSite = SameSiteMode.Lax;
             opt.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             opt.LoginPath = "/Account/Login";
+            opt.ExpireTimeSpan = TimeSpan.FromMinutes(AppCts.Identity.Auth.CookieTimeToLiveInMinutes);
         });
 
         // Add OpenIddict

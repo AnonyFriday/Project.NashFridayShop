@@ -1,0 +1,98 @@
+@using NashFridayStore.StoreFront.Commons
+@using NashFridayStore.StoreFront.Services.Identity
+@inject IAccountApiClient AccountApiClient
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var path = HttpContextAccessor.HttpContext?.Request.Path.Value;
+    var query = HttpContextAccessor.HttpContext?.Request.QueryString.Value;
+
+    string returnUrl = $"{path}{query}";
+    
+    bool isAuthenticated = User.Identity != null &&
+                           User.Identity.AuthenticationType == AppCts.Identity.AuthenticationType &&
+                           User.Identity.IsAuthenticated;
+}
+
+<header class="sticky top-0 z-50 bg-base-100 shadow-sm">
+    <!-- Top Row: Logo, Search, Icons -->
+    <div class="navbar border-b border-base-200">
+        <div class="navbar-start p-4">
+            <a asp-page="/Index" class="hover:opacity-80 transition-opacity">
+                <img src="~/images/nashfridayshop_logo.svg" alt="NashFriday Store" class="h-10 w-auto max-w-full" />
+            </a>
+        </div>
+
+        <!-- Center: Search Bar -->
+        <div class="navbar-center hidden md:flex px-4 relative z-50">
+            <vc:product-search-bar></vc:product-search-bar>
+        </div>
+    
+        <!-- Right: Icons & Auth -->
+        <div class="navbar-end gap-2 md:gap-4 md:w-[30%] justify-end">
+
+            <!-- Cart Dropdown -->
+            @if (isAuthenticated)
+            {
+                @* At a trigger event named cart-updated here, whenever header contains cart-updated, it return the contain again *@
+                @* Listening anyone trigger from the body element go downs *@
+                <div id="navbar-cart" 
+                     class="dropdown dropdown-end"
+                     hx-get="?handler=CartStatus"
+                     hx-trigger="cart-updated from:body" 
+                     hx-swap="innerHTML">
+                    <partial name="PartialViews/Navbar/_CartStatus" />
+                </div>
+            }
+
+            <div class="h-6 w-px bg-base-content/10 hidden sm:block"></div>
+
+            @* Login/Logout/Register/UserProfile dropdown *@
+            @if (isAuthenticated)
+            {
+                <div class="dropdown dropdown-end">
+                    <div tabindex="0" role="button"
+                         class="btn btn-ghost btn-circle text-base-content/70 hover:text-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                             stroke="currentColor" class="w-7 h-7">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        </svg>
+                    </div>
+                    <ul tabindex="0"
+                        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow-xl border border-base-200 font-bold uppercase text-[10px] tracking-widest text-base-content">
+                        <li>
+                            <a href="/Profile" class="justify-between py-3 hover:text-primary">
+                                Profile
+                                <span
+                                class="badge badge-primary badge-sm text-[8px] text-primary-content border-none">New</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Orders" class="py-3 hover:text-primary">
+                                My Orders
+                            </a>
+                        </li>
+                        <li>
+                            <form action="@AccountApiClient.GetLogoutRedirectAddress(returnUrl)" method="post">
+                                <button type="submit" class="w-full text-left py-3 text-error hover:text-error/80">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            }
+            else
+            {
+                <div class="flex items-center gap-1">
+                    <a href="@AccountApiClient.GetLoginRedirectAddress(returnUrl)"
+                       class="btn btn-ghost btn-sm font-black uppercase text-[10px] tracking-widest text-base-content/70 hover:text-primary">Login</a>
+                    <a href="@AccountApiClient.GetRegisterRedirectAddress(returnUrl)"
+                       class="btn btn-primary btn-sm rounded-full px-6 font-black uppercase text-[10px] tracking-widest text-primary-content">Register</a>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Bottom Row View Component -->
+    <vc:category-navigation></vc:category-navigation>
+</header>

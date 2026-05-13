@@ -1,0 +1,26 @@
+@page
+@{
+    ViewData["Title"] = "Something went wrong";
+}
+
+<div class="min-h-[70vh] flex flex-col items-center justify-center px-4 text-center">
+    <div class="bg-error/10 w-24 h-24 rounded-full flex items-center justify-center mb-8">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 text-error">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+        </svg>
+    </div>
+
+    <h1 class="text-5xl font-black mb-4 tracking-tight">Oops! Something broke.</h1>
+    <p class="text-xl text-base-content/60 max-w-lg mb-10">
+        Our server had a bit of a "Friday moment" and couldn't process that request. We're already looking into it!
+    </p>
+
+    <div class="flex flex-wrap gap-4 justify-center">
+        <button onclick="window.location.reload()" class="btn btn-primary rounded-full px-8 font-black uppercase tracking-widest">
+            Try Again
+        </button>
+        <a asp-page="/Index" class="btn btn-ghost rounded-full px-8 font-black uppercase tracking-widest">
+            Back to Home
+        </a>
+    </div>
+</div>

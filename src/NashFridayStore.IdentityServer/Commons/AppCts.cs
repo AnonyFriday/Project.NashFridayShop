@@ -9,6 +9,12 @@ public static class AppCts
             public const string Admin = "Admin";
             public const string Customer = "Customer";
         }
+
+        public static class Auth
+        {
+            public const string AdminPolicy = "AdminJwtPolicy";
+            public const int CookieTimeToLiveInMinutes = 60;
+        }
     }
 
     public static class Api

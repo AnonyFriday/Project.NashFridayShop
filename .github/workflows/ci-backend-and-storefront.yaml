@@ -51,6 +51,7 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: "**/coverage.cobertura.xml"
+          flags: unit
           fail_ci_if_error: true
 
   integration-tests:
@@ -80,4 +81,5 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: "**/coverage.cobertura.xml"
+          flags: integration # add flag to seperate unit test and integration test code coverage
           fail_ci_if_error: true

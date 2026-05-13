@@ -8,6 +8,7 @@ import { ActionGroupInDataTable, ViewButton, DeleteButton } from "@/features/sha
 import { GetCustomers } from "@/features/customers/customer.types";
 import SearchInput from "@/features/shared/components/SearchInput";
 import ToggleInput from "@/features/shared/components/ToggleInput";
+import Image from "next/image";
 import ArchiveStatusBadge from "@/features/shared/components/ArchiveStatusBadge";
 import { CustomerCreatedAtHelper } from "@/features/customers/customer.helper";
 
@@ -26,6 +27,21 @@ export default function CustomersPage() {
 
   const columns: ColumnDef<GetCustomers.Item>[] = [
     {
+      key: "imageUrl",
+      header: "Image",
+      render: (customer) => (
+        <div className="avatar">
+          <div className="w-12 h-12 rounded-lg bg-base-200">
+            {customer.avatarUrl ? (
+              <Image src={customer.avatarUrl} alt={customer.fullName} width={48} height={48} className="object-cover" />
+            ) : (
+              <span className="flex items-center justify-center w-full h-full text-base-content/40">No Img</span>
+            )}
+          </div>
+        </div>
+      ),
+    },
+    {
       key: "fullName",
       header: "Full Name",
       render: (customer) => <span className="font-medium text-base-content">{customer.fullName}</span>,
@@ -39,8 +55,8 @@ export default function CustomersPage() {
       key: "address",
       header: "Address",
       render: (customer) => (
-        <div className="min-w-[200px]">
-          <span className="text-sm text-base-content/70 line-clamp-2 break-words">{customer.address}</span>
+        <div className="min-w-50">
+          <span className="text-sm text-base-content/70 line-clamp-2 wrap-break-word">{customer.address}</span>
         </div>
       ),
     },
