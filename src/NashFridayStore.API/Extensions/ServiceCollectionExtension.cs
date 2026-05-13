@@ -15,6 +15,12 @@ public static class ServiceCollectionExtension
 {
     public static void AddApiServices(this IServiceCollection serviceCollection)
     {
+        // Add Scalar API Documentation
+        serviceCollection.AddOpenApi(opt =>
+        {
+            opt.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
+        });
+
         // Context 
         serviceCollection.AddHttpContextAccessor();
 

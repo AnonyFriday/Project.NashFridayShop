@@ -2,6 +2,7 @@ using NashFridayStore.API.Extensions;
 using NashFridayStore.Domain.Commons;
 using NashFridayStore.Infrastructure.Data;
 using NashFridayStore.Infrastructure.Extensions;
+using Scalar.AspNetCore;
 
 // Configure services
 
@@ -19,6 +20,13 @@ app.UseExceptionHandler();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference("/docs", opt =>
+    {
+        opt
+            .WithTitle("API Server - API Documentation")
+            .ForceDarkMode()
+            .SortTagsAlphabetically();
+    });
 
     using IServiceScope scope = app.Services.CreateScope();
     StoreDbContextSeeder seeder = scope.ServiceProvider.GetRequiredService<StoreDbContextSeeder>();

@@ -9,7 +9,15 @@ namespace NashFridayStore.API.Features.Admin.Categories.CreateCategory;
 [Route("api/admin/categories")]
 public sealed class Endpoint(Handler handler) : ControllerBase
 {
+    /// <summary>
+    /// Create a new category
+    /// </summary>
     [HttpPost]
+    [Tags("Admin - Categories")]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> Create(
         [FromBody] Request request,
         CancellationToken ct)

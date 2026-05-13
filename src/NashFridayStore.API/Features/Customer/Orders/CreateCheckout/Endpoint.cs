@@ -9,11 +9,20 @@ namespace NashFridayStore.API.Features.Customer.Orders.CreateCheckout;
 [Route("api/customer/orders/checkout")]
 public sealed class Endpoint(Handler handler) : ControllerBase
 {
+    /// <summary>
+    /// Create a checkout session for payment
+    /// </summary>
     [HttpPost]
-    public async Task<Response> Post(
+    [Tags("Customer - Orders")]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<IActionResult> Post(
         [FromBody] Request request,
         CancellationToken cancellationToken)
     {
-        return await handler.HandleAsync(request, cancellationToken);
+        Response response = await handler.HandleAsync(request, cancellationToken);
+        return Ok(response);
     }
 }

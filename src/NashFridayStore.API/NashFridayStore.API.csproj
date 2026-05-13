@@ -9,6 +9,7 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
     <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Scalar.AspNetCore" />
   </ItemGroup>
  
   <ItemGroup>
