@@ -4,18 +4,62 @@
 
 ## Techstack
 
-- **🔧 Backend**: .NET 10 (ASP.NET Core Web Api, Entity Framework Core, FluentValidation)
-- **🌐 Frontend**: Next.js (Admin Site), ASP.NET Razor Pages (StoreFront), HTMX
-- **🧩 BFF**: OIDC client, YARP Reverse Proxy, Cookie-based authentication
-- **🔐 Identity**: OpenIddict, Authorization Code Flow + PKCE
-- **🗄️ Database**: SQL Server
-- **🏗️ Architecture**: Vertical Slice Architecture
-- **🧪 Testing**: xUnit, Coverlet
-- **🛠️ Tooling**: Directory.Packages.props, Directory.Build.props, docker-compose.yaml
-- **🔧 API Docs**: Scalar
-- **📊 Dashboard**: Metabase
-- **🎪 Payment**: Stripe
-- **🛒 Cart**: Redis, RedisInsight
+- **Backend**: .NET 10 (ASP.NET Core Web Api, Entity Framework Core, FluentValidation)
+- **Frontend**: Next.js (Admin Site), ASP.NET Razor Pages (StoreFront), HTMX
+- **BFF**: OIDC client, YARP Reverse Proxy, Cookie-based authentication
+- **Identity**: OpenIddict, Authorization Code Flow + PKCE
+- **Database**: SQL Server
+- **Architecture**: Vertical Slice Architecture
+- **Testing**: xUnit, Coverlet
+- **Tooling**: Directory.Packages.props, Directory.Build.props, docker-compose.yaml
+- **API Docs**: Scalar
+- **Dashboard**: Metabase
+- **Payment**: Stripe
+- **Cart**: Redis, RedisInsight
+
+## Project Scope & Features
+
+For customers:
+
+- Home page: category menu, features products
+- View products by category
+- View product details
+- Product rating:
+  - Test: Classic Denim Yacket
+  - Extra:
+    - View ratings
+    - Post rating + comment (1 loggedin account can do it only one)
+- Register
+- Login/Logout
+- Optional (shopping cart, ordering, IdentityServer)
+- Extra:
+  - New Product (created date < 7)
+  - Payment
+  - Order Refund: demo order refund via stripe
+  - Order Delivered
+
+For admin:
+
+- Login/logout
+- Manage product categories (Name, Description): CRU
+- Manage products (Name, Category, Description, Price, Images, CreatedDate, UpdatedDate): CRUD
+- View customers: R
+- Extra: - Order Mangement: Get All, View, delivery (signalR – Server Send End) - Dashboard - Export PDF: - Export PDF Dashboard - top 10 products having highest average rating - top 10 products purchased the most - top 10 customer spending the most money on the products
+  Test:
+- Unit Testing
+- Extra:
+  - Integration Testing
+  - Performance Testing
+
+API Documentation
+
+Extra:
+
+- CI on FE, CI on BE
+- Google Cloud Storage
+- Stripe
+- Metabase
+- Redis Insight
 
 ## Current Supporting APIs
 
