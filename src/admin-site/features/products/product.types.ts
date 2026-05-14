@@ -60,6 +60,8 @@ export namespace GetProducts {
         averageStars: number
         quantity: number
         isDeleted: boolean
+        createdAtUtc: string
+        updatedAtUtc?: string
     }
 
     export interface Response extends PaginationResponse<Item> { }
