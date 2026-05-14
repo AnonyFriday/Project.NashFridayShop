@@ -46,38 +46,39 @@
 | **BFF**             | `/api/auth/login`                        | GET      | Start login from React → IdentityServer                 | ✅ Completed          | ❌ None   |
 | **BFF**             | `/api/auth/me`                           | GET      | Get current user info & claims                          | ✅ Completed          | ❌ None   |
 | **BFF**             | `/api/auth/logout`                       | POST     | Logout BFF session + Identity session                   | ✅ Completed          | ❌ None   |
+| **BFF**             | `/api/auth/register`                     | GET      | Redirect to IdentityServer registration                 | ✅ Completed          | ❌ None   |
 | **BFF**             | `/signin-oidc`                           | GET      | OIDC callback endpoint (middleware handled)             | ✅ Middleware handled | ❌ None   |
 | **BFF**             | `/dev/auth/tokens`(Dev Only)             | GET      | Return access_token, id_token, refresh_token            | ✅ Completed          | ❌ None   |
 | **BFF**             | `/api/{**catch-all}`                     | ALL      | Reverse proxy Customer-site + Admin-site requests → API | ✅ Completed          | ❌ None   |
 
 ## Current Supporting Pages In Admin, Customer and Identity Server
 
-| Layer               | Endpoint                 | Method   | Description                    | Status             |
-| ------------------- | ------------------------ | -------- | ------------------------------ | ------------------ |
-| **Admin Site**      | `/dashboard`             | GET      | Admin overview & statistics    | ✅ Completed       |
-| **Admin Site**      | `/products`              | GET      | Product management list        | ✅ Completed       |
-| **Admin Site**      | `/products/new`          | GET      | Create new product page        | ✅ Completed       |
-| **Admin Site**      | `/products/[id]`         | GET      | Edit product details page      | ✅ Completed       |
-| **Admin Site**      | `/categories`            | GET      | Category management list       | ✅ Completed       |
-| **Admin Site**      | `/categories/new`        | GET      | Create new category page       | ✅ Completed       |
-| **Admin Site**      | `/categories/[id]`       | GET      | Edit category details page     | ✅ Completed       |
-| **Admin Site**      | `/customers`             | GET      | Customer management list       | ✅ Completed       |
-| **Admin Site**      | `/orders`                | GET      | Order management list          | ✅ Completed       |
-| **Admin Site**      | `/orders/[id]`           | GET      | Order details page             | ✅ Completed       |
-| **Admin Site**      | `[...slug]`              | ALL      | Global 404 Routing             | ✅ Completed       |
-| **StoreFront**      | `/`                      | GET      | Home Page (Top Rated Products) | ✅ Completed       |
-| **StoreFront**      | `/Products`              | GET      | Product Search & Filter Page   | ✅ Completed       |
-| **StoreFront**      | `/Products/Details/{id}` | GET      | Product Details Page           | ✅ Completed       |
-| **StoreFront**      | `/Cart`                  | GET      | Shopping Cart Page             | ✅ Completed       |
-| **StoreFront**      | `/Orders`                | GET      | My Orders History Page         | ✅ Completed       |
-| **StoreFront**      | `/Profile`               | GET      | User Profile & Account Details | ✅ Completed       |
-| **StoreFront**      | `/Checkout`              | GET/POST | Checkout Page (Form + Summary) | ✅ Completed       |
-| **StoreFront**      | `/Checkout/Success`      | GET      | Order Success Confirmation     | ✅ Completed       |
-| **StoreFront**      | `/Errors/{code}`         | GET      | Global Error Pages (404, 500)  | ✅ Completed       |
-| **Identity Server** | `/Account/Login`         | GET      | Render Razor login page        | ✅ Completed       |
-| **Identity Server** | `/Account/Login`         | POST     | Submit login credentials       | ✅ Completed       |
-| **Identity Server** | `/Account/Register`      | GET      | Render registration page       | ❌ Not implemented |
-| **Identity Server** | `/Account/Register`      | POST     | Submit registration form       | ❌ Not implemented |
+| Layer               | Endpoint                 | Method   | Description                    | Status       |
+| ------------------- | ------------------------ | -------- | ------------------------------ | ------------ |
+| **Admin Site**      | `/dashboard`             | GET      | Admin overview & statistics    | ✅ Completed |
+| **Admin Site**      | `/products`              | GET      | Product management list        | ✅ Completed |
+| **Admin Site**      | `/products/new`          | GET      | Create new product page        | ✅ Completed |
+| **Admin Site**      | `/products/[id]`         | GET      | Edit product details page      | ✅ Completed |
+| **Admin Site**      | `/categories`            | GET      | Category management list       | ✅ Completed |
+| **Admin Site**      | `/categories/new`        | GET      | Create new category page       | ✅ Completed |
+| **Admin Site**      | `/categories/[id]`       | GET      | Edit category details page     | ✅ Completed |
+| **Admin Site**      | `/customers`             | GET      | Customer management list       | ✅ Completed |
+| **Admin Site**      | `/orders`                | GET      | Order management list          | ✅ Completed |
+| **Admin Site**      | `/orders/[id]`           | GET      | Order details page             | ✅ Completed |
+| **Admin Site**      | `[...slug]`              | ALL      | Global 404 Routing             | ✅ Completed |
+| **StoreFront**      | `/`                      | GET      | Home Page (Top Rated Products) | ✅ Completed |
+| **StoreFront**      | `/Products`              | GET      | Product Search & Filter Page   | ✅ Completed |
+| **StoreFront**      | `/Products/Details/{id}` | GET      | Product Details Page           | ✅ Completed |
+| **StoreFront**      | `/Cart`                  | GET      | Shopping Cart Page             | ✅ Completed |
+| **StoreFront**      | `/Orders`                | GET      | My Orders History Page         | ✅ Completed |
+| **StoreFront**      | `/Profile`               | GET      | User Profile & Account Details | ✅ Completed |
+| **StoreFront**      | `/Checkout`              | GET/POST | Checkout Page (Form + Summary) | ✅ Completed |
+| **StoreFront**      | `/Checkout/Success`      | GET      | Order Success Confirmation     | ✅ Completed |
+| **StoreFront**      | `/Errors/{code}`         | GET      | Global Error Pages (404, 500)  | ✅ Completed |
+| **Identity Server** | `/Account/Login`         | GET      | Render Razor login page        | ✅ Completed |
+| **Identity Server** | `/Account/Login`         | POST     | Submit login credentials       | ✅ Completed |
+| **Identity Server** | `/Account/Register`      | GET      | Render registration page       | ✅ Completed |
+| **Identity Server** | `/Account/Register`      | POST     | Submit registration form       | ✅ Completed |
 
 ## Architecture
 
@@ -86,9 +87,11 @@
 ## ERD (V1)
 
 ### Store Domain
+
 ![Store ERD](./images/erd_store.png)
 
 ### Identity Domain
+
 ![Identity ERD](./images/erd_identity.png)
 
 ## BFF + Reverse Proxy, Identity Server, API Server, Frontends communications
