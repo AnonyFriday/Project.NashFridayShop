@@ -56,14 +56,11 @@ public class Login(
             return Page();
         }
 
-        if (Url.IsLocalUrl(returnUrl))
+        if (!string.IsNullOrEmpty(returnUrl))
         {
-            // avoid https://your-bff.com/login?returnUrl=https://hacker-site.com
-            return LocalRedirect(returnUrl);
+            return Redirect(returnUrl);
         }
-        else
-        {
-            return RedirectToPage("/Index");
-        }
+
+        return RedirectToPage("/Index");
     }
 }
