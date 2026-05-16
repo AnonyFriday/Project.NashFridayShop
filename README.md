@@ -44,8 +44,15 @@ For admin:
 - Manage product categories (Name, Description): CRU
 - Manage products (Name, Category, Description, Price, Images, CreatedDate, UpdatedDate): CRUD
 - View customers: R
-- Extra: - Order Mangement: Get All, View, delivery (signalR – Server Send End) - Dashboard - Export PDF: - Export PDF Dashboard - top 10 products having highest average rating - top 10 products purchased the most - top 10 customer spending the most money on the products
-  Test:
+- Extra:
+  - Order Mangement: Get All, View, delivery (signalR – Server Send End)
+  - Dashboard
+  - Export PDF Dashboard
+    - Top 10 products having highest average rating
+    - Top 10 products purchased the most
+    - Top 10 customer spending the most money on the products
+    
+Test:
 - Unit Testing
 - Extra:
   - Integration Testing
@@ -53,8 +60,7 @@ For admin:
 
 API Documentation
 
-Extra:
-
+Extra Flows:
 - CI on FE, CI on BE
 - Google Cloud Storage
 - Stripe
